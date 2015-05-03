@@ -1,6 +1,13 @@
 grammar Exp;
 
+@header{
+	import b.*;
+}
 
+evaluatornew returns [Evaluator e]
+	: {$e = new IntEvaluator(55);}
+	;
+	
 evaluator returns [int result]
 	: expression EOF { $result = $expression.result;}
 	;

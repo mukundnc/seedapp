@@ -6,6 +6,8 @@ import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.TokenStream;
 
 import a.ExpParser.EvaluatorContext;
+import a.ExpParser.EvaluatornewContext;
+
 
 
 
@@ -20,7 +22,9 @@ public class TestExp {
 		TokenStream tokenStream = new CommonTokenStream(lexer);
 		ExpParser parser = new ExpParser(tokenStream);
 		EvaluatorContext result = parser.evaluator();
+		EvaluatornewContext resultNew = parser.evaluatornew();
 		System.out.println("I am ok result = " + result.result);
+		System.out.println("I am ok new result = " + resultNew.e.evaluate());
 	}
 
 }
