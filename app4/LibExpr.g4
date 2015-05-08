@@ -9,8 +9,8 @@ stat : ID EQUALS expr NEWLINE             # assign
      ;
 
 expr : LPAREN expr RPAREN                 # parens
-	 | expr op=(ADD | SUB) expr              # AddSub
-	 | expr op=(MUL | DIV) expr              # MulDiv
+	 | expr op=(MUL | DIV) expr           # MulDiv
+	 | expr op=(ADD | SUB) expr           # AddSub
      | ID                                 # id
      | INT                                # int
      ;
