@@ -3,13 +3,13 @@ import CommonLexerRules;
 
 prog : stat+;
 
-stat : ID '=' expr NEWLINE
+stat : ID EQUALS expr NEWLINE
      | expr NEWLINE
      | NEWLINE
      ;
 
-expr : '(' expr ')'
-	 | expr ('+' | '-' | '*' | '/') expr
+expr : LPAREN expr RPAREN
+	 | expr (ADD | SUB | MUL | DIV) expr
      | ID
      | INT
      ;
