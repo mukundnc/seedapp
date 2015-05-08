@@ -9,7 +9,7 @@ EQUALS : '=';
 ADD : '+';
 SUB : '-';
 MUL : '*';
-DIV : '/';
+DIV : '/';     
 
 LPAREN : '(';
 RPAREN : ')';
