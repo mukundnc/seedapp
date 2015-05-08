@@ -2,7 +2,7 @@ grammar Row;
 
 @parser::members {
 	public int col;
-	public RowParser(TokenStream input, col){
+	public RowParser(TokenStream input, int col){
 		this(input);
 		this.col = col;
 	}
@@ -24,4 +24,4 @@ locals [int i = 0;]
 
 NL : '\r'?'\n';
 TAB : '\t' -> skip;
-STUFF : ~['\t' | '\r' | '\n']+;
+STUFF:  ~[\t\r\n]+; 
