@@ -40,6 +40,6 @@ regionSpec
 eastSpec : 'east' | 'eastern';
 westSpec : 'west' | 'western';
 northSpec : 'north' | 'northern';
-southSpe : 'south' | 'southern';
+southSpec : 'south' | 'southern';
 
 ASSOC : 'in' | 'for' ;
