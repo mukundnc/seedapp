@@ -43,3 +43,4 @@ northSpec : 'north' | 'northern';
 southSpec : 'south' | 'southern';
 
 ASSOC : 'in' | 'for' ;
+WS : [' ' | '\t' | '\n' | '\r' | '\f']+ -> skip;
