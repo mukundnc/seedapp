@@ -7,8 +7,8 @@ display_aspect : 'show' 'all' | 'list' 'all' | 'get' 'all' | 'sales' 'of' | 'lis
 container_in_container 
 	:	category_in_region
 	|	category_in_state
-	//|	type_in_region
-	//|	type_in_state
+	|	type_in_region
+	|	type_in_state
 	//|	brand_in_region
 	//|	brand_in_state
 	;
@@ -19,6 +19,15 @@ category_in_region
 category_in_state
 	: categorySpec ASSOC stateSpec
 	;
+
+type_in_region
+	: typeSpec ASSOC regionSpec
+	;
+
+type_in_state 
+	: typeSpec ASSOC stateSpec
+	;
+
 
 categorySpec
 	: automibileSpec
@@ -70,6 +79,31 @@ apSpec : 'andhra pradesh' | 'andhrapradesh' | 'andhra' | 'ap';
 kntkSpec : 'karnataka' | 'kn' | 'kt';
 tnSpec : 'tamil nadu' | 'tamilnadu' | 'tamil nad' | 'tamilnad' | 'tn';
 kerSpec : 'kerla' | 'ker';
+
+
+typeSpec 
+	: mobileSpec | tabletSpec | laptopSpec
+	| shirtSpec | tshirtSpec | jeansSpec
+	| refrigratorSpec | tvSpec | acSpec
+	| bikeSpec | carSpec | suvSpec
+	;
+
+mobileSpec : 'mobile' | 'mobiles' | 'phones';
+tabletSpec : 'tablet' | 'tablets' | 'tab' | 'tabs';
+laptopSpec : 'laptop' | 'laptops' | 'laps' | 'lap';
+
+shirtSpec : 'shirts' | 'shirt';
+tshirtSpec : 'tshirts' | 'tshirt';
+jeansSpec : 'jeans' | 'jean' | 'trousers' | 'trouser';
+
+refrigratorSpec : 'fridge' | 'refrigrator' | 'refrigrators';
+tvSpec : 'tvs' | 'tv' | 'television' | 'led' | 'leds';
+acSpec : 'ac' | 'air conditioner' | 'acs';
+
+bikeSpec : 'bike' | 'bikes' | 'motor cycles' | 'motorcycles' | 'motor cycle' | 'motorcycle' | '2 wheeler' | '2wheeler' | '2 wheelers' | '2whellers';
+
+carSpec : 'car' | 'cars' | '4 wheelers' | '4wheelers' | '4 wheeler'  | '4wheeler';
+suvSpec : 'suv' | 'suvs' | 'sedans' | 'hatchbacks';
 
 
 
