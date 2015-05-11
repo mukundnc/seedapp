@@ -1,21 +1,36 @@
 grammar sales;
 
-query : display_aspect? container_in_container;
+query 
+	: display_aspect? container_in_container
+	| container_in_leaf
+	| leaf_in_container
+	| leaf_in_leaf
+	;
 
 display_aspect : 'show' 'all' | 'list' 'all' | 'get' 'all' | 'sales' 'of' | 'list';
 
 container_in_container 
 	:	category_in_region
-	|	category_in_state
-	|	category_in_city
+	|	category_in_state	
 	|	type_in_region
-	|	type_in_state
-	|	type_in_city
+	|	type_in_state	
 	|	brand_in_region
 	|	brand_in_state
+	;
+
+container_in_leaf
+	:	category_in_city
+	|	type_in_city
 	|	brand_in_city
-	|	model_in_region
+	;
+
+leaf_in_container
+	:	model_in_region
 	|	model_in_state
+	;
+
+leaf_in_leaf
+	:
 	|	model_in_city
 	;
 
