@@ -9,8 +9,8 @@ container_in_container
 	|	category_in_state
 	|	type_in_region
 	|	type_in_state
-	//|	brand_in_region
-	//|	brand_in_state
+	|	brand_in_region
+	|	brand_in_state
 	;
 
 category_in_region 
@@ -28,6 +28,13 @@ type_in_state
 	: typeSpec ASSOC stateSpec
 	;
 
+brand_in_region 
+	: brandSpec ASSOC regionSpec
+	;
+
+brand_in_state
+	: brandSpec ASSOC stateSpec
+	;
 
 categorySpec
 	: automibileSpec
@@ -106,11 +113,16 @@ carSpec : 'car' | 'cars' | '4 wheelers' | '4wheelers' | '4 wheeler'  | '4wheeler
 suvSpec : 'suv' | 'suvs' | 'sedans' | 'hatchbacks';
 
 
-
-
-
-
-
+brandSpec 
+	: 'apple' | 'samsung' | 'micromax' | 'xiome' | 'nokia' | 'hp' | 'dell' 
+	| 'asus' | 'acer' | 'lenovo' | 'compaq' | 'vanhusen' | 'colorplus' | 'arrow' 
+	| 'peterengland' | 'ralphpolo' | 'nike' | 'addidas' | 'crocodile' | 'kings' 
+	| 'sfk' | 'levis' | 'wrangler' | 'stryker' | 'killer' | 'pepe' | 'godrej' 
+	| 'voltas' | 'alwyn' | 'ge' | 'videocon' | 'lg' | 'sony' | 'panasonic' 
+	| 'toshiba' | 'carrier' | 'lyod' | 'bluestar' | 'hitachi' | 'kenstar' 
+	| 'bajaj' | 'hero' | 'kawasaky' | 'yamaha' | 'suzuki' | 'maruti' | 'hyundai' 
+	| 'tata' | 'fiat' | 'skoda' | 'honda' | 'toyota' | 'bmw' | 'audi' | 'mercedes'
+	;
 
 
 
