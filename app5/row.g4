@@ -14,7 +14,15 @@ locals [var i = 0;]
 	  )+
 	;
 
+expr : expr ('*' | '/') expr          #multDiv
+     | expr ('+' | '-') expr          #addSub
+     | IDENT                          #ident
+     | INT                            #int
+     ;
 
+
+IDENT : [a-zA-Z]+;
+INT : [0-9]+;
 NL : '\r'?'\n';
 TAB : '\t' -> skip;
 STUFF:  ~[\t\r\n]+; 
