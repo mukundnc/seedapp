@@ -1,13 +1,14 @@
 grammar sales;
+import commonlexer;
 
 query 
-	: display_aspect? container_in_container filter_expression?
+	: display_aspect container_in_container filter_expression?
 	| container_in_leaf filter_expression?
 	| leaf_in_container filter_expression?
 	| leaf_in_leaf filter_expression?
 	;
 
-display_aspect : 'show' 'all' | 'list' 'all' | 'get' 'all' | 'sales' 'of' | 'list';
+display_aspect : displaySpec;
 
 container_in_container 
 	:	category_in_region
@@ -81,17 +82,10 @@ model_in_city
 	;
 
 filter_expression 
-	: FILTER_ID expr
+	:	filterSpec
 	;
 
-expr
-	: expr ('and' | '&&' expr)+
-	| expr ('or' | '|' expr)+
-	| STR '=' STR
-	| STRNUM '=' STR
-	| STR ('>' | '>=' | '=' | '<' | '<=') NUM
-	| STR ('>' | '>=' | '=' | '<' | '<=') dateSpec
-	;
+displaySpec : DISPLAY_PREFIX?;
 
 categorySpec
 	: automibileSpec
@@ -189,23 +183,9 @@ modelSpec
 
 citySpec : STR;
 
-dateSpec 
-	:	YYYY_MM_DD
-	;	 
-
-YYYY_MM_DD: YEAR DATE_SPERATOR MONTH DATE_SPERATOR DAY;
-
-fragment YEAR : [2][0][0][0-9] | [2][0][1][0-5];
-fragment MONTH : [0]?[0-9] | [1][0-2];
-fragment DAY : [0]?[0-9] | [1-2][0-9] | [3][0-1];
-fragment DATE_SPERATOR : ('/' | '-');
+filterSpec 
+	: FILTER_CONTENT
+	;
 
 
-ASSOC : 'in' | 'for' | 'sales for' | 'sales in';
-FILTER_ID : 'from' | 'where' | 'sold from' | 'sold in' | 'that have' | 'that has' | 'which have' | 'which has' ;
-
-WS : [' ' | '\t' | '\n' | '\r' | '\f']+ -> skip;
-STR : [a-z]+;
-NUM : [0-9]+;
-STRNUM : STR NUM;
 
