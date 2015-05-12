@@ -5,7 +5,7 @@ fragment MONTH : [0]?[0-9] | [1][0-2];
 fragment DAY : [0]?[0-9] | [1-2][0-9] | [3][0-1];
 fragment DATE_SPERATOR : ('/' | '-');
 
-YYYY_MM_DD: [2][0][0-9][0-9] ('/'|'-') (([1-9]) | ([0][1-9]) | ([1][0-2])) ('/'|'-') ( ([1-9]) | ([12][0-9]) | ([0][1-9]) | ([3][01]) );
+YYYY_MM_DD: YEAR DATE_SPERATOR MONTH DATE_SPERATOR DAY;
 
 DISPLAY_PREFIX : 'show' | 'list' | 'get' | 'show all' | 'list all' | 'get all' | 'sales of';
 

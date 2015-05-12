@@ -1,34 +1,25 @@
 grammar expressions;
 import commonlexer;
 
-evaluate : statement EOF;
+evaluate : expression RELATION_OPERATOR?;
 
-statement
-	: singleStatement
-	| multiStatement
+term
+	: 
+	| '(' expression ')'
+	| STR 
+	| dateSpec
+	| STRNUM 
 	;
 
-singleStatement
-	: comparisonStatement*
+relation
+	: term (('=' | '!=' | '<' | '<=' | '>' | '>=' ) term)*
 	;
-
-multiStatement 
-	: multiAndOrStatement*
+	
+expression
+	: relation (AND_OR_OPERATOR relation)*
 	;
-
-comparisonStatement
-	: STR RELATION_OPERATOR STR
-	| STR RELATION_OPERATOR dateSpec
-	| STRNUM RELATION_OPERATOR STR
-	;
-
-multiAndOrStatement 
-	: comparisonStatement (AND_OR_OPERATOR (comparisonStatement))+
-	;
-
+		
 dateSpec 
 	:	YYYY_MM_DD
 	;
-
-
 
