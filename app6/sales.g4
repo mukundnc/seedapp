@@ -1,10 +1,10 @@
 grammar sales;
 
 query 
-	: display_aspect? container_in_container
-	| container_in_leaf
-	| leaf_in_container
-	| leaf_in_leaf
+	: display_aspect? container_in_container filter_expression?
+	| container_in_leaf filter_expression?
+	| leaf_in_container filter_expression?
+	| leaf_in_leaf filter_expression?
 	;
 
 display_aspect : 'show' 'all' | 'list' 'all' | 'get' 'all' | 'sales' 'of' | 'list';
@@ -80,6 +80,18 @@ model_in_city
 	: modelSpec ASSOC citySpec
 	;
 
+filter_expression 
+	: FILTER_ID expr
+	;
+
+expr
+	: expr ('and' | '&&' expr)+
+	| expr ('or' | '|' expr)+
+	| STR '=' STR
+	| STRNUM '=' STR
+	| STR ('>' | '>=' | '=' | '<' | '<=') NUM
+	| STR ('>' | '>=' | '=' | '<' | '<=') dateSpec
+	;
 
 categorySpec
 	: automibileSpec
@@ -152,7 +164,7 @@ refrigratorSpec : 'fridge' | 'refrigrator' | 'refrigrators';
 tvSpec : 'tvs' | 'tv' | 'television' | 'led' | 'leds';
 acSpec : 'ac' | 'air conditioner' | 'acs';
 
-bikeSpec : 'bike' | 'bikes' | 'motor cycles' | 'motorcycles' | 'motor cycle' | 'motorcycle' | '2 wheeler' | '2wheeler' | '2 wheelers' | '2whellers';
+bikeSpec : 'bike' | 'bikes' | 'motor cycles' | 'motorcycles' | 'motor cycle' | 'motorcycle' | '2 wheeler' | '2wheeler' | '2 wheelers' | '2wheelers';
 
 carSpec : 'car' | 'cars' | '4 wheelers' | '4wheelers' | '4 wheeler'  | '4wheeler';
 suvSpec : 'suv' | 'suvs' | 'sedans' | 'hatchbacks';
@@ -177,9 +189,23 @@ modelSpec
 
 citySpec : STR;
 
+dateSpec 
+	:	YYYY_MM_DD
+	;	 
+
+YYYY_MM_DD: YEAR DATE_SPERATOR MONTH DATE_SPERATOR DAY;
+
+fragment YEAR : [2][0][0][0-9] | [2][0][1][0-5];
+fragment MONTH : [0]?[0-9] | [1][0-2];
+fragment DAY : [0]?[0-9] | [1-2][0-9] | [3][0-1];
+fragment DATE_SPERATOR : ('/' | '-');
+
 
 ASSOC : 'in' | 'for' | 'sales for' | 'sales in';
+FILTER_ID : 'from' | 'where' | 'sold from' | 'sold in' | 'that have' | 'that has' | 'which have' | 'which has' ;
+
 WS : [' ' | '\t' | '\n' | '\r' | '\f']+ -> skip;
 STR : [a-z]+;
 NUM : [0-9]+;
 STRNUM : STR NUM;
+
