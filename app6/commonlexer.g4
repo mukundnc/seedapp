@@ -13,7 +13,7 @@ ASSOC : 'in' | 'for' | 'sales for' | 'sales in';
 
 FILTER_ID : 'from' | 'where' | 'sold from' | 'sold in' | 'that have' | 'that has' | 'which have' | 'which has' ;
 
-FILTER_CONTENT : FILTER_ID .*? EOF;
+
 
 
 RELATION_OPERATOR : ('=' | '!=' | '<=' | '<' | '>' | '>=');

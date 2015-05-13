@@ -184,7 +184,32 @@ modelSpec
 citySpec : STR;
 
 filterSpec 
-	: FILTER_CONTENT
+	: FILTER_ID expression RELATION_OPERATOR? EOF
+	;
+
+term
+	: 
+	| '(' expression ')'
+	| categorySpec
+	| typeSpec
+	| brandSpec
+	| modelSpec
+	| regionSpec
+	| stateSpec
+	| citySpec 
+	| dateSpec
+	;
+
+relation
+	: term (RELATION_OPERATOR term)*
+	;
+	
+expression
+	: relation (AND_OR_OPERATOR relation)*
+	;
+		
+dateSpec 
+	:	YYYY_MM_DD
 	;
 
 
