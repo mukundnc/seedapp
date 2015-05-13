@@ -2,3 +2,6 @@ node_modules
 *.java
 *.class
 *.tokens
+salesLexer.js
+salesListener.js
+salesParser.js
