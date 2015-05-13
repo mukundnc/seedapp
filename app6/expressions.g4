@@ -12,7 +12,7 @@ term
 	;
 
 relation
-	: term (('=' | '!=' | '<' | '<=' | '>' | '>=' ) term)*
+	: term (RELATION_OPERATOR term)*
 	;
 	
 expression

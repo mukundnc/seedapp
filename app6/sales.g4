@@ -3,9 +3,9 @@ import commonlexer;
 
 query 
 	: display_aspect container_in_container filter_expression?
-	| container_in_leaf filter_expression?
-	| leaf_in_container filter_expression?
-	| leaf_in_leaf filter_expression?
+	| display_aspect container_in_leaf filter_expression?
+	| display_aspect leaf_in_container filter_expression?
+	| display_aspect leaf_in_leaf filter_expression?
 	;
 
 display_aspect : displaySpec;
