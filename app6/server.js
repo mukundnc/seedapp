@@ -10,23 +10,23 @@ function onExitQuery(queryParams){
 	console.log(queryParams);
 }
 
-input = "show automobiles in north"; 	executeQuery(input);
-input = "show automobiles in up"; 		executeQuery(input);
-input = "show automobiles in mumbai";   executeQuery(input);
+// input = "show automobiles in north"; 	executeQuery(input);
+// input = "show automobiles in up"; 		executeQuery(input);
+// input = "show automobiles in mumbai";   executeQuery(input);
 
-input = "show cars in north"; 			executeQuery(input);
-input = "show cars in up"; 				executeQuery(input);
-input = "show cars in mumbai";  		executeQuery(input);
+// input = "show cars in north"; 			executeQuery(input);
+// input = "show cars in up"; 				executeQuery(input);
+// input = "show cars in mumbai";  		executeQuery(input);
 
-input = "show bmw in north"; 			executeQuery(input);
-input = "show bmw in up"; 				executeQuery(input);
-input = "show bmw in mumbai";  			executeQuery(input);
+// input = "show bmw in north"; 			executeQuery(input);
+// input = "show bmw in up"; 				executeQuery(input);
+// input = "show bmw in mumbai";  			executeQuery(input);
 
-input = "show iphone1 in north"; 		executeQuery(input);
-input = "show iphone1 in up";  			executeQuery(input);
-input = "show iphone1 in mumbai"; 		executeQuery(input);
+// input = "show iphone1 in north"; 		executeQuery(input);
+// input = "show iphone1 in up";  			executeQuery(input);
+// input = "show iphone1 in mumbai"; 		executeQuery(input);
 
-//input = " automobiles in north where state=raj";			executeQuery(input);
+input = "show apple in mah where region = north and state = mah and (city != mumbai and city != pune) and brand=apple and model = iphone5";			executeQuery(input);
 
 function executeQuery(query){
 	var chars = new antlr4.InputStream(query);
