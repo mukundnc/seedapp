@@ -118,10 +118,10 @@ stateSpec
 	| benSpec | odsSpec | bihSpec | jhaSpec
 	| apSpec | kntkSpec | tnSpec | kerSpec;
 
-upSpec : 'uttar' 'pradesh' | | 'uttarpradesh' | 'up';
+upSpec : 'uttar pradesh' | 'uttarpradesh' | 'up';
 punSpec : 'punjab' | 'pun';
 harSpec : 'haryana' | 'har';
-mpSpec : 'madhya' 'pradesh' | 'madhyapradesh' | 'mp';
+mpSpec : 'madhya pradesh' | 'madhyapradesh' | 'mp';
 
 mahSpec : 'maharashtra' | 'mah' | 'maha' ;
 rajSpec : 'rajasthan' | 'raj';
