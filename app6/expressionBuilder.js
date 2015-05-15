@@ -21,8 +21,18 @@ function ExpressionBuilder(){
 }
 
 ExpressionBuilder.prototype.build = function(ctx){
-	this.setActiveOperator(ctx);
-	var children = ctx.expression().children;
+	//this.setActiveOperator(ctx);
+	var relations = ctx.expression().relation();
+	var operators = ctx.expression().AND_OR_OPERATOR();
+	var i = 0;
+	var children = [];
+
+	while(i < relations.length){
+		children.push(relations[i]);
+		if(i < operators.length)
+			children.push(operators[i]);
+		++i;
+	}
 
 	children.forEach((function(c){
 		if(this.expressionItemType.OPERATOR === this.getExpressionItemType(c)){
@@ -48,37 +58,49 @@ ExpressionBuilder.prototype.build = function(ctx){
 	};
 }
 
-ExpressionBuilder.prototype.getExpressionItemType = function(ctx){
-	if(!ctx.children) return this.expressionItemType.OPERATOR;
+ExpressionBuilder.prototype.getExpressionItemType = function(relationOrOperator){
+	if(!relationOrOperator.children) return this.expressionItemType.OPERATOR;
 
-	if(ctx.children && ctx.children.length === 3) return this.expressionItemType.ATOMIC_RELATION;
+	var terms = relationOrOperator.term();
+	var operators = relationOrOperator.RELATION_OPERATOR();
+
+	if(terms && terms.length === 2 && operators && operators.length ===1) 
+		return this.expressionItemType.ATOMIC_RELATION;
 
 	return this.expressionItemType.COMPOSITE_RELATION;
 }
 
-ExpressionBuilder.prototype.getFiltersFromExpressionItem = function(expItem){
-	var children = expItem.children;
-	var expType = this.getExpressionItemType(expItem);
+ExpressionBuilder.prototype.getFiltersFromExpressionItem = function(atomicOrCompositeExpressionRelation){
+	var children = atomicOrCompositeExpressionRelation.children;
+	var expType = this.getExpressionItemType(atomicOrCompositeExpressionRelation);
 	var res = undefined;
 	switch (expType){
 		case this.expressionItemType.ATOMIC_RELATION : 
+			var terms = atomicOrCompositeExpressionRelation.term();
+			var operators = atomicOrCompositeExpressionRelation.RELATION_OPERATOR();
 			res = [{
 				filter : {
-					name : children[0].getText(),
-					operator : children[1].getText(),
-					value : children[2].getText()
+					name : terms[0].getText(),
+					operator : operators[0].getText(),
+					value : terms[1].getText()
 				}
 			}];
 			break;
 		case this.expressionItemType.COMPOSITE_RELATION : 
-			res = this.getFiltersFromCompositeRelation(expItem);
+			res = this.getFiltersFromCompositeRelation(atomicOrCompositeExpressionRelation);
 			break;
 	}
 	return res;
 }
 
-ExpressionBuilder.prototype.getFiltersFromCompositeRelation = function(expItem){
+ExpressionBuilder.prototype.getFiltersFromCompositeRelation = function(compositeExpressionRelation){
+	var relations = compositeExpressionRelation.term(0).expression().relation();
+	var arr = [];
+	relations.forEach((function(r){
+		arr = arr.concat(this.getFiltersFromExpressionItem(r));
+	}).bind(this));
 
+	return arr;
 }
 
 
@@ -89,50 +111,4 @@ ExpressionBuilder.prototype.setActiveOperator = function(ctx){
 	
 }
 
-
-ExpressionBuilder.prototype.build_old = function(ctx){
-	var rootExpression = ctx.expression();
-	this.showRelations(rootExpression);
-	//this.showOperators(rootExpression);
-}
-
-ExpressionBuilder.prototype.showRelations = function(rootExpression){
-	var relations = rootExpression.relation();
-	if(relations){
-		//console.log('found relations');
-		//console.log('relation type = ' + typeof(relations));
-		//console.log('here are relation keys');
-		//console.log(Object.keys(relations));
-		relations.forEach((function(r){
-			this.showRelationInfo(r);
-		}).bind(this));
-	}
-}
-
-ExpressionBuilder.prototype.showOperators = function(rootExpression){
-	var operators = this.rootExpression.AND_OR_OPERATOR();
-	if(operators){
-		console.log('found operators');
-		console.log('operator type = ' + typeof(operators));
-		console.log('here are operator keys')
-		console.log(Object.keys(operators));
-	}
-}
-
-ExpressionBuilder.prototype.showRelationInfo = function(r){
-	//console.log('here are relation info keys');
-	//console.log(Object.keys(r.children));
-	var terms = r.term();
-	console.log('found ' + Object.keys(terms).length + ' terms for relation ' + r.getText());
-	terms.forEach((function(t){
-		this.showTermInfo(t);
-	}).bind(this));
-}
-
-ExpressionBuilder.prototype.showTermInfo = function(t){
-	console.log(t.getText());
-	//if(t.expression)
-	//	this.build(t)	;
-	if(Object.keys(t.children).length === 3) this.build(t);
-}
 module.exports = ExpressionBuilder;
