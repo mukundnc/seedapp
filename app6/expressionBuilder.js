@@ -1,4 +1,10 @@
 
+var antlr4 = require('antlr4/index');
+var QueryLexer = require('./salesLexer').salesLexer;
+var QueryParser = require('./salesParser').salesParser;
+var BailErrorStrategy = require('antlr4/error/ErrorStrategy').BailErrorStrategy;
+
+
 function ExpressionBuilder(){
 	this.operators = {
 		EQ : '=',
@@ -77,12 +83,13 @@ ExpressionBuilder.prototype.getFiltersFromExpressionItem = function(atomicOrComp
 	switch (expType){
 		case this.expressionItemType.ATOMIC_RELATION : 
 			var terms = atomicOrCompositeExpressionRelation.term();
-			var operators = atomicOrCompositeExpressionRelation.RELATION_OPERATOR();
+			var operators = atomicOrCompositeExpressionRelation.RELATION_OPERATOR();			
 			res = [{
 				filter : {
 					name : terms[0].getText(),
 					operator : operators[0].getText(),
-					value : terms[1].getText()
+					value : terms[1].getText(),
+					isDate : this.isDateRelation(atomicOrCompositeExpressionRelation)
 				}
 			}];
 			break;
@@ -111,4 +118,20 @@ ExpressionBuilder.prototype.setActiveOperator = function(ctx){
 	
 }
 
+ExpressionBuilder.prototype.isDateRelation = function(relation){
+	var chars = new antlr4.InputStream(relation.getText());
+	var lexer = new QueryLexer(chars);
+	var tokens  = new antlr4.CommonTokenStream(lexer);
+	var parser = new QueryParser(tokens);
+	var errStrategy = new BailErrorStrategy();
+	parser._errHandler = new BailErrorStrategy();
+	parser.buildParseTrees = true;
+	try{
+		var tree = parser.parseDate();
+		return true;
+	}
+	catch(e){
+		return false;
+	}
+}
 module.exports = ExpressionBuilder;

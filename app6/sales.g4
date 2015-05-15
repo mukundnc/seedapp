@@ -212,5 +212,7 @@ dateSpec
 	:	YYYY_MM_DD
 	;
 
-
+parseDate 
+	: STR RELATION_OPERATOR dateSpec
+	;
 
