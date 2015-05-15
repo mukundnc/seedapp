@@ -13,7 +13,11 @@ AntlrApp.prototype.init = function(){
 }
 
 AntlrApp.prototype.getData = function(e){
-	$.getJSON('/data', this.onDataReceived.bind(this));
+	var query = 'show apple in north where state=pun and model=iphone5';
+	query = encodeURIComponent(query);
+	var url = '/data?q=' + query;
+	
+	$.getJSON(url, this.onDataReceived.bind(this));
 }
 
 AntlrApp.prototype.onDataReceived = function(data){

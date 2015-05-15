@@ -123,9 +123,8 @@ ExpressionBuilder.prototype.isDateRelation = function(relation){
 	var lexer = new QueryLexer(chars);
 	var tokens  = new antlr4.CommonTokenStream(lexer);
 	var parser = new QueryParser(tokens);
-	var errStrategy = new BailErrorStrategy();
 	parser._errHandler = new BailErrorStrategy();
-	parser.buildParseTrees = true;
+	parser.buildParseTrees = false;
 	try{
 		var tree = parser.parseDate();
 		return true;

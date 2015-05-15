@@ -1,34 +1,50 @@
 var antlr4 = require('antlr4/index');
+var BailErrorStrategy = require('antlr4/error/ErrorStrategy').BailErrorStrategy;
 var QueryListener = require('./queryListener');
 var QueryLexer = require('./salesLexer').salesLexer;
 var QueryParser = require('./salesParser').salesParser;
-
-var input = "";
-
-
-
 
 function AntlrApp(){
 
 }
 
 AntlrApp.prototype.executeQuery = function(query, cbOnExecuteComplete){
+	
+	function onQueryExecuted(data){
+		cbOnExecuteComplete({sucess : true, results : data});
+	}
+
+	try{
+		this.executeQueryInternal(query, onQueryExecuted);
+	}
+	catch(e){
+		console.log('***** exception in query parser ******');
+		console.log(JSON.stringify(e));
+		cbOnExecuteComplete({sucess : false, results : {}});
+	}
+}
+
+AntlrApp.prototype.executeQueryInternal = function(query, cbOnExecuteComplete){	
 	var chars = new antlr4.InputStream(query);
 	var lexer = new QueryLexer(chars);
 	var tokens  = new antlr4.CommonTokenStream(lexer);
 	var parser = new QueryParser(tokens);
+	parser._errHandler = new BailErrorStrategy();
 	parser.buildParseTrees = true;
+
 	var tree = parser.query();
 
 	var queryListener = new QueryListener(cbOnExecuteComplete);
 
 	antlr4.tree.ParseTreeWalker.DEFAULT.walk(queryListener, tree);	
+
 }
 
 AntlrApp.prototype.runTests = function(){
 	function onQueryResult(data){
 		console.log(JSON.stringify(data));
 	}
+	var input = "";
 	//input = "show automobiles in north"; 	this.executeQuery(input, onQueryResult);
 	// input = "show automobiles in up"; 		this.executeQuery(input, onQueryResult);
 	// input = "show automobiles in mumbai";   this.executeQuery(input, onQueryResult);
