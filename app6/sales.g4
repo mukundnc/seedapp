@@ -129,7 +129,7 @@ goaSpec : 'goa';
 gujSpec : 'gujrat' | 'guj';
 
 benSpec : 'bengal' | 'west bengal' | 'westbengal' | 'wb';
-odsSpec : 'odhisha' | 'orissa' | 'odisa' | 'or';
+odsSpec : 'odhisha' | 'orissa' | 'odisa';
 bihSpec : 'bihar' | 'bh';
 jhaSpec : 'jharkhand' | 'jha';
 

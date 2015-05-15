@@ -12,6 +12,10 @@ function QueryListener(cbOnExitQuery){
 QueryListener.prototype = Object.create(QueryListenerBase.prototype);
 QueryListener.prototype.constructor = QueryListener;
 
+QueryListener.prototype.enterQuery = function(ctx){
+	this.memory = {};
+}
+
 QueryListener.prototype.exitQuery = function(ctx){
 	this.cbOnExitQuery(this.memory);
 }
@@ -79,7 +83,10 @@ QueryListener.prototype.enterModel_in_city = function(ctx) {
 
 // Enter a parse tree produced by salesParser#filter_expression.
 QueryListener.prototype.enterFilter_expression = function(ctx) {
-	this.memory.filter = {value: ctx.filterSpec().getText()};
+	var ExpressionBuilder = require('./expressionBuilder');
+	var expBldr = new ExpressionBuilder();
+	var res = expBldr.build(ctx.filterSpec());
+	console.log(JSON.stringify(res));
 };
 
 QueryListener.prototype.addToMemory = function(key1, spec1, key2, spec2){
