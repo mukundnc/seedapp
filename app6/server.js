@@ -19,7 +19,7 @@ function run(){
 		//console.log(data);
 	}
 
-	antlrApp.executeQuery(onQueryComplete);
+	antlrApp.runTests();
 }
 
 run();
