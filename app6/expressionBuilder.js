@@ -57,10 +57,8 @@ ExpressionBuilder.prototype.build = function(ctx){
 	
 
 	return {
-		filter : {
-			and : this.and,
-			or : this.or
-		}
+		and : this.and,
+		or : this.or
 	};
 }
 

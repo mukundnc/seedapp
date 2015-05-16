@@ -11,7 +11,7 @@ function AntlrApp(){
 AntlrApp.prototype.executeQuery = function(query, cbOnExecuteComplete){
 	
 	function onQueryExecuted(data){
-		cbOnExecuteComplete({sucess : true, results : data});
+		cbOnExecuteComplete({success : true, results : data});
 	}
 
 	try{
@@ -20,7 +20,7 @@ AntlrApp.prototype.executeQuery = function(query, cbOnExecuteComplete){
 	catch(e){
 		console.log('***** exception in query parser ******');
 		console.log(JSON.stringify(e));
-		cbOnExecuteComplete({sucess : false, results : {}});
+		cbOnExecuteComplete({success : false, results : {}});
 	}
 }
 

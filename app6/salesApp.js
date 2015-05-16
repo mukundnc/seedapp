@@ -1,4 +1,5 @@
 var antlrApp = require('./antlrApp');
+var esApp = require('./esApp');
 
 function SalesApp(){
 
@@ -22,7 +23,7 @@ SalesApp.prototype.onAntlrResponse = function(cbOnDone, antlResponse){
 		return;
 	}
 
-	cbOnDone(antlResponse);
+	esApp.executeQuery(antlResponse.results, cbOnDone);
 }
 
 var gSalesApp = new SalesApp();
