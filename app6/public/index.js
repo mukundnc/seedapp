@@ -80,7 +80,8 @@ AntlrApp.prototype.getDisplayDate = function(ts){
 	var day = dt.getDate();
 	var month = dt.getMonth();
 	var year = dt.getFullYear();
-
+	if(day < 10) day = '0' + day;
+	
 	var map = {
 		0 : 'Jan',
 		1 : 'Feb',
