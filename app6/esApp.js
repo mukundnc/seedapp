@@ -17,7 +17,16 @@ ESApp.prototype.init = function(){
 
 ESApp.prototype.executeQuery = function(antlrQueryObject, cbOnDone){
 	var esQuery = this.getESQueryFromQueryAndFilters(antlrQueryObject);
-	cbOnDone({success : true, results : esQuery});
+	this.client.search(esQuery, function(err, res){
+		if(err){
+			console.log(err);
+			cbOnDone({success : false, results : 'error in ES query execute'});
+		}
+		else{
+			cbOnDone({success : true, results : res});
+		}
+	});
+	
 }
 
 ESApp.prototype.getESQueryFromQueryAndFilters = function(queryAndFilters){
