@@ -6,7 +6,6 @@ function onAppReady(){
 
 function AntlrApp(){
 	this.init();
-	this.initUI();
 	$('.searchInput').val('show apple in north where state=pun and model=iphone5 and date >= 2010/01/1 and date <= 2012-1-1');
 }
 
@@ -47,6 +46,7 @@ AntlrApp.prototype.onDataReceived = function(data){
 }
 
 AntlrApp.prototype.showResultsTable = function(resp){
+	var self = this;
 	var total = resp.hits.total;
 	var hits = resp.hits.hits;
 	var count = hits.length;
@@ -57,6 +57,7 @@ AntlrApp.prototype.showResultsTable = function(resp){
 			        '<td align="center">ID_PRODUCT</td>'+
 			    	'<td align="center">ID_REGION</td>'+
 			    	'<td align="center">ID_CUSTOMER</td>'+
+			    	'<td align="center">ID_DATE</td>'+
 			  	  '</tr>';
 	var $tbody = $('.resultsTable tbody');
 	hits.forEach(function(h){
@@ -65,11 +66,41 @@ AntlrApp.prototype.showResultsTable = function(resp){
 		var r = h._source.region;
 		var region = r.city + '-' + r.state + ' (' + r.region + ')';
 		var customer = h._source.customer.name + '-' + h._source.customer.id;
+		var date = self.getDisplayDate(h._source.timestamp);
 
-		var row = rowHtml.replace('ID_PRODUCT', product).replace('ID_REGION', region).replace('ID_CUSTOMER', customer);
+		var row = rowHtml.replace('ID_PRODUCT', product).replace('ID_REGION', region).replace('ID_CUSTOMER', customer).replace('ID_DATE', date);
 		var $trow = $(row);
 		$trow.appendTo($tbody);
 	});
 
 }
+
+AntlrApp.prototype.getDisplayDate = function(ts){
+	var dt = new Date(ts);
+	var day = dt.getDate();
+	var month = dt.getMonth();
+	var year = dt.getFullYear();
+
+	var map = {
+		0 : 'Jan',
+		1 : 'Feb',
+		2 : 'Mar',
+		3 : 'Apr',
+		4 : 'May',
+		5 : 'Jun',
+		6 : 'Jul',
+		7 : 'Aug',
+		8 : 'Sep',
+		9 : 'Oct',
+		10 : 'Nov',
+		11 : 'Dec',
+	}
+
+	return day + '-' + map[month] + '-' + year;
+}
+
+
+
+
+
 
