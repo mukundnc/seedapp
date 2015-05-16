@@ -1,5 +1,6 @@
 var elasticsearch = require('elasticsearch');
 var dictonary = require('./domainStrings');
+var qb = require('./queryBuilder');
 
 function ESApp(){
 	this.init();
@@ -17,6 +18,7 @@ ESApp.prototype.init = function(){
 
 ESApp.prototype.executeQuery = function(antlrQueryObject, cbOnDone){
 	var esQuery = this.getESQueryFromQueryAndFilters(antlrQueryObject);
+	console.log(JSON.stringify(esQuery));
 	this.client.search(esQuery, function(err, res){
 		if(err){
 			console.log(err);
@@ -30,42 +32,89 @@ ESApp.prototype.executeQuery = function(antlrQueryObject, cbOnDone){
 }
 
 ESApp.prototype.getESQueryFromQueryAndFilters = function(queryAndFilters){
-	var esQuery = {
-		index : 'companysales',
-		type: 'sales',
-		body: {
-			query:{
-			}
-		}
-	};
-
-	esQuery.body.query.filtered = {
-		query : {
-			match : {}
-		},
-		filter:{}
-	};
-	var qKeys = Object.keys(queryAndFilters.query);
-	esQuery.body.query.filtered.query.match[qKeys[0]] = dictonary.getDomainQualifiedStr(queryAndFilters.query[qKeys[0]]);
-
-	if(qKeys.length === 2){
-		esQuery.body.query.filtered.filter.term = {};
-		esQuery.body.query.filtered.filter.term[qKeys[1]] = dictonary.getDomainQualifiedStr(queryAndFilters.query[qKeys[1]]);
+	var esQuery = {};
+	if(queryAndFilters.filters){
+		esQuery = this.getMultiFieldAndOrESQuery(queryAndFilters);
 	}
-    if (queryAndFilters.filters && queryAndFilters.filters.hasFilters){
-		esQuery.body.query.filtered.filter.and = [];
-		var andFilters = queryAndFilters.filters.and;
-		andFilters.forEach(function(f){
-			if(!f.filter.isDate){
-				var term = {term: {}};
-				term.term[f.filter.name] = dictonary.getDomainQualifiedStr(f.filter.value);
-				esQuery.body.query.filtered.filter.and.push(term);
-			}
-		});
+	else{
+		esQuery = this.getMatchOrSingleFieldESQuery(queryAndFilters);		
 	}
 	return esQuery;
 }
 
-var gESApp = new ESApp();
+ESApp.prototype.getMatchOrSingleFieldESQuery = function(queryAndFilters){
+	var esQuery = {};
+	var qKeys = Object.keys(queryAndFilters.query);
+	if(qKeys.length === 1){                        //Keyword query like 'show all apple'
+		var aQuery = new qb.MatchQuery();
+		aQuery.addMatch(qKeys[0], queryAndFilters.query[qKeys[0]]);
+		esQuery = aQuery.toESQuery();
+	}
+	if(qKeys.length === 2){                        //Keyword with single match like 'show all apple in maharashtra'
+		var aQuery = new qb.MatchQueryWithSingleField();
+		aQuery.addMatch(qKeys[0], queryAndFilters.query[qKeys[0]]);
+		aQuery.addField(qKeys[1], queryAndFilters.query[qKeys[1]]);
+		esQuery = aQuery.toESQuery();
+	}	
+	return esQuery;
+}
 
+
+ESApp.prototype.getMultiFieldAndOrESQuery = function(queryAndFilters){
+	var hasAndOnlyFilters = queryAndFilters.filters.and.length > 0 && queryAndFilters.filters.or.length === 0;
+	var hasOrOnlyFilters = queryAndFilters.filters.or.length > 0 && queryAndFilters.filters.and.length === 0;
+	var hasBothAndOrFilters = queryAndFilters.filters.or.length > 0 && queryAndFilters.filters.and.length > 0;
+
+	if(hasAndOnlyFilters)
+		return this.getMultiAndOnlyESQuery(queryAndFilters);
+
+	if(hasOrOnlyFilters)
+		return this.getMultiOrOnlyESQuery(queryAndFilters);
+
+	if(hasBothAndOrFilters)
+		return this.getMultiAndOrESQuery(queryAndFilters);
+}
+
+ESApp.prototype.getMultiAndOnlyESQuery = function(queryAndFilters){
+	var qKeys = Object.keys(queryAndFilters.query);
+	var k1 = qKeys[0], v1 = queryAndFilters.query[k1];
+	var k2 = qKeys[0], v2 = queryAndFilters.query[k2];
+	var esQuery = new qb.MatchQueryWithAndFilters();
+	esQuery.addMatch(k1,v1);
+	esQuery.addAndFilter(k2,v2);
+
+	queryAndFilters.filters.and.forEach(function(filter){
+		if(!filter.filter.isDate){
+			esQuery.addAndFilter(filter.filter.name, filter.filter.value)
+		}
+	});
+
+	return esQuery.toESQuery();
+}
+
+ESApp.prototype.getMultiOrOnlyESQuery = function(queryAndFilters){
+	var qKeys = Object.keys(queryAndFilters.query);
+	var k1 = qKeys[0], v1 = queryAndFilters.query[k1];
+	var k2 = qKeys[0], v2 = queryAndFilters.query[k2];
+	var esQuery = new qb.MatchQueryWithOrFilters();
+	esQuery.addMatch(k1,v1);
+	esQuery.addOrFilter(k2,v2);
+
+	queryAndFilters.filters.or.forEach(function(filter){
+		if(!filter.isDate){
+			esQuery.addOrFilter(filter.filter.name, filter.filter.value)
+		}
+	});
+
+	return esQuery.toESQuery();
+}
+
+ESApp.prototype.getMultiAndOrESQuery = function(queryAndFilters){
+	var esQuery = {};
+	return esQuery
+}
+
+
+
+var gESApp = new ESApp();
 module.exports = gESApp;
