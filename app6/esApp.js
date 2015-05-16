@@ -16,8 +16,45 @@ ESApp.prototype.init = function(){
 
 
 ESApp.prototype.executeQuery = function(antlrQueryObject, cbOnDone){
-	console.log(JSON.stringify(antlrQueryObject));
-	cbOnDone({success : true, results : {}});
+	var esQuery = this.getESQueryFromQueryAndFilters(antlrQueryObject);
+	cbOnDone({success : true, results : esQuery});
+}
+
+ESApp.prototype.getESQueryFromQueryAndFilters = function(queryAndFilters){
+	var esQuery = {
+		index : 'companysales',
+		type: 'sales',
+		body: {
+			query:{
+			}
+		}
+	};
+
+	esQuery.body.query.filtered = {
+		query : {
+			match : {}
+		},
+		filter:{}
+	};
+	var qKeys = Object.keys(queryAndFilters.query);
+	esQuery.body.query.filtered.query.match[qKeys[0]] = dictonary.getDomainQualifiedStr(queryAndFilters.query[qKeys[0]]);
+
+	if(!queryAndFilters.filters.hasFilters){
+		esQuery.body.query.filtered.filter.term = {};
+		esQuery.body.query.filtered.filter.term[qKeys[1]] = dictonary.getDomainQualifiedStr(queryAndFilters.query[qKeys[1]]);
+	}
+	else{
+		esQuery.body.query.filtered.filter.and = [];
+		var andFilters = queryAndFilters.filters.and;
+		andFilters.forEach(function(f){
+			if(!f.filter.isDate){
+				var term = {term: {}};
+				term.term[f.filter.name] = dictonary.getDomainQualifiedStr(f.filter.value);
+				esQuery.body.query.filtered.filter.and.push(term);
+			}
+		});
+	}
+	return esQuery;
 }
 
 var gESApp = new ESApp();

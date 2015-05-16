@@ -173,6 +173,10 @@ function getDomainQualifiedStr(str){
 		dqs = str.replace(str[0], str[0].toUpperCase());
 		console.log('Unable to get the domain qualified string for \'' + str + '\' returning approx \'' + dqs + '\'');
 	}
+	if(str.toLowerCase().indexOf('iphone') !== -1){
+		dqs = str.toLowerCase();
+		dqs = str.replace(str[1], str[1].toUpperCase());
+	}
 	return dqs;
 }
 

@@ -58,7 +58,9 @@ ExpressionBuilder.prototype.build = function(ctx){
 
 	return {
 		and : this.and,
-		or : this.or
+		or : this.or,
+		hasFilters : this.and.length > 0 || this.or.length > 0,
+		hasSingleFilter : this.and.length + this.or.length === 1
 	};
 }
 

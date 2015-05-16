@@ -11,6 +11,6 @@ Effctive app logging.
 Effective error handling.
 Add configurations for constants.
 
-
+Single keyword queries
 Composite queries
 Modular/Resuable grammar

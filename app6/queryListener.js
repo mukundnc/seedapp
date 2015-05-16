@@ -85,7 +85,7 @@ QueryListener.prototype.enterModel_in_city = function(ctx) {
 QueryListener.prototype.enterFilter_expression = function(ctx) {
 	var ExpressionBuilder = require('./expressionBuilder');
 	var expBldr = new ExpressionBuilder();
-	this.memory.filter = expBldr.build(ctx.filterSpec());
+	this.memory.filters = expBldr.build(ctx.filterSpec());
 };
 
 QueryListener.prototype.addToMemory = function(key1, spec1, key2, spec2){
