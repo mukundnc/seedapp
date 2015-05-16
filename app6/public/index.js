@@ -7,12 +7,13 @@ function onAppReady(){
 function AntlrApp(){
 	this.init();
 	this.initUI();
+	$('.searchInput').val('show apple in north where state=pun and model=iphone5 and date >= 2010/01/1 and date <= 2012-1-1');
 }
 
 AntlrApp.prototype.initUI = function(){
 	$('#results').text('');
 	$('.resultsTable tbody').html('');
-	$('.searchInput').val('show apple in north where state=pun and model=iphone5 and date >= 2010/01/1 and date <= 2012-1-1');
+	
 
 }
 
@@ -23,6 +24,7 @@ AntlrApp.prototype.init = function(){
 }
 
 AntlrApp.prototype.executeQuery = function(e){
+	this.initUI();
 	var query = $('.searchInput').val();
 	query = encodeURIComponent(query);
 	var url = '/data?q=' + query;
