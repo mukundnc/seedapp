@@ -17,15 +17,18 @@ SalesApp.prototype.getFormattedQueryStr = function(req){
 	return str.toLowerCase();
 }
 
-SalesApp.prototype.onAntlrResponse = function(cbOnDone, antlResponse){
-	if(!antlResponse.success){
-		cbOnDone(antlResponse);
+SalesApp.prototype.onAntlrResponse = function(cbOnDone, antlrResponse){
+	if(!antlrResponse.success){
+		cbOnDone(antlrResponse);
 		return;
 	}
 
-	esApp.executeQuery(antlResponse.results, cbOnDone);
+	esApp.executeQuery(antlrResponse.results, cbOnDone);
 }
 
+SalesApp.prototype.runAllTests = function(){
+	antlrApp.runAllTests();
+}
 var gSalesApp = new SalesApp();
 
 module.exports = gSalesApp;

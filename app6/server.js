@@ -5,6 +5,7 @@ var salesApp = require('./salesApp');
 app.use(express.static('public'));
 
 app.get('/data', onDataRequest);
+app.get('/run', onRunTestRequest);
 
 function onDataRequest(req, res){
 
@@ -13,6 +14,11 @@ function onDataRequest(req, res){
 	}
 
 	salesApp.executeQuery(req, onQueryComplete);
+}
+
+function onRunTestRequest(req, res){
+	salesApp.runAllTests();
+	res.send('done');
 }
 
 var port = 9090;

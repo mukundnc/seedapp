@@ -18,6 +18,7 @@ QueryListener.prototype.enterQuery = function(ctx){
 
 QueryListener.prototype.exitQuery = function(ctx){
 	this.cbOnExitQuery(this.memory);
+
 }
 
 // Enter a parse tree produced by salesParser#category_in_region.

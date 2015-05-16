@@ -2,10 +2,10 @@ grammar sales;
 import commonlexer;
 
 query 
-	: display_aspect container_in_container filter_expression?
-	| display_aspect container_in_leaf filter_expression?
-	| display_aspect leaf_in_container filter_expression?
-	| display_aspect leaf_in_leaf filter_expression?
+	: display_aspect container_in_container filter_expression? EOF
+	| display_aspect container_in_leaf filter_expression? EOF
+	| display_aspect leaf_in_container filter_expression? EOF
+	| display_aspect leaf_in_leaf filter_expression? EOF
 	;
 
 display_aspect : displaySpec;
@@ -184,7 +184,7 @@ modelSpec
 citySpec : STR;
 
 filterSpec 
-	: FILTER_ID expression RELATION_OPERATOR? EOF
+	: FILTER_ID expression RELATION_OPERATOR?
 	;
 
 term

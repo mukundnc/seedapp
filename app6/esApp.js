@@ -48,11 +48,11 @@ ESApp.prototype.getESQueryFromQueryAndFilters = function(queryAndFilters){
 	var qKeys = Object.keys(queryAndFilters.query);
 	esQuery.body.query.filtered.query.match[qKeys[0]] = dictonary.getDomainQualifiedStr(queryAndFilters.query[qKeys[0]]);
 
-	if(!queryAndFilters.filters.hasFilters){
+	if(qKeys.length === 2){
 		esQuery.body.query.filtered.filter.term = {};
 		esQuery.body.query.filtered.filter.term[qKeys[1]] = dictonary.getDomainQualifiedStr(queryAndFilters.query[qKeys[1]]);
 	}
-	else{
+    if (queryAndFilters.filters && queryAndFilters.filters.hasFilters){
 		esQuery.body.query.filtered.filter.and = [];
 		var andFilters = queryAndFilters.filters.and;
 		andFilters.forEach(function(f){
