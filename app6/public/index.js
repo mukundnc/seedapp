@@ -13,10 +13,10 @@ AntlrApp.prototype.init = function(){
 }
 
 AntlrApp.prototype.getData = function(e){
-	var query = 'show apple in north where state=pun and model=iphone5';
+	var query = 'show apple in north where state=pun and model=iphone5 and date >= 2010/01/1 and date <= 2012-1-1';
 	query = encodeURIComponent(query);
 	var url = '/data?q=' + query;
-	
+
 	$.getJSON(url, this.onDataReceived.bind(this));
 }
 
