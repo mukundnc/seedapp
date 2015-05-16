@@ -69,7 +69,7 @@ ESApp.prototype.getMultiFieldAndOrESQuery = function(queryAndFilters){
 		return this.getMultiAndOnlyESQuery(queryAndFilters);
 
 	if(hasOrOnlyFilters)
-		return this.getMultiOrOnlyESQuery(queryAndFilters);
+		return this.getMultiAndOrESQuery(queryAndFilters);
 
 	if(hasBothAndOrFilters)
 		return this.getMultiAndOrESQuery(queryAndFilters);
@@ -78,7 +78,7 @@ ESApp.prototype.getMultiFieldAndOrESQuery = function(queryAndFilters){
 ESApp.prototype.getMultiAndOnlyESQuery = function(queryAndFilters){
 	var qKeys = Object.keys(queryAndFilters.query);
 	var k1 = qKeys[0], v1 = queryAndFilters.query[k1];
-	var k2 = qKeys[0], v2 = queryAndFilters.query[k2];
+	var k2 = qKeys[1], v2 = queryAndFilters.query[k2];
 	var esQuery = new qb.MatchQueryWithAndFilters();
 	esQuery.addMatch(k1,v1);
 	esQuery.addAndFilter(k2,v2);
@@ -95,13 +95,13 @@ ESApp.prototype.getMultiAndOnlyESQuery = function(queryAndFilters){
 ESApp.prototype.getMultiOrOnlyESQuery = function(queryAndFilters){
 	var qKeys = Object.keys(queryAndFilters.query);
 	var k1 = qKeys[0], v1 = queryAndFilters.query[k1];
-	var k2 = qKeys[0], v2 = queryAndFilters.query[k2];
+	var k2 = qKeys[1], v2 = queryAndFilters.query[k2];
 	var esQuery = new qb.MatchQueryWithOrFilters();
 	esQuery.addMatch(k1,v1);
 	esQuery.addOrFilter(k2,v2);
 
 	queryAndFilters.filters.or.forEach(function(filter){
-		if(!filter.isDate){
+		if(!filter.filter.isDate){
 			esQuery.addOrFilter(filter.filter.name, filter.filter.value)
 		}
 	});
@@ -110,8 +110,26 @@ ESApp.prototype.getMultiOrOnlyESQuery = function(queryAndFilters){
 }
 
 ESApp.prototype.getMultiAndOrESQuery = function(queryAndFilters){
-	var esQuery = {};
-	return esQuery
+	var qKeys = Object.keys(queryAndFilters.query);
+	var k1 = qKeys[0], v1 = queryAndFilters.query[k1];
+	var k2 = qKeys[1], v2 = queryAndFilters.query[k2];
+	var esQuery = new qb.MatchQueryWithAndOrFilters();
+	esQuery.addMatch(k1,v1);
+	esQuery.addAndFilter(k2,v2);
+
+	queryAndFilters.filters.and.forEach(function(filter){
+		if(!filter.filter.isDate){
+			esQuery.addAndFilter(filter.filter.name, filter.filter.value)
+		}
+	});
+
+	queryAndFilters.filters.or.forEach(function(filter){
+		if(!filter.filter.isDate){
+			esQuery.addOrFilter(filter.filter.name, filter.filter.value)
+		}
+	});
+
+	return esQuery.toESQuery();
 }
 
 

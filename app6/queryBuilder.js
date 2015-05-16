@@ -138,11 +138,65 @@ MatchQueryWithOrFilters.prototype.toESQuery = function(){
 	return this.query;
 }
 
+
+
+
+function MatchQueryWithAndOrFilters(){
+	this.query = {
+		index: 'companysales',
+		type: 'sales',
+		body: {
+			query: {
+				filtered: {
+					query :{
+						match: {
+						}
+					},
+					filter : {
+						and :[
+						],
+						or : [
+						]					
+					}
+
+				}		
+			}
+		}
+	}
+}
+
+MatchQueryWithAndOrFilters.prototype.addMatch = function(key, value){
+	var qValue = dictonary.getDomainQualifiedStr(value);
+	this.query.body.query.filtered.query.match[key] = qValue;
+}
+
+MatchQueryWithAndOrFilters.prototype.addOrFilter = function(key, value){
+	var qValue = dictonary.getDomainQualifiedStr(value);
+	var term = {term: {}};
+	term.term[key] = qValue;
+	this.query.body.query.filtered.filter.or.push(term);
+}
+
+MatchQueryWithAndOrFilters.prototype.addAndFilter = function(key, value){
+	var qValue = dictonary.getDomainQualifiedStr(value);
+	var term = {term: {}};
+	term.term[key] = qValue;
+	this.query.body.query.filtered.filter.and.push(term);
+}
+
+MatchQueryWithAndOrFilters.prototype.toESQuery = function(){
+	return this.query;
+}
+
+
+
+
 module.exports = {
 	MatchQuery : MatchQuery,
 	MatchQueryWithSingleField : MatchQueryWithSingleField,
 	MatchQueryWithAndFilters : MatchQueryWithAndFilters,
-	MatchQueryWithOrFilters : MatchQueryWithOrFilters
+	MatchQueryWithOrFilters : MatchQueryWithOrFilters,
+	MatchQueryWithAndOrFilters : MatchQueryWithAndOrFilters
 }
 
 

@@ -27,7 +27,7 @@ function ExpressionBuilder(){
 }
 
 ExpressionBuilder.prototype.build = function(ctx){
-	//this.setActiveOperator(ctx);
+	this.setActiveOperator(ctx);
 	var relations = ctx.expression().relation();
 	var operators = ctx.expression().AND_OR_OPERATOR();
 	var i = 0;
