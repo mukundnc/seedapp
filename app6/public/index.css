@@ -1,7 +1,69 @@
+.border{
+	border-style: solid;
+	border-width: 1px;
+}
+
+h1 {
+	position : relative;
+	left:40%;
+}
+.container{
+	position:relative;
+	top  : 2%;
+	left : 2%;
+	height : 600px;
+	width : 90%;
+}
+
+.searchContainer{
+	position: relative;
+	height : 15%;
+}
+
+.resultsContainer{
+	position : relative;
+	height: 85%;
+}
+
+.searchInput {
+	position: relative;
+	left: 1%;
+	width:80%;
+	height: 35px;
+	font-size: medium;
+}
+
 #run{
 	position: relative;
-	top:100px;
-	left: 500px;
-	height: 50px;
-	width:100px;
+	right: 238px;
+	height: 40px;
+	width:40px;
+	float: right;
+	background-color: #4d90fe;
+  	//background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
+  	background-image: url("Icons_Search.svg");
+  	cursor: pointer;
 }
+
+.countRow {
+	height : 10%;
+	margin-top:10px;
+}
+
+.countRow span{
+	margin-left:10px;
+	font-size: larger;
+	font-weight: 600;
+	color: rgb(49, 50, 200);
+}
+
+.resultsRow {
+	height:90%;
+}
+
+.resultsTable {
+	position: relative;
+	width: 100%;
+}
+
+
