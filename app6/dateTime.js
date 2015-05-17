@@ -36,22 +36,21 @@ DateTime.prototype.getDateRangeFromFilters = function(queryAndFilters){
 
 	if(keys.length === 1 && this.isLT_Or_LE_Or_From(keys[0])){
 		dateRange.hasDates = true;
-		dateRange.startDate = map[keys[0]];
-		dateRange.endDate = maxEndDate;
+		dateRange.startDate = minStartDate;
+		dateRange.endDate = map[keys[0]];
 		return dateRange;
 	}
 
 	if(keys.length === 1 && this.isGT_Or_GE_Or_To(keys[0])){
 		dateRange.hasDates = true;
-		dateRange.endDate = map[keys[0]];
-		dateRange.startDate = minStartDate;
+		dateRange.endDate = maxEndDate;
+		dateRange.startDate = map[keys[0]];
 		return dateRange;
 	}	
 
 	var eDate = map['<'] || map['<='] || map['to'];
 	var sDate = map['>'] || map['>='] || map['from'];
-console.log(eDate);
-console.log(sDate);
+
 
 	if(sDate && eDate){
 		dateRange.hasDates = true;
