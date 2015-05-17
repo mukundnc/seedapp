@@ -34,14 +34,14 @@ DateTime.prototype.getDateRangeFromFilters = function(queryAndFilters){
 		return dateRange;
 	}
 
-	if(keys.length === 1 && this.isLT_Or_LE_Or_From(keys[0])){
+	if(keys.length === 1 && this.isLT_Or_LE_Or_To(keys[0])){
 		dateRange.hasDates = true;
 		dateRange.startDate = minStartDate;
 		dateRange.endDate = map[keys[0]];
 		return dateRange;
 	}
 
-	if(keys.length === 1 && this.isGT_Or_GE_Or_To(keys[0])){
+	if(keys.length === 1 && this.isGT_Or_GE_Or_From(keys[0])){
 		dateRange.hasDates = true;
 		dateRange.endDate = maxEndDate;
 		dateRange.startDate = map[keys[0]];
@@ -82,8 +82,8 @@ DateTime.prototype.isLT_Or_LE = function(op){
 	return this.isLT(op) || this.isLE(op);
 }
 
-DateTime.prototype.isLT_Or_LE_Or_From = function(op){
-	return this.isLT_Or_LE(op) | this.isFrom(op);
+DateTime.prototype.isLT_Or_LE_Or_To = function(op){
+	return this.isLT_Or_LE(op) || this.isTo(op);
 }
 
 DateTime.prototype.isGT = function(op){
@@ -102,8 +102,8 @@ DateTime.prototype.isGT_Or_GE = function(op){
 	return this.isGT(op) || this.isGE(op);
 }
 
-DateTime.prototype.isGT_Or_GE_Or_To = function(op){
-	return this.isGT_Or_GE(op) || this.isTo(op);
+DateTime.prototype.isGT_Or_GE_Or_From = function(op){
+	return this.isGT_Or_GE(op) || this.isFrom(op);
 }
 
 var gDateTime = new DateTime();
