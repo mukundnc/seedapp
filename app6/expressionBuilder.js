@@ -130,6 +130,7 @@ ExpressionBuilder.prototype.isDateRelation = function(relation){
 		return true;
 	}
 	catch(e){
+		console.log('********* error in parsing date ********');
 		return false;
 	}
 }

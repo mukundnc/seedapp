@@ -1,6 +1,7 @@
 var elasticsearch = require('elasticsearch');
 var dictonary = require('./domainStrings');
 var qb = require('./queryBuilder');
+var dtm = require('./dateTime');
 
 function ESApp(){
 	this.init();
@@ -45,7 +46,7 @@ ESApp.prototype.getESQueryFromQueryAndFilters = function(queryAndFilters){
 ESApp.prototype.getMatchOrSingleFieldESQuery = function(queryAndFilters){
 	var esQuery = {};
 	var qKeys = Object.keys(queryAndFilters.query);
-	var dateRange = this.getDateRangeFromFilters(queryAndFilters);
+	var dateRange = dtm.getDateRangeFromFilters(queryAndFilters);
 	if(qKeys.length === 1){                        //Keyword query like 'show all apple'
 		var aQuery = new qb.MatchQuery();
 		aQuery.addMatch(qKeys[0], queryAndFilters.query[qKeys[0]]);		
@@ -101,7 +102,7 @@ ESApp.prototype.getMultiAndOnlyESQuery = function(queryAndFilters){
 		}
 	});
 
-	var dateRange = this.getDateRangeFromFilters(queryAndFilters);
+	var dateRange = dtm.getDateRangeFromFilters(queryAndFilters);
 	if(dateRange.hasDates)
 		esQuery.addDateRange(dateRange.startDate, dateRange.endDate);
 
@@ -146,64 +147,6 @@ ESApp.prototype.getMultiAndOrESQuery = function(queryAndFilters){
 	});
 
 	return esQuery.toESQuery();
-}
-
-ESApp.prototype.getDateRangeFromFilters = function(queryAndFilters){
-
-	var dateRange = { hasDates : false, startDate: '2000/01/01', endDate: '2000/01/01'};
-
-	if(!queryAndFilters.filters) return dateRange;
-
-	var andOrFilters = queryAndFilters.filters.and.concat(queryAndFilters.filters.or);
-
-	var map = {};
-
-	andOrFilters.forEach(function(filter){
-		if(filter.filter.isDate){
-			map[filter.filter.operator] = filter.filter.value;
-		}
-	});
-
-
-	var keys = Object.keys(map);
-	if(keys.length === 0) return dateRange;
-
-	
-	var minStartDate = '2000/01/01';
-	var maxEndDate = '2015/12/31';
-
-	if(keys.length === 1 && keys[0] === '='){
-		dateRange.hasDates = true;
-		dateRange.startDate = map[keys[0]];
-		dateRange.endDate = map[keys[0]];
-		return dateRange;
-	}
-
-	if(keys.length === 1 && (keys[0] === '>' || keys[0] === '>=')){
-		dateRange.hasDates = true;
-		dateRange.startDate = map[keys[0]];
-		dateRange.endDate = maxEndDate;
-		return dateRange;
-	}
-
-	if(keys.length === 1 && (keys[0] === '<' || keys[0] === '<=')){
-		dateRange.hasDates = true;
-		dateRange.endDate = map[keys[0]];
-		dateRange.startDate = minStartDate;
-		return dateRange;
-	}	
-
-	var eDate = map['<'] ? map['<'] : map['<='];
-	var sDate = map['>'] ? map['>'] : map['>='];
-
-	if(sDate && eDate){
-		dateRange.hasDates = true;
-		dateRange.endDate = eDate;
-		dateRange.startDate = sDate;
-		return dateRange;
-	}		
-
-	return dateRange;
 }
 
 var gESApp = new ESApp();
