@@ -55,9 +55,7 @@ ExpressionBuilder.prototype.build = function(ctx){
 
 	return {
 		and : this.and,
-		or : this.or,
-		hasFilters : this.and.length > 0 || this.or.length > 0,
-		hasSingleFilter : this.and.length + this.or.length === 1
+		or : this.or
 	};
 }
 
@@ -120,7 +118,7 @@ ExpressionBuilder.prototype.isDateRelation = function(relation){
 	if(!terms) return false;
 
 	for (var i = 0; i < terms.length; i++) {
-		if(terms[i].dateSpec){
+		if(terms[i].dateSpec()){
 			return true;
 		}
 	};
