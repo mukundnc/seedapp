@@ -102,7 +102,7 @@ var DomainQualifiedStringMap = {
 	'2wheelers' : 'Bike', 
 	'car' : 'Car', 
 	'cars' : 'Car', 
-	'4 wheelers' : 'CarCar', 
+	'4 wheelers' : 'Car', 
 	'4wheelers' : 'Car', 
 	'4 wheeler' : 'Car', 
 	'4wheeler' : 'Car', 
