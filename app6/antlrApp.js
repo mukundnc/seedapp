@@ -29,7 +29,7 @@ AntlrApp.prototype.executeQueryInternal = function(query, cbOnExecuteComplete){
 	var lexer = new QueryLexer(chars);
 	var tokens  = new antlr4.CommonTokenStream(lexer);
 	var parser = new QueryParser(tokens);
-	parser._errHandler = new BailErrorStrategy();
+	//parser._errHandler = new BailErrorStrategy();
 	parser.buildParseTrees = true;
 
 	var tree = parser.query();
