@@ -6,7 +6,7 @@ function onAppReady(){
 
 function AntlrApp(){
 	this.init();
-	$('.searchInput').val('show apple in north where state=pun and model=iphone5 and date >= 2010/01/1 and date <= 2012-1-1');
+	$('.searchInput').val('show apple in north where date >= 2010/01/1 and date <= 2010/12/31');
 }
 
 AntlrApp.prototype.initUI = function(){

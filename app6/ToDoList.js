@@ -1,4 +1,5 @@
 
+Fix or only + or and queries (along with dates)
 
 
 

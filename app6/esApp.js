@@ -45,16 +45,28 @@ ESApp.prototype.getESQueryFromQueryAndFilters = function(queryAndFilters){
 ESApp.prototype.getMatchOrSingleFieldESQuery = function(queryAndFilters){
 	var esQuery = {};
 	var qKeys = Object.keys(queryAndFilters.query);
+	var dateRange = this.getDateRangeFromFilters(queryAndFilters);
 	if(qKeys.length === 1){                        //Keyword query like 'show all apple'
 		var aQuery = new qb.MatchQuery();
-		aQuery.addMatch(qKeys[0], queryAndFilters.query[qKeys[0]]);
+		aQuery.addMatch(qKeys[0], queryAndFilters.query[qKeys[0]]);		
+		if(dateRange.hasDates)
+			aQuery.addDateRange(dateRange.startDate, dateRange.endDate);
 		esQuery = aQuery.toESQuery();
 	}
 	if(qKeys.length === 2){                        //Keyword with single match like 'show all apple in maharashtra'
-		var aQuery = new qb.MatchQueryWithSingleField();
-		aQuery.addMatch(qKeys[0], queryAndFilters.query[qKeys[0]]);
-		aQuery.addField(qKeys[1], queryAndFilters.query[qKeys[1]]);
-		esQuery = aQuery.toESQuery();
+		if(!dateRange.hasDates){
+			var aQuery = new qb.MatchQueryWithSingleField();
+			aQuery.addMatch(qKeys[0], queryAndFilters.query[qKeys[0]]);
+			aQuery.addAndFilter(qKeys[1], queryAndFilters.query[qKeys[1]]);
+			esQuery = aQuery.toESQuery();
+		}
+		else{
+			var aQuery = new qb.MatchQueryWithAndFilters();
+			aQuery.addMatch(qKeys[0], queryAndFilters.query[qKeys[0]]);
+			aQuery.addAndFilter(qKeys[1], queryAndFilters.query[qKeys[1]]);
+			aQuery.addDateRange(dateRange.startDate, dateRange.endDate);
+			esQuery = aQuery.toESQuery();
+		}
 	}	
 	return esQuery;
 }
@@ -88,6 +100,10 @@ ESApp.prototype.getMultiAndOnlyESQuery = function(queryAndFilters){
 			esQuery.addAndFilter(filter.filter.name, filter.filter.value)
 		}
 	});
+
+	var dateRange = this.getDateRangeFromFilters(queryAndFilters);
+	if(dateRange.hasDates)
+		esQuery.addDateRange(dateRange.startDate, dateRange.endDate);
 
 	return esQuery.toESQuery();
 }
@@ -132,7 +148,63 @@ ESApp.prototype.getMultiAndOrESQuery = function(queryAndFilters){
 	return esQuery.toESQuery();
 }
 
+ESApp.prototype.getDateRangeFromFilters = function(queryAndFilters){
 
+	var dateRange = { hasDates : false, startDate: '2000/01/01', endDate: '2000/01/01'};
+
+	if(!queryAndFilters.filters) return dateRange;
+
+	var andOrFilters = queryAndFilters.filters.and.concat(queryAndFilters.filters.or);
+
+	var map = {};
+
+	andOrFilters.forEach(function(filter){
+		if(filter.filter.isDate){
+			map[filter.filter.operator] = filter.filter.value;
+		}
+	});
+
+
+	var keys = Object.keys(map);
+	if(keys.length === 0) return dateRange;
+
+	
+	var minStartDate = '2000/01/01';
+	var maxEndDate = '2015/12/31';
+
+	if(keys.length === 1 && keys[0] === '='){
+		dateRange.hasDates = true;
+		dateRange.startDate = map[keys[0]];
+		dateRange.endDate = map[keys[0]];
+		return dateRange;
+	}
+
+	if(keys.length === 1 && (keys[0] === '>' || keys[0] === '>=')){
+		dateRange.hasDates = true;
+		dateRange.startDate = map[keys[0]];
+		dateRange.endDate = maxEndDate;
+		return dateRange;
+	}
+
+	if(keys.length === 1 && (keys[0] === '<' || keys[0] === '<=')){
+		dateRange.hasDates = true;
+		dateRange.endDate = map[keys[0]];
+		dateRange.startDate = minStartDate;
+		return dateRange;
+	}	
+
+	var eDate = map['<'] ? map['<'] : map['<='];
+	var sDate = map['>'] ? map['>'] : map['>='];
+
+	if(sDate && eDate){
+		dateRange.hasDates = true;
+		dateRange.endDate = eDate;
+		dateRange.startDate = sDate;
+		return dateRange;
+	}		
+
+	return dateRange;
+}
 
 var gESApp = new ESApp();
 module.exports = gESApp;

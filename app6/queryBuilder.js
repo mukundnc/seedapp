@@ -19,6 +19,17 @@ MatchQuery.prototype.addMatch = function(key, value){
 	this.query.body.query.match[key] = qValue;
 }
 
+MatchQuery.prototype.addDateRange = function(start, end){
+	this.query.body.filter = {
+		range:{
+			timestamp : {
+				gte : start,
+				lte : end
+			}
+		}
+	};
+}
+
 MatchQuery.prototype.toESQuery = function(){
 	return this.query;
 }
@@ -73,10 +84,8 @@ function MatchQueryWithAndFilters(){
 					},
 					filter : {
 						and : [
-						]
-						
+						]						
 					}
-
 				}		
 			}
 		}
@@ -93,6 +102,18 @@ MatchQueryWithAndFilters.prototype.addAndFilter = function(key, value){
 	var term = {term: {}};
 	term.term[key] = qValue;
 	this.query.body.query.filtered.filter.and.push(term);
+}
+
+MatchQueryWithAndFilters.prototype.addDateRange = function(start, end){
+	var range = {
+		range : {
+			timestamp : {
+				gte : start,
+				lte : end
+			}
+		}
+	}
+	this.query.body.query.filtered.filter.and.push(range);
 }
 
 MatchQueryWithAndFilters.prototype.toESQuery = function(){
