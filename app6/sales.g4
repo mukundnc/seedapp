@@ -6,6 +6,7 @@ query
 	| display_aspect container_in_leaf filter_expression? EOF
 	| display_aspect leaf_in_container filter_expression? EOF
 	| display_aspect leaf_in_leaf filter_expression? EOF
+	| display_aspect single_entity filter_expression? EOF
 	;
 
 display_aspect : displaySpec;
@@ -82,7 +83,17 @@ model_in_city
 	;
 
 filter_expression 
-	:	filterSpec
+	: filterSpec
+	;
+
+single_entity
+	: categorySpec
+	| typeSpec
+	| brandSpec
+	| regionSpec
+	| stateSpec
+	| modelSpec
+	| citySpec
 	;
 
 displaySpec : DISPLAY_PREFIX?;

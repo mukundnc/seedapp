@@ -4,7 +4,6 @@ function DateTime(){
 }
 
 DateTime.prototype.getDateRangeFromFilters = function(queryAndFilters){
-	console.log(JSON.stringify(queryAndFilters.filters));
 	var dateRange = { hasDates : false, startDate: '2000/01/01', endDate: '2000/01/01'};
 
 	if(!queryAndFilters.filters) return dateRange;

@@ -18,7 +18,7 @@ QueryListener.prototype.enterQuery = function(ctx){
 
 QueryListener.prototype.exitQuery = function(ctx){
 	this.cbOnExitQuery(this.memory);
-
+console.log('exit query');
 }
 
 // Enter a parse tree produced by salesParser#category_in_region.
@@ -82,12 +82,43 @@ QueryListener.prototype.enterModel_in_city = function(ctx) {
 	this.addDoubleKeysToMemory('model', ctx.modelSpec(), 'city', ctx.citySpec());
 };
 
+// Enter a parse tree produced by salesParser#single_entity.
+QueryListener.prototype.enterSingle_entity = function(ctx) {
+	if(ctx.categorySpec())
+		this.addSingleKeyToMemory('category', ctx.categorySpec());
+	
+	if(ctx.typeSpec())
+		this.addSingleKeyToMemory('type', ctx.typeSpec());
+
+	if(ctx.brandSpec())
+		this.addSingleKeyToMemory('brand', ctx.brandSpec());
+
+	if(ctx.regionSpec())
+		this.addSingleKeyToMemory('region', ctx.regionSpec());
+
+	if(ctx.stateSpec())
+		this.addSingleKeyToMemory('state', ctx.stateSpec());
+
+	if(ctx.modelSpec())
+		this.addSingleKeyToMemory('model', ctx.modelSpec());
+
+	if(ctx.citySpec())
+		this.addSingleKeyToMemory('city', ctx.citySpec());
+	
+};
+
+
 // Enter a parse tree produced by salesParser#filter_expression.
 QueryListener.prototype.enterFilter_expression = function(ctx) {
 	var ExpressionBuilder = require('./expressionBuilder');
 	var expBldr = new ExpressionBuilder();
 	this.memory.filters = expBldr.build(ctx.filterSpec());
 };
+
+QueryListener.prototype.addSingleKeyToMemory = function(key, spec){
+	this.memory.query = {};
+	this.memory.query[key] = spec.getText();
+}
 
 QueryListener.prototype.addDoubleKeysToMemory = function(key1, spec1, key2, spec2){
 	this.memory.query = {};
