@@ -91,10 +91,13 @@ ESApp.prototype.getMultiFieldAndOrESQuery = function(queryAndFilters){
 ESApp.prototype.getMultiAndOnlyESQuery = function(queryAndFilters){
 	var qKeys = Object.keys(queryAndFilters.query);
 	var k1 = qKeys[0], v1 = queryAndFilters.query[k1];
-	var k2 = qKeys[1], v2 = queryAndFilters.query[k2];
 	var esQuery = new qb.MatchQueryWithAndFilters();
 	esQuery.addMatch(k1,v1);
-	esQuery.addAndFilter(k2,v2);
+
+	if(qKeys.length > 1){ 				//this has become optional now as we support single entity key search
+		var k2 = qKeys[1], v2 = queryAndFilters.query[k2];
+		esQuery.addAndFilter(k2,v2);
+	}
 
 	queryAndFilters.filters.and.forEach(function(filter){
 		if(!filter.filter.isDate){
@@ -112,10 +115,13 @@ ESApp.prototype.getMultiAndOnlyESQuery = function(queryAndFilters){
 ESApp.prototype.getMultiOrOnlyESQuery = function(queryAndFilters){
 	var qKeys = Object.keys(queryAndFilters.query);
 	var k1 = qKeys[0], v1 = queryAndFilters.query[k1];
-	var k2 = qKeys[1], v2 = queryAndFilters.query[k2];
-	var esQuery = new qb.MatchQueryWithOrFilters();
+	var esQuery = new qb.MatchQueryWithAndFilters();
 	esQuery.addMatch(k1,v1);
-	esQuery.addOrFilter(k2,v2);
+
+	if(qKeys.length > 1){ 				//this has become optional now as we support single entity key search
+		var k2 = qKeys[1], v2 = queryAndFilters.query[k2];
+		esQuery.addAndFilter(k2,v2);
+	}
 
 	queryAndFilters.filters.or.forEach(function(filter){
 		if(!filter.filter.isDate){
@@ -129,10 +135,13 @@ ESApp.prototype.getMultiOrOnlyESQuery = function(queryAndFilters){
 ESApp.prototype.getMultiAndOrESQuery = function(queryAndFilters){
 	var qKeys = Object.keys(queryAndFilters.query);
 	var k1 = qKeys[0], v1 = queryAndFilters.query[k1];
-	var k2 = qKeys[1], v2 = queryAndFilters.query[k2];
-	var esQuery = new qb.MatchQueryWithAndOrFilters();
+	var esQuery = new qb.MatchQueryWithAndFilters();
 	esQuery.addMatch(k1,v1);
-	esQuery.addAndFilter(k2,v2);
+
+	if(qKeys.length > 1){ 				//this has become optional now as we support single entity key search
+		var k2 = qKeys[1], v2 = queryAndFilters.query[k2];
+		esQuery.addAndFilter(k2,v2);
+	}
 
 	queryAndFilters.filters.and.forEach(function(filter){
 		if(!filter.filter.isDate){
