@@ -58,7 +58,7 @@ ESApp.prototype.getMatchOrSingleFieldESQuery = function(queryAndFilters){
 		if(!dateRange.hasDates){
 			var aQuery = new qb.MatchQueryWithSingleField();
 			aQuery.addMatch(qKeys[0], queryAndFilters.query[qKeys[0]]);
-			aQuery.addAndFilter(qKeys[1], queryAndFilters.query[qKeys[1]]);
+			aQuery.addField(qKeys[1], queryAndFilters.query[qKeys[1]]);
 			esQuery = aQuery.toESQuery();
 		}
 		else{
