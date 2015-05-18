@@ -23,63 +23,63 @@ QueryListener.prototype.exitQuery = function(ctx){
 
 // Enter a parse tree produced by salesParser#category_in_region.
 QueryListener.prototype.enterCategory_in_region = function(ctx) {
-	this.addToMemory('category', ctx.categorySpec(), 'region', ctx.regionSpec());
+	this.addDoubleKeysToMemory('category', ctx.categorySpec(), 'region', ctx.regionSpec());
 };
 
 // Enter a parse tree produced by salesParser#category_in_state.
 QueryListener.prototype.enterCategory_in_state = function(ctx) {
-	this.addToMemory('category', ctx.categorySpec(), 'state', ctx.stateSpec());
+	this.addDoubleKeysToMemory('category', ctx.categorySpec(), 'state', ctx.stateSpec());
 };
 
 // Enter a parse tree produced by salesParser#category_in_city.
 QueryListener.prototype.enterCategory_in_city = function(ctx) {
-	this.addToMemory('category', ctx.categorySpec(), 'city', ctx.citySpec());
+	this.addDoubleKeysToMemory('category', ctx.categorySpec(), 'city', ctx.citySpec());
 };
 
 // Enter a parse tree produced by salesParser#type_in_region.
 QueryListener.prototype.enterType_in_region = function(ctx) {
-	this.addToMemory('type', ctx.typeSpec(), 'region', ctx.regionSpec());
+	this.addDoubleKeysToMemory('type', ctx.typeSpec(), 'region', ctx.regionSpec());
 };
 
 // Enter a parse tree produced by salesParser#type_in_state.
 QueryListener.prototype.enterType_in_state = function(ctx) {
-	this.addToMemory('type', ctx.typeSpec(), 'state', ctx.stateSpec());
+	this.addDoubleKeysToMemory('type', ctx.typeSpec(), 'state', ctx.stateSpec());
 };
 
 // Enter a parse tree produced by salesParser#type_in_city.
 QueryListener.prototype.enterType_in_city = function(ctx) {
-	this.addToMemory('type', ctx.typeSpec(), 'city', ctx.citySpec());
+	this.addDoubleKeysToMemory('type', ctx.typeSpec(), 'city', ctx.citySpec());
 };
 
 // Enter a parse tree produced by salesParser#brand_in_region.
 QueryListener.prototype.enterBrand_in_region = function(ctx) {
-	this.addToMemory('brand', ctx.brandSpec(), 'region', ctx.regionSpec());
+	this.addDoubleKeysToMemory('brand', ctx.brandSpec(), 'region', ctx.regionSpec());
 };
 
 // Enter a parse tree produced by salesParser#brand_in_state.
 QueryListener.prototype.enterBrand_in_state = function(ctx) {
-	this.addToMemory('brand', ctx.brandSpec(), 'state', ctx.stateSpec());
+	this.addDoubleKeysToMemory('brand', ctx.brandSpec(), 'state', ctx.stateSpec());
 };
 
 // Enter a parse tree produced by salesParser#brand_in_city.
 QueryListener.prototype.enterBrand_in_city = function(ctx) {
-	this.addToMemory('brand', ctx.brandSpec(), 'city', ctx.citySpec());
+	this.addDoubleKeysToMemory('brand', ctx.brandSpec(), 'city', ctx.citySpec());
 };
 
 // Enter a parse tree produced by salesParser#model_in_region.
 QueryListener.prototype.enterModel_in_region = function(ctx) {
-	this.addToMemory('model', ctx.modelSpec(), 'region', ctx.regionSpec());
+	this.addDoubleKeysToMemory('model', ctx.modelSpec(), 'region', ctx.regionSpec());
 };
 
 // Enter a parse tree produced by salesParser#model_in_state.
 QueryListener.prototype.enterModel_in_state = function(ctx) {
-	this.addToMemory('model', ctx.modelSpec(), 'state', ctx.stateSpec());
+	this.addDoubleKeysToMemory('model', ctx.modelSpec(), 'state', ctx.stateSpec());
 };
 
 
 // Enter a parse tree produced by salesParser#model_in_city.
 QueryListener.prototype.enterModel_in_city = function(ctx) {
-	this.addToMemory('model', ctx.modelSpec(), 'city', ctx.citySpec());
+	this.addDoubleKeysToMemory('model', ctx.modelSpec(), 'city', ctx.citySpec());
 };
 
 // Enter a parse tree produced by salesParser#filter_expression.
@@ -89,7 +89,7 @@ QueryListener.prototype.enterFilter_expression = function(ctx) {
 	this.memory.filters = expBldr.build(ctx.filterSpec());
 };
 
-QueryListener.prototype.addToMemory = function(key1, spec1, key2, spec2){
+QueryListener.prototype.addDoubleKeysToMemory = function(key1, spec1, key2, spec2){
 	this.memory.query = {};
 	this.memory.query[key1] = spec1.getText();
 	this.memory.query[key2] = spec2.getText();
