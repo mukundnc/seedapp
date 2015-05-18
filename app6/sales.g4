@@ -6,7 +6,6 @@ query
 	| display_aspect container_in_leaf filter_expression? EOF
 	| display_aspect leaf_in_container filter_expression? EOF
 	| display_aspect leaf_in_leaf filter_expression? EOF
-	| display_aspect single_entity filter_expression? EOF
 	;
 
 display_aspect : displaySpec;
@@ -34,16 +33,6 @@ leaf_in_container
 leaf_in_leaf
 	:
 	|	model_in_city
-	;
-	
-single_entity
-	: categorySpec
-	| typeSpec
-	| brandSpec
-	| regionSpec
-	| stateSpec
-	| citySpec
-	| modelSpec
 	;
 
 category_in_region 
@@ -193,8 +182,6 @@ modelSpec
 	;
 
 citySpec : STR;
-
-
 
 filterSpec 
 	: FILTER_ID expression RELATION_OPERATOR?
