@@ -1,3 +1,5 @@
+var logger = require('./../utils/Logger');
+
 function ApiController(){
 
 }
