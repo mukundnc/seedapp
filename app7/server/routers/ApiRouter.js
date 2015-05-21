@@ -3,6 +3,6 @@ var router = express.Router();
 var apiController = require('./../controllers/ApiController');
 
 router.get('/',  apiController.handleDefaultRequest);
-router.get('/search', apiController.handleSearchRequest);
+router.get('/search', apiController.handleSearchRequest.bind(apiController));
 
 module.exports = router;
