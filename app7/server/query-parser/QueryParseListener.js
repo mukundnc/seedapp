@@ -1,4 +1,5 @@
 var QueryParseListenerBase = require('./antlr/generated/salesListener').salesListener;
+var ExpressionBuilder = require('./ExpressionBuilder');
 var logger = require('./../utils/Logger');
 
 function QueryParseListener(cbOnExitQuery){
@@ -112,7 +113,6 @@ QueryParseListener.prototype.enterSingle_entity = function(ctx) {
 
 // Enter a parse tree produced by salesParser#filter_expression.
 QueryParseListener.prototype.enterFilter_expression = function(ctx) {
-	var ExpressionBuilder = require('./expressionBuilder');
 	var expBldr = new ExpressionBuilder();
 	this.memory.filters = expBldr.build(ctx.filterSpec());
 };
