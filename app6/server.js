@@ -4,7 +4,7 @@ var salesApp = require('./salesApp');
 
 app.use(express.static('public'));
 
-app.get('/data', onDataRequest);
+app.get('/api/search', onDataRequest);
 app.get('/run', onRunTestRequest);
 
 function onDataRequest(req, res){
