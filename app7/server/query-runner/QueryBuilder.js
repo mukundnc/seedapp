@@ -209,15 +209,75 @@ MatchQueryWithAndOrFilters.prototype.toESQuery = function(){
 	return this.query;
 }
 
+function QueryAggregator(){
+	this.aggregatorTemplate = {
+		aggs : {
+			categories : {
+				terms : {
+					field : 'category',
+					size : 5
+				}
+			},
+			brands:{
+				terms : {
+					field : 'brand',
+					size : 100
+				}
+			},
+			regions: {
+				terms : {
+					field : 'region',
+					size : 5
+				}
+			},
+			types : {
+				terms : {
+					field : 'type',
+					size : 100
+				}
+			},
+			states : {
+				terms : {
+					field : 'state',
+					size : 50
 
+				}
+			},
+			cities : {
+				terms : {
+					field : 'city',
+					size : 100
+				}
+			},
+			models : {
+				terms : {
+					field : 'model',
+					size : 600
+				}
+			},
+			yearly : {
+				date_histogram : {
+					field : 'timestamp',
+					interval : 'year',
+					format : 'YYYY/MM/DD'
+				}
+			}
+		}
+	};
+}
 
+QueryAggregator.prototype.getDefault = function(){
+	var agg = JSON.parse(JSON.stringify(this.aggregatorTemplate));
+	return agg;
+}
 
 module.exports = {
 	MatchQuery : MatchQuery,
 	MatchQueryWithSingleField : MatchQueryWithSingleField,
 	MatchQueryWithAndFilters : MatchQueryWithAndFilters,
 	MatchQueryWithOrFilters : MatchQueryWithOrFilters,
-	MatchQueryWithAndOrFilters : MatchQueryWithAndOrFilters
+	MatchQueryWithAndOrFilters : MatchQueryWithAndOrFilters,
+	QueryAggregator : QueryAggregator
 }
 
 
