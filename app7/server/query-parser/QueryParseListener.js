@@ -119,6 +119,8 @@ QueryParseListener.prototype.enterFilter_expression = function(ctx) {
 };
 
 QueryParseListener.prototype.addSingleKeyToMemory = function(key, spec, searchContext){
+	if (spec.length === 0) return;
+
 	this.memory.query = {};
 	this.memory.query[key] = [];
 	this.memory.searchContext = searchContext;
