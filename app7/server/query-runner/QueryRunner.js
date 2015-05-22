@@ -184,53 +184,36 @@ QueryRunner.prototype.applyAggregatorsToESQuery = function(esQuery, queryAndFilt
 		case sc.type_in_region : 
 			delete agg.aggs.categories;
 			delete agg.aggs.types;
-			delete agg.aggs.brands;
-			delete agg.aggs.models;
-			delete agg.aggs.regions;
-			delete agg.aggs.states;
 			delete agg.aggs.cities;
+			delete agg.aggs.regions;
 			break;
 		case sc.type_in_state : 
 			delete agg.aggs.categories;
 			delete agg.aggs.types;
-			delete agg.aggs.brands;
-			delete agg.aggs.models;
 			delete agg.aggs.regions;
 			delete agg.aggs.states;
-			delete agg.aggs.cities;
 			break;
 		case sc.type_in_city : 
 			delete agg.aggs.categories;
 			delete agg.aggs.types;
-			delete agg.aggs.brands;
-			delete agg.aggs.models;
 			delete agg.aggs.regions;
 			delete agg.aggs.states;
 			delete agg.aggs.cities;
 			break;
 		case sc.brand_in_region : 
-			delete agg.aggs.categories;
-			delete agg.aggs.types;
 			delete agg.aggs.brands;
-			delete agg.aggs.models;
 			delete agg.aggs.regions;
-			delete agg.aggs.states;
 			delete agg.aggs.cities;
+			delete agg.aggs.models;
 			break;
 		case sc.brand_in_state : 
-			delete agg.aggs.categories;
-			delete agg.aggs.types;
 			delete agg.aggs.brands;
-			delete agg.aggs.models;
 			delete agg.aggs.regions;
-			delete agg.aggs.states;
 			delete agg.aggs.cities;
+			delete agg.aggs.states;
 			break;
 		case sc.brand_in_city : 
-			delete agg.aggs.categories;
-			delete agg.aggs.types;
 			delete agg.aggs.brands;
-			delete agg.aggs.models;
 			delete agg.aggs.regions;
 			delete agg.aggs.states;
 			delete agg.aggs.cities;
@@ -241,7 +224,6 @@ QueryRunner.prototype.applyAggregatorsToESQuery = function(esQuery, queryAndFilt
 			delete agg.aggs.brands;
 			delete agg.aggs.models;
 			delete agg.aggs.regions;
-			delete agg.aggs.states;
 			delete agg.aggs.cities;
 			break;
 		case sc.model_in_state : 
@@ -251,7 +233,6 @@ QueryRunner.prototype.applyAggregatorsToESQuery = function(esQuery, queryAndFilt
 			delete agg.aggs.models;
 			delete agg.aggs.regions;
 			delete agg.aggs.states;
-			delete agg.aggs.cities;
 			break;
 		case sc.model_in_city : 
 			delete agg.aggs.categories;
@@ -264,60 +245,45 @@ QueryRunner.prototype.applyAggregatorsToESQuery = function(esQuery, queryAndFilt
 			break;
 		case sc.category : 
 			delete agg.aggs.categories;
-			delete agg.aggs.types;
-			delete agg.aggs.brands;
 			delete agg.aggs.models;
-			delete agg.aggs.regions;
 			delete agg.aggs.states;
 			delete agg.aggs.cities;
 			break;
 		case sc.type : 
 			delete agg.aggs.categories;
 			delete agg.aggs.types;
-			delete agg.aggs.brands;
 			delete agg.aggs.models;
-			delete agg.aggs.regions;
 			delete agg.aggs.states;
 			delete agg.aggs.cities;
 			break;
 		case sc.brand : 
-			delete agg.aggs.categories;
-			delete agg.aggs.types;
 			delete agg.aggs.brands;
-			delete agg.aggs.models;
-			delete agg.aggs.regions;
 			delete agg.aggs.states;
 			delete agg.aggs.cities;
 			break;
 		case sc.region : 
-			delete agg.aggs.categories;
 			delete agg.aggs.types;
 			delete agg.aggs.brands;
 			delete agg.aggs.models;
 			delete agg.aggs.regions;
-			delete agg.aggs.states;
 			delete agg.aggs.cities;
 			break;
 		case sc.state : 
-			delete agg.aggs.categories;
 			delete agg.aggs.types;
 			delete agg.aggs.brands;
 			delete agg.aggs.models;
 			delete agg.aggs.regions;
 			delete agg.aggs.states;
-			delete agg.aggs.cities;
 			break;
 		case sc.model : 
 			delete agg.aggs.categories;
 			delete agg.aggs.types;
 			delete agg.aggs.brands;
 			delete agg.aggs.models;
-			delete agg.aggs.regions;
 			delete agg.aggs.states;
 			delete agg.aggs.cities;
 			break;
 		case sc.city : 
-			delete agg.aggs.categories;
 			delete agg.aggs.types;
 			delete agg.aggs.brands;
 			delete agg.aggs.models;
@@ -328,7 +294,24 @@ QueryRunner.prototype.applyAggregatorsToESQuery = function(esQuery, queryAndFilt
 		default : 
 			logger.log('********  invalid search context in aggregator *********');
 	}
+
+	esQuery.body.aggs = agg.aggs;
 }
 
 
 module.exports = QueryRunner;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
