@@ -20,7 +20,7 @@ QueryParseListener.prototype.enterQuery = function(ctx){
 
 QueryParseListener.prototype.exitQuery = function(ctx){
 	this.cbOnExitQuery({
-		success: false, 
+		success: true, 
 		data : this.memory});
 	logger.log('exit query');
 }
