@@ -309,6 +309,18 @@ FilterOnly.prototype.addAndFilter = function(key, value){
 	this.query.body.query.filtered.filter.and.push(term);
 }
 
+FilterOnly.prototype.addDateRange = function(start, end){
+	var range = {
+		range : {
+			timestamp : {
+				gte : start,
+				lte : end
+			}
+		}
+	}
+	this.query.body.query.filtered.filter.and.push(range);
+}
+
 FilterOnly.prototype.toESQuery = function(){
 	return this.query;
 }
