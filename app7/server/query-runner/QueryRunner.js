@@ -240,7 +240,11 @@ QueryRunner.prototype.applyAggregatorsToESQuery = function(esQuery, searchContex
 			delete agg.aggs.cities;
 			break;
 		default : 
-			logger.log('********  invalid search context in aggregator *********');
+			delete agg.aggs.types;
+			delete agg.aggs.brands;
+			delete agg.aggs.models;
+			delete agg.aggs.states;
+			delete agg.aggs.cities;
 	}
 
 	esQuery.body.aggs = agg.aggs;
