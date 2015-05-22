@@ -20,7 +20,7 @@ QueryParseListener.prototype.enterQuery = function(ctx){
 
 QueryParseListener.prototype.exitQuery = function(ctx){
 	this.cbOnExitQuery({
-		success: true, 
+		success: false, 
 		data : this.memory});
 	logger.log('exit query');
 }
@@ -120,14 +120,25 @@ QueryParseListener.prototype.enterFilter_expression = function(ctx) {
 
 QueryParseListener.prototype.addSingleKeyToMemory = function(key, spec, searchContext){
 	this.memory.query = {};
-	this.memory.query[key] = spec.getText();
+	this.memory.query[key] = [];
 	this.memory.searchContext = searchContext;
+	spec.forEach((function(s){
+		this.memory.query[key].push(s.getText());
+	}).bind(this));
 }
 
 QueryParseListener.prototype.addDoubleKeysToMemory = function(key1, spec1, key2, spec2, searchContext){
 	this.memory.query = {};
-	this.memory.query[key1] = spec1.getText();
-	this.memory.query[key2] = spec2.getText();
+	this.memory.query[key1] = [];
+	this.memory.query[key2] = [];
 	this.memory.searchContext = searchContext;
+
+	spec1.forEach((function(s){
+		this.memory.query[key1].push(s.getText());
+	}).bind(this));
+
+	spec2.forEach((function(s){
+		this.memory.query[key2].push(s.getText());
+	}).bind(this));
 }
 module.exports = QueryParseListener;

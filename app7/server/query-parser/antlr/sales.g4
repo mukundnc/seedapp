@@ -37,49 +37,49 @@ leaf_in_leaf
 	;
 
 category_in_region 
-	: categorySpec ASSOC regionSpec
+	: categorySpec (',' categorySpec)* ASSOC regionSpec (',' regionSpec)*
 	;
 category_in_state
-	: categorySpec ASSOC stateSpec
+	: categorySpec (',' categorySpec)* ASSOC stateSpec (',' stateSpec)* 
 	;
 
 category_in_city
-	:	categorySpec ASSOC citySpec
+	: categorySpec (',' categorySpec)* ASSOC citySpec (',' citySpec)* 
 	;
 
 type_in_region
-	: typeSpec ASSOC regionSpec
+	: typeSpec (',' typeSpec)* ASSOC regionSpec (',' regionSpec)* 
 	;
 
 type_in_state 
-	: typeSpec ASSOC stateSpec
+	: typeSpec (',' typeSpec)* ASSOC stateSpec (',' stateSpec)* 
 	;
 
 type_in_city
-	: typeSpec ASSOC citySpec
+	: typeSpec (',' typeSpec)* ASSOC citySpec (',' citySpec)* 
 	;
 
 brand_in_region 
-	: brandSpec ASSOC regionSpec
+	: brandSpec (',' brandSpec)* ASSOC regionSpec (',' regionSpec)* 
 	;
 
 brand_in_state
-	: brandSpec ASSOC stateSpec
+	: brandSpec (',' brandSpec)* ASSOC stateSpec (',' stateSpec)* 
 	;
 brand_in_city
-	: brandSpec ASSOC citySpec
+	: brandSpec (',' brandSpec)* ASSOC citySpec (',' citySpec)* 
 	;
 
 model_in_region
-	: modelSpec ASSOC regionSpec
+	: modelSpec (',' modelSpec)* ASSOC regionSpec (',' regionSpec)* 
 	;
 
 model_in_state
-	: modelSpec ASSOC stateSpec
+	: modelSpec (',' modelSpec)* ASSOC stateSpec (',' stateSpec)* 
 	;
 
 model_in_city 
-	: modelSpec ASSOC citySpec
+	: modelSpec (',' modelSpec)* ASSOC citySpec (',' citySpec)* 
 	;
 
 filter_expression 
@@ -87,13 +87,13 @@ filter_expression
 	;
 
 single_entity
-	: categorySpec
-	| typeSpec
-	| brandSpec
-	| regionSpec
-	| stateSpec
-	| modelSpec
-	| citySpec
+	: categorySpec (',' categorySpec)*
+	| typeSpec (',' typeSpec)*
+	| brandSpec (',' brandSpec)*
+	| regionSpec (',' regionSpec)*
+	| stateSpec (',' stateSpec)*
+	| modelSpec (',' modelSpec)*
+	| citySpec (',' citySpec)*
 	;
 
 displaySpec : DISPLAY_PREFIX?;
