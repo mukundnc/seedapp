@@ -17,7 +17,17 @@ function MatchQuery(){
 
 MatchQuery.prototype.addMatch = function(key, value){
 	var qValue = dictonary.getDomainQualifiedStr(value);
-	this.query.body.query.match[key] = qValue;
+	if(key === 'model'){
+		delete this.query.body.query.match;
+		this.query.body.query = {
+			multi_match : {
+				query : qValue,
+				fields : ['model', 'city']
+			}
+		};
+	}
+	else
+		this.query.body.query.match[key] = qValue;
 }
 
 MatchQuery.prototype.addDateRange = function(start, end){
