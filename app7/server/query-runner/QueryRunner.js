@@ -1,5 +1,6 @@
 var elasticsearch = require('elasticsearch');
 var dictonary = require('./../../config/Dictionary');
+var ESQueryHelper = require('./ESQueryHelper');
 var qb = require('./QueryBuilder');
 var dtm = require('./../utils/DateTime');
 var config = require('./../../config/config');
@@ -19,8 +20,28 @@ QueryRunner.prototype.init = function(){
 
 
 QueryRunner.prototype.run = function(antlrQueryObject, cbOnDone){
-	var esQuery = this.getESQueryFromQueryAndFilters(antlrQueryObject);
-	this.applyAggregatorsToESQuery(esQuery, antlrQueryObject);
+	var allSrcTargets = this.getSourceTargetAndFilterBreakDown(antlrQueryObject);
+	var resp = {success: true, results : []};
+	var execCnt = 0;
+
+	function onComplete(data){
+		execCnt++;
+		resp.results.push(data.results);
+		if(execCnt >= allSrcTargets.length){
+			cbOnDone(resp);
+			return;
+		}
+	}
+
+	allSrcTargets.forEach((function(st){
+		this.runSingle(st, antlrQueryObject.searchContext, onComplete);
+	}).bind(this));
+}
+
+QueryRunner.prototype.runSingle = function(srcTargetFilter, searchContext, cbOnDone){
+	var qHlpr = new ESQueryHelper();
+	var esQuery = qHlpr.getESQuery(srcTargetFilter.source, srcTargetFilter.target, srcTargetFilter.filters);
+	this.applyAggregatorsToESQuery(esQuery, searchContext);
 	this.client.search(esQuery, function(err, res){
 		if(err){
 			logger.log(err);
@@ -32,137 +53,64 @@ QueryRunner.prototype.run = function(antlrQueryObject, cbOnDone){
 	});	
 }
 
-QueryRunner.prototype.getESQueryFromQueryAndFilters = function(queryAndFilters){
-	var esQuery = {};
-	if(queryAndFilters.filters){
-		esQuery = this.getMultiFieldAndOrESQuery(queryAndFilters);
+QueryRunner.prototype.getSourceTargetAndFilterBreakDown = function(queryAndFilters){
+	var arr = [];
+	if(queryAndFilters.query){
+		var keys = Object.keys(queryAndFilters.query);
+		if(keys.length === 1){								//Single entity search : phones
+			var vals = queryAndFilters.query[keys[0]];
+			vals.forEach(function(v){
+				arr.push({
+					source :{
+						key : keys[0],
+						value : v
+					}, 
+					target : null, 
+					filters : queryAndFilters.filters
+				});
+			});
+		}
+		if(keys.length === 2){								//Entity in entity search : phones in maharashtra
+			var srcObjs = [];
+			var srcVals = queryAndFilters.query[keys[0]];
+			srcVals.forEach(function(v){
+				srcObjs.push({
+					key : keys[0],
+					value : v
+				});
+			});
+			var trgObjs = [];
+			var trgVals = queryAndFilters.query[keys[1]];
+			trgVals.forEach(function(v){
+				trgObjs.push({
+					key : keys[1],
+					value : v
+				});
+			});
+
+			srcObjs.forEach(function(s){
+				trgObjs.forEach(function(t){
+					arr.push({
+						source : s, 
+						target : t, 
+						filters : queryAndFilters.filters
+					});
+				});
+			});
+		}
 	}
-	else{
-		esQuery = this.getMatchOrSingleFieldESQuery(queryAndFilters);		
-	}
-	return esQuery;
+	else
+		arr.push({source : null, target : null, filters : queryAndFilters.filters});
+
+	return arr;
 }
 
-QueryRunner.prototype.getMatchOrSingleFieldESQuery = function(queryAndFilters){
-	var esQuery = {};
-	var qKeys = Object.keys(queryAndFilters.query);
-	var dateRange = dtm.getDateRangeFromFilters(queryAndFilters);
-	if(qKeys.length === 1){                        //Keyword query like 'show all apple'
-		var aQuery = new qb.MatchQuery();
-		aQuery.addMatch(qKeys[0], queryAndFilters.query[qKeys[0]]);		
-		if(dateRange.hasDates)
-			aQuery.addDateRange(dateRange.startDate, dateRange.endDate);
-		esQuery = aQuery.toESQuery();
-	}
-	if(qKeys.length === 2){                        //Keyword with single match like 'show all apple in maharashtra'
-		if(!dateRange.hasDates){
-			var aQuery = new qb.MatchQueryWithSingleField();
-			aQuery.addMatch(qKeys[0], queryAndFilters.query[qKeys[0]]);
-			aQuery.addField(qKeys[1], queryAndFilters.query[qKeys[1]]);
-			esQuery = aQuery.toESQuery();
-		}
-		else{
-			var aQuery = new qb.MatchQueryWithAndFilters();
-			aQuery.addMatch(qKeys[0], queryAndFilters.query[qKeys[0]]);
-			aQuery.addAndFilter(qKeys[1], queryAndFilters.query[qKeys[1]]);
-			aQuery.addDateRange(dateRange.startDate, dateRange.endDate);
-			esQuery = aQuery.toESQuery();
-		}
-	}	
-	return esQuery;
-}
 
-
-QueryRunner.prototype.getMultiFieldAndOrESQuery = function(queryAndFilters){
-	var hasAndOnlyFilters = queryAndFilters.filters.and.length > 0 && queryAndFilters.filters.or.length === 0;
-	var hasOrOnlyFilters = queryAndFilters.filters.or.length > 0 && queryAndFilters.filters.and.length === 0;
-	var hasBothAndOrFilters = queryAndFilters.filters.or.length > 0 && queryAndFilters.filters.and.length > 0;
-
-	if(hasAndOnlyFilters)
-		return this.getMultiAndOnlyESQuery(queryAndFilters);
-
-	if(hasOrOnlyFilters)
-		return this.getMultiAndOrESQuery(queryAndFilters);
-
-	if(hasBothAndOrFilters)
-		return this.getMultiAndOrESQuery(queryAndFilters);
-}
-
-QueryRunner.prototype.getMultiAndOnlyESQuery = function(queryAndFilters){
-	var qKeys = Object.keys(queryAndFilters.query);
-	var k1 = qKeys[0], v1 = queryAndFilters.query[k1];
-	var esQuery = new qb.MatchQueryWithAndFilters();
-	esQuery.addMatch(k1,v1);
-
-	if(qKeys.length > 1){ 				//this has become optional now as we support single entity key search
-		var k2 = qKeys[1], v2 = queryAndFilters.query[k2];
-		esQuery.addAndFilter(k2,v2);
-	}
-
-	queryAndFilters.filters.and.forEach(function(filter){
-		if(!filter.filter.isDate){
-			esQuery.addAndFilter(filter.filter.name, filter.filter.value)
-		}
-	});
-
-	var dateRange = dtm.getDateRangeFromFilters(queryAndFilters);
-	if(dateRange.hasDates)
-		esQuery.addDateRange(dateRange.startDate, dateRange.endDate);
-
-	return esQuery.toESQuery();
-}
-
-QueryRunner.prototype.getMultiOrOnlyESQuery = function(queryAndFilters){
-	var qKeys = Object.keys(queryAndFilters.query);
-	var k1 = qKeys[0], v1 = queryAndFilters.query[k1];
-	var esQuery = new qb.MatchQueryWithAndFilters();
-	esQuery.addMatch(k1,v1);
-
-	if(qKeys.length > 1){ 				//this has become optional now as we support single entity key search
-		var k2 = qKeys[1], v2 = queryAndFilters.query[k2];
-		esQuery.addAndFilter(k2,v2);
-	}
-
-	queryAndFilters.filters.or.forEach(function(filter){
-		if(!filter.filter.isDate){
-			esQuery.addOrFilter(filter.filter.name, filter.filter.value)
-		}
-	});
-
-	return esQuery.toESQuery();
-}
-
-QueryRunner.prototype.getMultiAndOrESQuery = function(queryAndFilters){
-	var qKeys = Object.keys(queryAndFilters.query);
-	var k1 = qKeys[0], v1 = queryAndFilters.query[k1];
-	var esQuery = new qb.MatchQueryWithAndFilters();
-	esQuery.addMatch(k1,v1);
-
-	if(qKeys.length > 1){ 				//this has become optional now as we support single entity key search
-		var k2 = qKeys[1], v2 = queryAndFilters.query[k2];
-		esQuery.addAndFilter(k2,v2);
-	}
-
-	queryAndFilters.filters.and.forEach(function(filter){
-		if(!filter.filter.isDate){
-			esQuery.addAndFilter(filter.filter.name, filter.filter.value)
-		}
-	});
-
-	queryAndFilters.filters.or.forEach(function(filter){
-		if(!filter.filter.isDate){
-			esQuery.addOrFilter(filter.filter.name, filter.filter.value)
-		}
-	});
-
-	return esQuery.toESQuery();
-}
-
-QueryRunner.prototype.applyAggregatorsToESQuery = function(esQuery, queryAndFilters){
+QueryRunner.prototype.applyAggregatorsToESQuery = function(esQuery, searchContext){
 	var agg = new qb.QueryAggregator().getDefault();
 	var sc = config.searchContext;
 
-	switch(queryAndFilters.searchContext){
+	switch(searchContext){
 		case sc.category_in_region : 
 			delete agg.aggs.categories;
 			delete agg.aggs.models;

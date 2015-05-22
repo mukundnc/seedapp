@@ -271,13 +271,56 @@ QueryAggregator.prototype.getDefault = function(){
 	return agg;
 }
 
+function FilterOnly(){
+	this.query = {
+		index: config.elasticSearch.salesIndex,
+		type: config.elasticSearch.salesType,
+		body: {
+			query: {
+				filtered: {
+					query :{
+						match_all: {
+						}
+					},
+					filter : {
+						and :[
+						],
+						or : [
+						]					
+					}
+				}		
+			}
+		}
+	}
+
+}
+
+FilterOnly.prototype.addOrFilter = function(key, value){
+	var qValue = dictonary.getDomainQualifiedStr(value);
+	var term = {term: {}};
+	term.term[key] = qValue;
+	this.query.body.query.filtered.filter.or.push(term);
+}
+
+FilterOnly.prototype.addAndFilter = function(key, value){
+	var qValue = dictonary.getDomainQualifiedStr(value);
+	var term = {term: {}};
+	term.term[key] = qValue;
+	this.query.body.query.filtered.filter.and.push(term);
+}
+
+FilterOnly.prototype.toESQuery = function(){
+	return this.query;
+}
+
 module.exports = {
 	MatchQuery : MatchQuery,
 	MatchQueryWithSingleField : MatchQueryWithSingleField,
 	MatchQueryWithAndFilters : MatchQueryWithAndFilters,
 	MatchQueryWithOrFilters : MatchQueryWithOrFilters,
 	MatchQueryWithAndOrFilters : MatchQueryWithAndOrFilters,
-	QueryAggregator : QueryAggregator
+	QueryAggregator : QueryAggregator,
+	FilterOnly : FilterOnly
 }
 
 

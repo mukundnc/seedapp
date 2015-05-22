@@ -3,12 +3,12 @@ function DateTime(){
 
 }
 
-DateTime.prototype.getDateRangeFromFilters = function(queryAndFilters){
+DateTime.prototype.getDateRangeFromFilters = function(filters){
 	var dateRange = { hasDates : false, startDate: '2000/01/01', endDate: '2000/01/01'};
 
-	if(!queryAndFilters.filters) return dateRange;
+	if(!filters) return dateRange;
 
-	var andOrFilters = queryAndFilters.filters.and.concat(queryAndFilters.filters.or);
+	var andOrFilters = filters.and.concat(filters.or);
 
 	var map = {};
 

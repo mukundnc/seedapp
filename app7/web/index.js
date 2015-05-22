@@ -39,7 +39,8 @@ AntlrApp.prototype.handleKeyPressEvent = function(e){
 
 AntlrApp.prototype.onDataReceived = function(data){
 	if(data.success){
-		this.showResultsTable(data.results);
+		var consolidatedResults = this.postProcessResults(data.results);
+		this.showResultsTable(consolidatedResults);
 	}
 	else
 		alert('Internal server error');
@@ -73,6 +74,18 @@ AntlrApp.prototype.showResultsTable = function(resp){
 		$trow.appendTo($tbody);
 	});
 
+}
+
+AntlrApp.prototype.postProcessResults = function(results){
+	if(results.length === 1) return results[0];
+
+	var result = results[0];
+	for(var i = 1; i < results.length ; i++){
+		result.hits.total += results[i].hits.total;
+		result.hits.hits = result.hits.hits.concat(results[i].hits.hits);
+		result.took += results[i].took;
+	}
+	return result;
 }
 
 AntlrApp.prototype.getDisplayDate = function(ts){
