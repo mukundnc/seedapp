@@ -335,7 +335,42 @@ FilterOnly.prototype.toESQuery = function(){
 	return this.query;
 }
 
+function getRootQuery(){
+	return {
+		index: config.elasticSearch.salesIndex,
+		type: config.elasticSearch.salesType,
+		body: {
+			query: {
+				match_all: {
+				}
+			},
+			aggs:{
+				categories : {
+					terms : {
+						field : 'category',
+						size : 5
+					}
+				},
+				regions: {
+					terms : {
+						field : 'region',
+						size : 5
+					}
+				},
+				yearly : {
+					date_histogram : {
+						field : 'timestamp',
+						interval : 'year',
+						format : 'YYYY/MM/DD'
+					}
+				}
+			}			
+		}
+	};
+}
+
 module.exports = {
+	getRootQuery : getRootQuery,
 	MatchQuery : MatchQuery,
 	MatchQueryWithSingleField : MatchQueryWithSingleField,
 	MatchQueryWithAndFilters : MatchQueryWithAndFilters,
