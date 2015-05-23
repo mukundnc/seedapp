@@ -1,5 +1,5 @@
 var dictonary = require('./../../config/Dictionary');
-var qb = require('./QueryBuilder');
+var qb = require('./ESQueryBuilder');
 var dtm = require('./../utils/DateTime');
 var config = require('./../../config/config');
 var logger = require('./../utils/Logger');
