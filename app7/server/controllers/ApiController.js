@@ -30,10 +30,11 @@ ApiController.prototype.onQueryParseResponse = function(respHttp, respQueryParse
 
 ApiController.prototype.executeQuery = function(parsedQueryObject, respHttp){
 	var queryRunner = new QueryRunner();
-	queryRunner.run(parsedQueryObject, this.onExecuteQueryResponse.bind(this, respHttp));
+	queryRunner.run(parsedQueryObject, this.onExecuteQueryResponse.bind(this, parsedQueryObject, respHttp));
 }
 
-ApiController.prototype.onExecuteQueryResponse = function(respHttp, respExecQuery){
+ApiController.prototype.onExecuteQueryResponse = function(parsedQueryObject, respHttp, respExecQuery){
+	respExecQuery.query = parsedQueryObject;
 	respHttp.json(respExecQuery);
 }
 
