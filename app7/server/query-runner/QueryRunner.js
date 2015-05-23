@@ -18,6 +18,48 @@ QueryRunner.prototype.init = function(){
 	});
 }
 
+QueryRunner.prototype.getRoot = function(cbOnDone){
+	var esQuery = {
+		index: config.elasticSearch.salesIndex,
+		type: config.elasticSearch.salesType,
+		body: {
+			query: {
+				match_all: {
+				}
+			},
+			aggs:{
+				categories : {
+					terms : {
+						field : 'category',
+						size : 5
+					}
+				},
+				regions: {
+					terms : {
+						field : 'region',
+						size : 5
+					}
+				},
+				yearly : {
+					date_histogram : {
+						field : 'timestamp',
+						interval : 'year',
+						format : 'YYYY/MM/DD'
+					}
+				}
+			}			
+		}
+	};
+	this.client.search(esQuery, function(err, res){
+		if(err){
+			logger.log(err);
+			cbOnDone({success : false, results : 'error in ES query execute'});
+		}
+		else{
+			cbOnDone({success : true, results : res});
+		}
+	});	
+}
 
 QueryRunner.prototype.run = function(antlrQueryObject, cbOnDone){
 	var allSrcTargets = this.getSourceTargetAndFilterBreakDown(antlrQueryObject);

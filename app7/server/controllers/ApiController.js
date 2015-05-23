@@ -7,7 +7,10 @@ function ApiController(){
 }
 
 ApiController.prototype.handleDefaultRequest = function(req, res){
-	res.send('welcome to search api.')
+	var queryRunner = new QueryRunner();
+	queryRunner.getRoot(function(data){
+		res.json(data);
+	});
 }
 
 ApiController.prototype.handleSearchRequest = function(req, res){
