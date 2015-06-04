@@ -1,6 +1,9 @@
 var logger = require('./../utils/Logger');
 var QueryParser = require('./../query-parser/QueryParser');
 var QueryRunner = require('./../query-runner/QueryRunner');
+var config = require('./../../config/config');
+
+var fs = require('fs');
 
 function ApiController(){
 
@@ -39,7 +42,15 @@ ApiController.prototype.onExecuteQueryResponse = function(parsedQueryObject, res
 }
 
 ApiController.prototype.handleSaveRequest_v1 = function(req, res){
-	res.json({success: true, message: 'data saved successfully'});
+	var filePath = config.v1.saveFileName;
+	fs.writeFile(filePath, JSON.stringify(req.body), function(err){
+		if(err){
+			logger.log(err);
+			res.json({success: false, message: 'falied to save the data'})
+		}
+		else
+			res.json({success: true, message: 'data saved successfully'});
+	});
 }
 
 var gApiController = new ApiController();

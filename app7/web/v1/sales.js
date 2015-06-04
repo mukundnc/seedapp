@@ -129,7 +129,7 @@ SalesApp.prototype.save = function(){
 		url : '/api/v1/save',
 		type : 'POST',
 		contentType : 'application/json',
-		data : sData,
+		data : JSON.stringify(sData),
 		success : function(res){
 			console.log(res);
 		},

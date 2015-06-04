@@ -28,6 +28,9 @@ var config = {
 		region : 17,
 		state : 18,
 		city : 19
+	},
+	v1 : {
+		saveFileName : './web/v1/sales.txt'
 	}
 };
 

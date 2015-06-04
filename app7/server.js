@@ -3,6 +3,7 @@ var app = new express();
 var apiRouter = require('./server/routers/ApiRouter');
 var logger = require('./server/utils/Logger');
 
+app.use(require('body-parser').json())
 app.use(express.static('web'));
 app.use('/api', apiRouter);
 
