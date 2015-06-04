@@ -12,7 +12,7 @@ function SalesApp (){
 SalesApp.prototype.init = function(){
 	var self = this;
 	$.ajax({
-		url : '/sales.txt',
+		url : 'sales.txt',
 		type : 'GET',
 		success : function (d){
 			var obj = JSON.parse(d);
