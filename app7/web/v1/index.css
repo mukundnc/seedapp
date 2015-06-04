@@ -103,7 +103,7 @@ h1 {
 	left : 60px;
 }
 
-.sinput {
+.sinput, .binput {
 	width : 40px;
 	margin-left: 30px;
 }
@@ -166,8 +166,30 @@ h1 {
 	left: 25%;
 }
 
+.bContainer{
+	position: relative;
+	float : left;
+	left:200px;
+	width : 500px;
+	top:120px;
+}
 
+.bQuarterRow{
+	position: relative;
+	left : 300px;
+}
 
+.bQuarterHead{
+	margin-left: 50px;
+}
 
+.bCategory{
+	position: relative;
+	left : 5px;
+	width : 100px;
+}
 
-
+.bRow{
+	position: relative;
+	left: 115px;	
+}
