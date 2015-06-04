@@ -1,1 +1,4 @@
-categoryBrands.js
+function CategoryBrands(){
+
+}
+

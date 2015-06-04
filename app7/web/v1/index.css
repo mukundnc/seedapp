@@ -66,6 +66,10 @@ h1 {
 	width: 100%;
 }
 
+.sContainer{
+	float : left;
+	width : 500px;
+}
 
 .yearRow {
 	position: relative;
