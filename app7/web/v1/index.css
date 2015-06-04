@@ -144,8 +144,23 @@ h1 {
 	left : 630px;
 }
 
+#save{
+	position: relative;
+	top:10px;
+	left: 20px;
+	height: 40px;
+	width:70px;
+	float: left;
+	background-color: #4d90fe;
+  	cursor: pointer;
+  	z-index: 999;	
+}
 
-
+#save span{
+	position: relative;
+	top: 22%;
+	left: 25%;
+}
 
 
 

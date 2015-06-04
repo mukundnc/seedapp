@@ -38,6 +38,10 @@ ApiController.prototype.onExecuteQueryResponse = function(parsedQueryObject, res
 	respHttp.json(respExecQuery);
 }
 
+ApiController.prototype.handleSaveRequest_v1 = function(req, res){
+	res.json({success: true, message: 'data saved successfully'});
+}
+
 var gApiController = new ApiController();
 
 module.exports = gApiController;

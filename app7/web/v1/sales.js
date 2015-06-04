@@ -16,7 +16,7 @@ SalesApp.prototype.init = function(){
 		type : 'GET',
 		success : function (d){
 			var obj = JSON.parse(d);
-			self.sales = obj.sales;
+			self.sales = obj.sales.region_category;
 			self.updateUI();
 		},
 		error: function(err){
@@ -29,6 +29,7 @@ SalesApp.prototype.init = function(){
 SalesApp.prototype.addEventHandlers = function(){
 	$('.sinput').on('focusout', this.updateSalesObject.bind(this));
 	$('#year').on('change', this.updateUI.bind(this));
+	$('#save').on('click', this.save.bind(this));
 }
 
 SalesApp.prototype.updateUI = function(){
@@ -42,6 +43,8 @@ SalesApp.prototype.updateUI = function(){
 	regions.forEach((function(r){
 		this.updateUIForRegion(r, this.sales[sYearKey])
 	}).bind(this));
+
+	this.updateSalesCounters();
 }
 
 SalesApp.prototype.updateSalesObject = function(){
@@ -90,12 +93,13 @@ SalesApp.prototype.updateSalesObjectForRegion = function(region, sales){
 	});
 }
 
-SalesApp.prototype.updateSalesCounters = function(currYearKey){
+SalesApp.prototype.updateSalesCounters = function(){
 	var self = this;
 	var allYearKeys = Object.keys(this.sales);
 	var qArr = ['q1', 'q2', 'q3', 'q4'];
 	var rArr = ['east', 'west', 'north', 'south'];
 	var cArr = ['automobiles', 'electronics', 'appliances', 'cloths'];
+	var currYearKey = this.getCurrentSalesYearKey();
 	var total = 0;
 	var currYear = 0;
 
@@ -115,6 +119,26 @@ SalesApp.prototype.updateSalesCounters = function(currYearKey){
 	$('#yearCnt').text('Current year sales : ' + currYear);
 }
 
+SalesApp.prototype.save = function(){
+	var sData = {
+		sales : {
+			region_category : this.sales
+		}
+	}
+	var options = {
+		url : '/api/v1/save',
+		type : 'POST',
+		contentType : 'application/json',
+		data : sData,
+		success : function(res){
+			console.log(res);
+		},
+		error : function(a,b,c){
+			console.error('error in saving data');
+		}
+	}
+	$.ajax(options);
+}
 
 SalesApp.prototype.getInputControlsForRegion = function(region){
 	var map = {
