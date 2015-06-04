@@ -23,6 +23,12 @@ SalesApp.prototype.init = function(){
 			console.error('error in ajax');
 		}
 	});
+	this.addEventHandlers();
+}
+
+SalesApp.prototype.addEventHandlers = function(){
+	$('.sinput').on('focusout', this.updateSalesObject.bind(this));
+	$('#year').on('change', this.updateUI.bind(this));
 }
 
 SalesApp.prototype.updateUI = function(){
@@ -35,6 +41,19 @@ SalesApp.prototype.updateUI = function(){
 	
 	regions.forEach((function(r){
 		this.updateUIForRegion(r, this.sales[sYearKey])
+	}).bind(this));
+}
+
+SalesApp.prototype.updateSalesObject = function(){
+	var sYearKey = this.getCurrentSalesYearKey();
+
+	if(!this.sales[sYearKey])
+		console.error('no sales object');
+	
+	var regions = ['east', 'west', 'north', 'south'];
+	
+	regions.forEach((function(r){
+		this.updateSalesObjectForRegion(r, this.sales[sYearKey])
 	}).bind(this));
 }
 
@@ -53,6 +72,19 @@ SalesApp.prototype.updateUIForRegion = function(region, sales){
 		$(inputs[i]).val(sales[q][region]['electronics']); i++;
 		$(inputs[i]).val(sales[q][region]['appliances']); i++;
 		$(inputs[i]).val(sales[q][region]['cloths']); i++;
+	});
+}
+
+SalesApp.prototype.updateSalesObjectForRegion = function(region, sales){
+	var inputs = this.getInputControlsForRegion(region);
+	var qArr = ['q1', 'q2', 'q3', 'q4'];
+	var i = 0;
+
+	qArr.forEach(function(q){
+		sales[q][region]['automobiles'] = parseInt($(inputs[i]).val()); i++;
+		sales[q][region]['electronics'] = parseInt($(inputs[i]).val()); i++;
+		sales[q][region]['appliances'] = parseInt($(inputs[i]).val()); i++;
+		sales[q][region]['cloths'] = parseInt($(inputs[i]).val()); i++;
 	});
 }
 
