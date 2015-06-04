@@ -1,0 +1,172 @@
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Sales App</title>
+	<link rel="stylesheet" type="text/css" href="index.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.3/jquery.min.js"></script>
+	<script type="text/javascript" src="sales.js"></script>
+</head>
+<body>
+	<div class="sContainer">
+		<div class="yearRow">
+			<span>Year</span>
+			<select id="year">
+				<option>2000</option>
+				<option>2001</option>
+				<option>2002</option>
+				<option>2003</option>
+				<option>2004</option>
+				<option>2005</option>
+				<option>2006</option>
+				<option>2007</option>
+				<option>2008</option>
+				<option>2009</option>
+				<option>2010</option>
+				<option>2011</option>
+				<option>2012</option>
+				<option>2013</option>
+				<option>2014</option>
+			</select>
+		</div>
+		<div class="quarterRow">
+			<span class="qSpan">Q1</span>
+			<span class="qSpan" style="margin-left: 83px;">Q2</span>
+			<span class="qSpan" style="margin-left: 83px;">Q3</span>
+			<span class="qSpan" style="margin-left: 83px;">Q4</span>
+		</div>
+		<div class="eastRow">East</div>		
+		<div class="eastContainerRow">
+			<div class="eastContainer">
+				<div class="eAuto">
+					<span>Automobiles</span>
+					<input type='text' class="input" id="eAutoq1"></input>
+					<input type='text' class="input" id="eAutoq2"></input>
+					<input type='text' class="input" id="eAutoq3"></input>
+					<input type='text' class="input" id="eAutoq4"></input>
+				</div>
+				<div class="eElec">
+					<span>Electronics</span>
+					<input type='text' class="input" id="eElecq1" style="margin-left: 76px;"></input>
+					<input type='text' class="input" id="eElecq2"></input>
+					<input type='text' class="input" id="eElecq3"></input>
+					<input type='text' class="input" id="eElecq4"></input>
+				</div>
+				<div class="eApp">
+					<span>Appliances</span>
+					<input type='text' class="input" id="eAppq1" style="margin-left: 76px;"></input>
+					<input type='text' class="input" id="eAppq2"></input>
+					<input type='text' class="input" id="eAppq3"></input>
+					<input type='text' class="input" id="eAppq4"></input>
+				</div>
+				<div class="eCloth">
+					<span>Cloths</span>
+					<input type='text' class="input" id="eClothq1" style="margin-left: 106px;"></input>
+					<input type='text' class="input" id="eClothq2"></input>
+					<input type='text' class="input" id="eClothq3"></input>
+					<input type='text' class="input" id="eClothq4"></input>
+				</div>
+			</div>			
+		</div>
+		<div class="westRow">West</div>		
+		<div class="westContainerRow">
+			<div class="westContainer">
+				<div class="wAuto">
+					<span>Automobiles</span>
+					<input type='text' class="input" id="wAutoq1"></input>
+					<input type='text' class="input" id="wAutoq2"></input>
+					<input type='text' class="input" id="wAutoq3"></input>
+					<input type='text' class="input" id="wAutoq4"></input>
+				</div>
+				<div class="eElec">
+					<span>Electronics</span>
+					<input type='text' class="input" id="wElecq1" style="margin-left: 76px;"></input>
+					<input type='text' class="input" id="wElecq2"></input>
+					<input type='text' class="input" id="wElecq3"></input>
+					<input type='text' class="input" id="wElecq4"></input>
+				</div>
+				<div class="eApp">
+					<span>Appliances</span>
+					<input type='text' class="input" id="wAppq1" style="margin-left: 76px;"></input>
+					<input type='text' class="input" id="wAppq2"></input>
+					<input type='text' class="input" id="wAppq3"></input>
+					<input type='text' class="input" id="wAppq4"></input>
+				</div>
+				<div class="eCloth">
+					<span>Cloths</span>
+					<input type='text' class="input" id="wClothq1" style="margin-left: 106px;"></input>
+					<input type='text' class="input" id="wClothq2"></input>
+					<input type='text' class="input" id="wClothq3"></input>
+					<input type='text' class="input" id="wClothq4"></input>
+				</div>
+			</div>
+		</div>
+
+		<div class="northRow">North</div>		
+		<div class="northContainerRow">
+			<div class="northContainer">
+				<div class="wAuto">
+					<span>Automobiles</span>
+					<input type='text' class="input" id="nAutoq1"></input>
+					<input type='text' class="input" id="nAutoq2"></input>
+					<input type='text' class="input" id="nAutoq3"></input>
+					<input type='text' class="input" id="nAutoq4"></input>
+				</div>
+				<div class="eElec">
+					<span>Electronics</span>
+					<input type='text' class="input" id="nElecq1" style="margin-left: 76px;"></input>
+					<input type='text' class="input" id="nElecq2"></input>
+					<input type='text' class="input" id="nElecq3"></input>
+					<input type='text' class="input" id="nElecq4"></input>
+				</div>
+				<div class="eApp">
+					<span>Appliances</span>
+					<input type='text' class="input" id="nAppq1" style="margin-left: 76px;"></input>
+					<input type='text' class="input" id="nAppq2"></input>
+					<input type='text' class="input" id="nAppq3"></input>
+					<input type='text' class="input" id="nAppq4"></input>
+				</div>
+				<div class="eCloth">
+					<span>Cloths</span>
+					<input type='text' class="input" id="nClothq1" style="margin-left: 106px;"></input>
+					<input type='text' class="input" id="nClothq2"></input>
+					<input type='text' class="input" id="nClothq3"></input>
+					<input type='text' class="input" id="nClothq4"></input>
+				</div>
+			</div>
+		</div>
+
+		<div class="southRow">South</div>		
+		<div class="southContainerRow">
+			<div class="southContainer">
+				<div class="wAuto">
+					<span>Automobiles</span>
+					<input type='text' class="input" id="sAutoq1"></input>
+					<input type='text' class="input" id="sAutoq2"></input>
+					<input type='text' class="input" id="sAutoq3"></input>
+					<input type='text' class="input" id="sAutoq4"></input>
+				</div>
+				<div class="eElec">
+					<span>Electronics</span>
+					<input type='text' class="input" id="sElecq1" style="margin-left: 76px;"></input>
+					<input type='text' class="input" id="sElecq2"></input>
+					<input type='text' class="input" id="sElecq3"></input>
+					<input type='text' class="input" id="sElecq4"></input>
+				</div>
+				<div class="eApp">
+					<span>Appliances</span>
+					<input type='text' class="input" id="sAppq1" style="margin-left: 76px;"></input>
+					<input type='text' class="input" id="sAppq2"></input>
+					<input type='text' class="input" id="sAppq3"></input>
+					<input type='text' class="input" id="sAppq4"></input>
+				</div>
+				<div class="eCloth">
+					<span>Cloths</span>
+					<input type='text' class="input" id="sClothq1" style="margin-left: 106px;"></input>
+					<input type='text' class="input" id="sClothq2"></input>
+					<input type='text' class="input" id="sClothq3"></input>
+					<input type='text' class="input" id="sClothq4"></input>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>

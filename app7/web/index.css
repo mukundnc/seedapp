@@ -67,3 +67,86 @@ h1 {
 }
 
 
+.yearRow {
+	position: relative;
+	left: 300px;
+	top: 80px;
+}
+
+.quarterRow{
+	position: relative;
+	top: 100px;
+	left:175px;
+}
+
+.qSpan {
+	margin-left: 50px;
+}
+
+.eastRow{
+	position : relative;
+	top : 100px;
+	left:10px;
+}
+.eastContainerRow {
+	position : relative;
+	top : 95px;
+}
+
+.eastContainer{
+	position: relative;
+	top: 10px;
+	left : 60px;
+}
+
+.input {
+	width : 40px;
+	margin-left: 65px;
+}
+
+.westRow{
+	position : relative;
+	top : 110px;
+	left:10px;
+}
+.westContainerRow{
+	position:relative;
+	top : 120px;
+	left : 60px;
+}
+
+.northRow{
+	position : relative;
+	top : 135px;
+	left:10px;
+}
+.northContainerRow{
+	position:relative;
+	top : 145px;
+	left : 60px;
+}
+
+
+.southRow{
+	position : relative;
+	top : 160px;
+	left:10px;
+}
+.southContainerRow{
+	position:relative;
+	top : 170px;
+	left : 60px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
