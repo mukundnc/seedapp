@@ -33,20 +33,27 @@ SalesApp.prototype.updateUI = function(){
 	
 	var regions = ['east', 'west', 'north', 'south'];
 	
-
+	regions.forEach((function(r){
+		this.updateUIForRegion(r, this.sales[sYearKey])
+	}).bind(this));
 }
 
 SalesApp.prototype.getCurrentSalesYearKey = function(){
 	return 's' + $('#year').val();
 }
-SalesApp.prototype.getAllInputValues = function(){
-	var self = this;
-	var allInputs = []
-	var jqSels = ['.eastContainer input', '.westContainer input', '.northContainer input', '.southContainer input'];
-	jqSels.forEach(function(jqSel){
-		allInputs = allInputs.concat(self.getInputValuesForRegion(jqSel));
+
+
+SalesApp.prototype.updateUIForRegion = function(region, sales){
+	var inputs = this.getInputControlsForRegion(region);
+	var qArr = ['q1', 'q2', 'q3', 'q4'];
+	var i = 0;
+
+	qArr.forEach(function(q){
+		$(inputs[i]).val(sales[q][region]['automobiles']); i++;
+		$(inputs[i]).val(sales[q][region]['electronics']); i++;
+		$(inputs[i]).val(sales[q][region]['appliances']); i++;
+		$(inputs[i]).val(sales[q][region]['cloths']); i++;
 	});
-	return $(allInputs);
 }
 
 SalesApp.prototype.getInputControlsForRegion = function(region){
@@ -79,10 +86,10 @@ SalesApp.prototype.getDefaultValuesForSalesYear = function(){
 	sale = {
 		q1 : {
 			east:{
-				automobiles : 1,
-				electronics : 2,
-				appliances : 3,
-				cloths : 4
+				automobiles : 0,
+				electronics : 0,
+				appliances : 0,
+				cloths : 0
 			},
 			west:{
 				automobiles : 0,
