@@ -55,6 +55,8 @@ SalesApp.prototype.updateSalesObject = function(){
 	regions.forEach((function(r){
 		this.updateSalesObjectForRegion(r, this.sales[sYearKey])
 	}).bind(this));
+
+	this.updateSalesCounters(sYearKey);
 }
 
 SalesApp.prototype.getCurrentSalesYearKey = function(){
@@ -87,6 +89,32 @@ SalesApp.prototype.updateSalesObjectForRegion = function(region, sales){
 		sales[q][region]['cloths'] = parseInt($(inputs[i]).val()); i++;
 	});
 }
+
+SalesApp.prototype.updateSalesCounters = function(currYearKey){
+	var self = this;
+	var allYearKeys = Object.keys(this.sales);
+	var qArr = ['q1', 'q2', 'q3', 'q4'];
+	var rArr = ['east', 'west', 'north', 'south'];
+	var cArr = ['automobiles', 'electronics', 'appliances', 'cloths'];
+	var total = 0;
+	var currYear = 0;
+
+	allYearKeys.forEach(function(y){
+		qArr.forEach(function(q){
+			rArr.forEach(function(r){
+				cArr.forEach(function(c){
+					total += self.sales[y][q][r][c];
+					if(currYearKey === y)
+						currYear += self.sales[y][q][r][c];
+				});
+			});
+		});
+	});
+
+	$('#totalCnt').text('Total sales : ' + total);
+	$('#yearCnt').text('Current year sales : ' + currYear);
+}
+
 
 SalesApp.prototype.getInputControlsForRegion = function(region){
 	var map = {
