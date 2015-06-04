@@ -139,7 +139,7 @@ h1 {
 }
 
 .cContainer{
-	position: relative;
+	position: absolute;
 	top : 190px;
 	left : 630px;
 }
