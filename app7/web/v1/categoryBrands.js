@@ -24,6 +24,7 @@ CategoryBrands.prototype.onCategoryChange = function(){
 		case 'Appliances' : $('.bApplianceContainer').addClass('bActive'); break;
 		case 'Cloths' : $('.bClothsContainer').addClass('bActive'); break;
 	}
+	this.updatePercentCounters();
 }
 
 CategoryBrands.prototype.getData = function(){
@@ -55,6 +56,8 @@ CategoryBrands.prototype.updateUI = function(){
 	categories.forEach((function(c){
 		this.updateUIForCategory(c, this.sales[cYearKey])
 	}).bind(this));
+
+	this.updatePercentCounters();
 }
 
 CategoryBrands.prototype.getCurrentSalesYearKey = function(){
@@ -137,6 +140,8 @@ CategoryBrands.prototype.updateSalesObject = function(){
 	categories.forEach((function(c){
 		this.updateSalesObjectForCategory(c, this.sales[cYearKey])
 	}).bind(this));
+
+	this.updatePercentCounters();
 }
 
 CategoryBrands.prototype.updateSalesObjectForCategory = function(category, sales){
@@ -155,7 +160,7 @@ CategoryBrands.prototype.updateAutomobilesObjects = function(inputs, sales){
 	var i = 0;
 	bArr.forEach(function(b){
 		qArr.forEach(function(q){
-			sales[q]['automobiles'][b] = $(inputs[i]).val(); i++;
+			sales[q]['automobiles'][b] = parseInt($(inputs[i]).val()); i++;
 		});
 	});	
 }
@@ -166,7 +171,7 @@ CategoryBrands.prototype.updateElectronicsObjects = function(inputs, sales){
 	var i = 0;
 	bArr.forEach(function(b){
 		qArr.forEach(function(q){
-			sales[q]['electronics'][b] = $(inputs[i]).val(); i++;
+			sales[q]['electronics'][b] = parseInt($(inputs[i]).val()); i++;
 		});
 	});	
 }
@@ -177,7 +182,7 @@ CategoryBrands.prototype.updateAppliancesObjects = function(inputs, sales){
 	var i = 0;
 	bArr.forEach(function(b){
 		qArr.forEach(function(q){
-			sales[q]['appliances'][b] = $(inputs[i]).val(); i++;
+			sales[q]['appliances'][b] = parseInt($(inputs[i]).val()); i++;
 		});
 	});	
 }
@@ -188,9 +193,36 @@ CategoryBrands.prototype.updateClothsObjects = function(inputs, sales){
 	var i = 0;
 	bArr.forEach(function(b){
 		qArr.forEach(function(q){
-			sales[q]['cloths'][b] = $(inputs[i]).val(); i++;
+			sales[q]['cloths'][b] = parseInt($(inputs[i]).val()); i++;
 		});
 	});	
+}
+
+CategoryBrands.prototype.updatePercentCounters = function(){
+	var sales = this.sales[this.getCurrentSalesYearKey()];
+	var key = $('#category').val().toLowerCase();
+	var q1 = 0, q2 = 0, q3 = 0, q4 = 0;
+	var qArr = ['q1', 'q2', 'q3', 'q4'];
+	qArr.forEach(function(q){
+		var category = sales[q][key];
+		Object.keys(category).forEach(function(brand){
+			switch(q){
+				case 'q1' : q1 += category[brand]; break;
+				case 'q2' : q2 += category[brand]; break;
+				case 'q3' : q3 += category[brand]; break;
+				case 'q4' : q4 += category[brand]; break;
+			}
+		});
+	});
+	$('#q1Sum').val(q1);
+	$('#q2Sum').val(q2);
+	$('#q3Sum').val(q3);
+	$('#q4Sum').val(q4);
+
+	q1 !== 100 ? $('#q1Sum').css('border-color', 'red') : $('#q1Sum').css('border-color', '');
+	q2 !== 100 ? $('#q2Sum').css('border-color', 'red') : $('#q2Sum').css('border-color', '');
+	q3 !== 100 ? $('#q3Sum').css('border-color', 'red') : $('#q3Sum').css('border-color', '');
+	q4 !== 100 ? $('#q4Sum').css('border-color', 'red') : $('#q4Sum').css('border-color', '');
 }
 
 CategoryBrands.prototype.getSaveJson = function(){
