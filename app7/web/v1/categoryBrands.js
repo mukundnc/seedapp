@@ -193,6 +193,10 @@ CategoryBrands.prototype.updateClothsObjects = function(inputs, sales){
 	});	
 }
 
+CategoryBrands.prototype.getSaveJson = function(){
+	return this.sales;
+}
+
 CategoryBrands.prototype.getDefaultValuesForYear = function(){
 	var sale = {
 		q1 : {

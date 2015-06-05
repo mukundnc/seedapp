@@ -23,7 +23,7 @@ RegionCategory.prototype.init = function(){
 RegionCategory.prototype.addEventHandlers = function(){
 	$('.sinput').on('focusout', this.updateSalesObject.bind(this));
 	$('#year').on('change', this.updateUI.bind(this));
-	$('#save').on('click', this.save.bind(this));
+	
 }
 
 RegionCategory.prototype.updateUI = function(){
@@ -113,25 +113,8 @@ RegionCategory.prototype.updateSalesCounters = function(){
 	$('#yearCnt').text('Current year sales : ' + currYear);
 }
 
-RegionCategory.prototype.save = function(){
-	var sData = {
-		sales : {
-			region_category : this.sales
-		}
-	}
-	var options = {
-		url : '/api/v1/save',
-		type : 'POST',
-		contentType : 'application/json',
-		data : JSON.stringify(sData),
-		success : function(res){
-			console.log(res);
-		},
-		error : function(a,b,c){
-			console.error('error in saving data');
-		}
-	}
-	$.ajax(options);
+RegionCategory.prototype.getSaveJson = function(){
+	return this.sales;
 }
 
 RegionCategory.prototype.getInputControlsForRegion = function(region){
