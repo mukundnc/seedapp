@@ -9,6 +9,8 @@ CategoryBrands.prototype.init = function(){
 
 CategoryBrands.prototype.addEventHandlers = function(){
 	$('#category').on('change', this.onCategoryChange.bind(this));
+	$('.binput').on('focusout', this.updateSalesObject.bind(this));
+	$('#year').on('change', this.updateUI.bind(this));
 }
 
 CategoryBrands.prototype.onCategoryChange = function(){
@@ -122,6 +124,73 @@ CategoryBrands.prototype.getInputControlsForCategory = function(category){
 	};
 	var $inputs = $(map[category]);
 	return $inputs;
+}
+
+CategoryBrands.prototype.updateSalesObject = function(){
+	var cYearKey = this.getCurrentSalesYearKey();
+
+	if(!this.sales[cYearKey])
+		console.error('no sales object');
+	
+	var categories = ['automobiles', 'electronics', 'appliances', 'cloths'];
+	
+	categories.forEach((function(c){
+		this.updateSalesObjectForCategory(c, this.sales[cYearKey])
+	}).bind(this));
+}
+
+CategoryBrands.prototype.updateSalesObjectForCategory = function(category, sales){
+	var inputs = this.getInputControlsForCategory(category);
+	switch(category){
+		case 'automobiles' : this.updateAutomobilesObjects(inputs, sales); break;
+		case 'electronics' : this.updateElectronicsObjects(inputs, sales); break;
+		case 'appliances' : this.updateAppliancesObjects(inputs, sales); break;
+		case 'cloths' : this.updateClothsObjects(inputs, sales); break;
+	}
+}
+
+CategoryBrands.prototype.updateAutomobilesObjects = function(inputs, sales){
+	var qArr = ['q1', 'q2', 'q3', 'q4'];
+	var bArr = ['honda', 'toyota', 'bmw', 'audi', 'mercedes', 'maruti', 'hyundai', 'fiat', 'tata', 'skoda', 'bajaj', 'hero', 'kawasaky', 'yamaha', 'suzuki' ];
+	var i = 0;
+	bArr.forEach(function(b){
+		qArr.forEach(function(q){
+			sales[q]['automobiles'][b] = $(inputs[i]).val(); i++;
+		});
+	});	
+}
+
+CategoryBrands.prototype.updateElectronicsObjects = function(inputs, sales){
+	var qArr = ['q1', 'q2', 'q3', 'q4'];
+	var bArr = ['apple', 'samsung', 'micromax', 'xiome', 'nokia', 'hp', 'dell', 'asus', 'acer', 'compaq', 'lenovo'];
+	var i = 0;
+	bArr.forEach(function(b){
+		qArr.forEach(function(q){
+			sales[q]['electronics'][b] = $(inputs[i]).val(); i++;
+		});
+	});	
+}
+
+CategoryBrands.prototype.updateAppliancesObjects = function(inputs, sales){
+	var qArr = ['q1', 'q2', 'q3', 'q4'];
+	var bArr = ['godrej', 'voltas', 'lg', 'sony', 'panasonic', 'toshiba', 'carrier', 'lyod', 'bluestar', 'hitachi', 'kenstar'];
+	var i = 0;
+	bArr.forEach(function(b){
+		qArr.forEach(function(q){
+			sales[q]['appliances'][b] = $(inputs[i]).val(); i++;
+		});
+	});	
+}
+
+CategoryBrands.prototype.updateClothsObjects = function(inputs, sales){
+	var qArr = ['q1', 'q2', 'q3', 'q4'];
+	var bArr = ['vanhusen', 'colorplus', 'arrow', 'peterengland', 'ralphpolo', 'nike', 'addidas', 'crocodile', 'kings', 'sfk', 'levis', 'wrangler', 'stryker', 'killer', 'pepe' ];
+	var i = 0;
+	bArr.forEach(function(b){
+		qArr.forEach(function(q){
+			sales[q]['cloths'][b] = $(inputs[i]).val(); i++;
+		});
+	});	
 }
 
 CategoryBrands.prototype.getDefaultValuesForYear = function(){
