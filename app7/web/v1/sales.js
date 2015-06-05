@@ -26,10 +26,14 @@ function save(){
 		contentType : 'application/json',
 		data : JSON.stringify(sData),
 		success : function(res){
-			console.log(res);
+			if(res.success)
+				alert('Data saved successfully');
+			else
+				alert('Failed to save data');
 		},
 		error : function(a,b,c){
 			console.error('error in saving data');
+			alert('Network error while saving data');
 		}
 	}
 	$.ajax(options);
