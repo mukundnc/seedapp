@@ -29,8 +29,8 @@ var config = {
 		state : 18,
 		city : 19
 	},
-	v1 : {
-		saveFileName : './web/v1/sales.txt'
+	saleStrategy : {
+		strategyFileName : './web/v1/sales.txt'
 	}
 };
 

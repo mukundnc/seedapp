@@ -21,7 +21,7 @@ function save(){
 	}
 
 	var options = {
-		url : '/api/v1/save',
+		url : '/api/strategy/save',
 		type : 'POST',
 		contentType : 'application/json',
 		data : JSON.stringify(sData),

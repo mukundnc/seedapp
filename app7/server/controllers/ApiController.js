@@ -1,9 +1,7 @@
 var logger = require('./../utils/Logger');
 var QueryParser = require('./../query-parser/QueryParser');
 var QueryRunner = require('./../query-runner/QueryRunner');
-var config = require('./../../config/config');
-
-var fs = require('fs');
+var DataManager = require('./../data-manager/DataManager');
 
 function ApiController(){
 
@@ -41,16 +39,9 @@ ApiController.prototype.onExecuteQueryResponse = function(parsedQueryObject, res
 	respHttp.json(respExecQuery);
 }
 
-ApiController.prototype.handleSaveRequest_v1 = function(req, res){
-	var filePath = config.v1.saveFileName;
-	fs.writeFile(filePath, JSON.stringify(req.body), function(err){
-		if(err){
-			logger.log(err);
-			res.json({success: false, message: 'falied to save the data'})
-		}
-		else
-			res.json({success: true, message: 'data saved successfully'});
-	});
+ApiController.prototype.handleSaveSalesStrategyRequest = function(req, res){
+	var dataMgr = new DataManager();
+	dataMgr.saveSalesStrategy(req, res);
 }
 
 var gApiController = new ApiController();
