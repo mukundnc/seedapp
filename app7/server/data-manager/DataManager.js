@@ -1,6 +1,7 @@
 
 var fs = require('fs');
 var config = require('./../../config/config');
+var IndexBuilder = require('./IndexBuilder');
 
 function DataManager(){
 
@@ -19,7 +20,23 @@ DataManager.prototype.saveSalesStrategy = function(req, res){
 }
 
 DataManager.prototype.buildSalesIndices = function(req, res){
-	res.json({success: true, message: 'indices built successfully'});
+	fs.readFile(config.saleStrategy.strategyFileName, (function(err, data){
+		if(err){
+			res.json({success : false, message : 'error in reading staregy file'});
+			return;
+		}
+
+		try{
+			var saleStrategy = JSON.parse(data);
+			var indexBldr = new IndexBuilder();
+			indexBldr.build(req, res, saleStrategy);
+
+		}
+		catch(e){
+			res.json({success : false, message : 'error in reading staregy data object'});
+			return;
+		}
+	}).bind(this));
 }
 
 module.exports = DataManager;
