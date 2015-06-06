@@ -19,12 +19,11 @@ IndexBuilder.prototype.build = function(req, res, saleStrategy){
 	var sRKeys = ['east', 'west', 'north', 'south'];
 	var sCKeys = ['automobiles', 'electronics', 'appliances', 'cloths'];
 
-	sYKeys = ['s2000'];
+	//sYKeys = ['s2001'];
 	//sQKeys = [sQKeys[0]];
 	//sRKeys = [sRKeys[0]];
 	//sCKeys = [sCKeys[0]];
 	var sales = [];
-
 	sYKeys.forEach(function(sYkey){
 		sQKeys.forEach(function(sQKey){
 			sRKeys.forEach(function(sRKey){
@@ -36,7 +35,7 @@ IndexBuilder.prototype.build = function(req, res, saleStrategy){
 		});
 	});
 
-console.log(sales.length);
+	console.log(sales.length);
 	res.json({success: true, message: 'indices built successfully'});
 }
 
@@ -69,7 +68,7 @@ IndexBuilder.prototype.getSalesProductsForYearQuarterRegionCategory = function(y
 		});
 	});
 
-	return salesProducts
+	return salesProducts;
 }
 
 IndexBuilder.prototype.getBrandDistribution = function(year, q, category){
@@ -98,7 +97,7 @@ IndexBuilder.prototype.getProductsByBrandName = function(brand, count){
 	if(count === 0) return [];
 
 	var prods = _.where(Products, {'brand' : dictonary.getDomainQualifiedStr(brand)});
-	if(prods.length < count)
+	while(prods.length < count)
 		prods = prods.concat(prods);
 
 	prods = this.shuffleArray(prods);
@@ -132,7 +131,7 @@ IndexBuilder.prototype.getDateInstances = function(year, q, count){
 		});
 	});
 
-	if(dates.length < count)
+	while(dates.length < count)
 		dates = dates.concat(dates);
 	dates = dates.splice(0, count);
 	dates = this.shuffleArray(dates);
@@ -142,7 +141,7 @@ IndexBuilder.prototype.getDateInstances = function(year, q, count){
 IndexBuilder.prototype.getRegionInstances = function(region, count){
 	var rgns = _.where(Regions, { region : dictonary.getDomainQualifiedStr(region)});
 
-	if(rgns.length < count)
+	while(rgns.length < count)
 		rgns = rgns.concat(rgns);
 	rgns = rgns.splice(0, count);
 	rgns = this.shuffleArray(rgns);
@@ -151,7 +150,7 @@ IndexBuilder.prototype.getRegionInstances = function(region, count){
 
 IndexBuilder.prototype.getCustomerInstances = function(count){
 	var c = Customers.slice(0);
-	if(c.length < count)
+	while(c.length < count)
 		c = c.concat(c);
 	c = c.splice(0, count);
 	return c;
