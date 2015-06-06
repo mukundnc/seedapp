@@ -4,7 +4,7 @@ var config = {
 		logFileName : './server/log/app.log'
 	},
 	elasticSearch : {
-		url : 'localhost:9200',
+		url : 'http://localhost:9200/',
 		salesIndex : 'companysales',
 		salesType : 'sales'
 	},

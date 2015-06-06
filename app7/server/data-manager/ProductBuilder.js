@@ -18,7 +18,7 @@ ProductBuilder.prototype.getSalesProducts = function(saleStrategy){
 	var sRKeys = ['east', 'west', 'north', 'south'];
 	var sCKeys = ['automobiles', 'electronics', 'appliances', 'cloths'];
 
-	sYKeys = ['s2000'];
+	//sYKeys = ['s2000'];
 	//sQKeys = [sQKeys[0]];
 	//sRKeys = [sRKeys[0]];
 	//sCKeys = [sCKeys[0]];
