@@ -7,6 +7,7 @@ function onAppReady(){
 	regionCategory = new RegionCategory();
 	categoryBrands = new CategoryBrands();
 	$('#save').on('click', save);
+	$('#build').on('click', build);
 }
 
 function save(){
@@ -37,4 +38,17 @@ function save(){
 		}
 	}
 	$.ajax(options);
+}
+
+function build(){
+	$.ajax({
+		url : '/api/strategy/build',
+		type : 'GET',
+		success : function(res){
+			console.log(res);
+		},
+		error : function(){
+			console.error('error in building indices');	
+		}
+	});
 }

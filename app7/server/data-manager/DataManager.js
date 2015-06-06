@@ -18,5 +18,9 @@ DataManager.prototype.saveSalesStrategy = function(req, res){
 	});	
 }
 
+DataManager.prototype.buildSalesIndices = function(req, res){
+	res.json({success: true, message: 'indices built successfully'});
+}
+
 module.exports = DataManager;
 

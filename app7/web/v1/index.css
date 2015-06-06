@@ -153,7 +153,7 @@ h1 {
 	top:10px;
 	left: 20px;
 	height: 40px;
-	width:70px;
+	width:150px;
 	float: left;
 	background-color: #4d90fe;
   	cursor: pointer;
@@ -161,6 +161,24 @@ h1 {
 }
 
 #save span{
+	position: relative;
+	top: 24%;
+	left: 40%;
+}
+
+#build{
+	position: relative;
+	top:60px;
+	left: -130px;
+	height: 40px;
+	width:150px;
+	float: left;
+	background-color: #4d90fe;
+  	cursor: pointer;
+  	z-index: 999;	
+}
+
+#build span{
 	position: relative;
 	top: 22%;
 	left: 25%;

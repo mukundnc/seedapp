@@ -44,6 +44,11 @@ ApiController.prototype.handleSaveSalesStrategyRequest = function(req, res){
 	dataMgr.saveSalesStrategy(req, res);
 }
 
+ApiController.prototype.handleBuildSalesIndicesRequest = function(req, res){
+	var dataMgr = new DataManager();
+	dataMgr.buildSalesIndices(req, res);
+}
+
 var gApiController = new ApiController();
 
 module.exports = gApiController;
