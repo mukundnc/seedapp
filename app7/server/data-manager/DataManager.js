@@ -26,16 +26,10 @@ DataManager.prototype.buildSalesIndices = function(req, res){
 			return;
 		}
 
-		try{
-			var saleStrategy = JSON.parse(data);
-			var indexBldr = new IndexBuilder();
-			indexBldr.build(req, res, saleStrategy);
+		var saleStrategy = JSON.parse(data);
+		var indexBldr = new IndexBuilder();
+		indexBldr.build(req, res, saleStrategy);
 
-		}
-		catch(e){
-			res.json({success : false, message : 'error in reading staregy data object'});
-			return;
-		}
 	}).bind(this));
 }
 
