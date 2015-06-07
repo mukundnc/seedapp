@@ -129,11 +129,16 @@ IndexBuilder.prototype.addTypesToIndex = function(products, resHttp){
 	var sales20KDoc = [];
 	var TWENTY_K = 20000;
 	var orgCnt = products.length;
+	var isResponseSent = false;
 
 	function onComplete(){
+		if(!isResponseSent){
+			resHttp.json({success: true, message: 'Request added successfully.\nPlease check applogs for status'});
+			isResponseSent = true;
+		}
+		
 		logger.log('create index success count = ' + (orgCnt - products.length));
 		if(products.length === 0) {
-			resHttp.json({success: true, message: 'indices built successfully'});
 			return;
 		}
 

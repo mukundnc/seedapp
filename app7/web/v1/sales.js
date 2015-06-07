@@ -53,7 +53,7 @@ function build(){
 			hideLoading();
 			alert(res.message);
 		},
-		error : function(){
+		error : function(a,b,c){
 			hideLoading();
 			alert('network error');
 		}
