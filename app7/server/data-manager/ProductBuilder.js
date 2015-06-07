@@ -19,9 +19,6 @@ ProductBuilder.prototype.getSalesProducts = function(saleStrategy){
 	var sCKeys = ['automobiles', 'electronics', 'appliances', 'cloths'];
 
 	//sYKeys = ['s2000'];
-	//sQKeys = [sQKeys[0]];
-	//sRKeys = [sRKeys[0]];
-	//sCKeys = [sCKeys[0]];
 	var sales = [];
 	sYKeys.forEach(function(sYkey){
 		sQKeys.forEach(function(sQKey){
@@ -34,7 +31,7 @@ ProductBuilder.prototype.getSalesProducts = function(saleStrategy){
 		});
 	});
 
-	console.log(sales.length);
+	logger.log(sales.length);
 	return sales;
 }
 

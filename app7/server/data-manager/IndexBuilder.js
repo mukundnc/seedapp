@@ -44,7 +44,7 @@ IndexBuilder.prototype.deleteIndex = function(cbOnDelete){
 	};
 
 	function deleteSuccess(){
-		console.log("deleted indices successfully : " + esConfig.salesIndex);
+		logger.log("deleted indices successfully : " + esConfig.salesIndex);
 		cbOnDelete(true);
 	}
 
@@ -67,7 +67,7 @@ IndexBuilder.prototype.createNewIndexWithMapping = function(products, resHttp){
 		}
 		var data = JSON.parse(body);
 		if(data.acknowledged){
-			console.log('created index successfully');
+			logger.log('created index successfully');
 			this.putMapping(products, resHttp);
 		}
 	}).bind(this));
@@ -117,7 +117,7 @@ IndexBuilder.prototype.putMapping = function(products, resHttp){
 	}; 
 	request(options, (function(err, req, body){
 		if(err){
-			console.log('error in creating mapping');
+			logger.log('error in creating mapping');
 			return;
 		}
 		this.addTypesToIndex(products, resHttp);
@@ -131,7 +131,7 @@ IndexBuilder.prototype.addTypesToIndex = function(products, resHttp){
 	var orgCnt = products.length;
 
 	function onComplete(){
-		console.log('create index success count = ' + (orgCnt - products.length));
+		logger.log('create index success count = ' + (orgCnt - products.length));
 		if(products.length === 0) {
 			resHttp.json({success: true, message: 'indices built successfully'});
 			return;
@@ -171,7 +171,7 @@ IndexBuilder.prototype.add20KSalesDoc = function(sales20KDoc, cbOnComplete){
 
 	this.client.bulk(bulkQuery, function (err, resp) {
 		if(err){
-			console.log(err);
+			logger.log(err);
 			return;
 		}
 		cbOnComplete();

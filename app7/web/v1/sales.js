@@ -4,13 +4,16 @@ var regionCategory = null;
 var categoryBrands = null;
 
 function onAppReady(){
+	hideLoading();
 	regionCategory = new RegionCategory();
 	categoryBrands = new CategoryBrands();
 	$('#save').on('click', save);
 	$('#build').on('click', build);
+	
 }
 
 function save(){
+	showLoading();
 	var rgnCatData = regionCategory.getSaveJson();
 	var catBrandData = categoryBrands.getSaveJson();
 
@@ -26,7 +29,7 @@ function save(){
 		type : 'POST',
 		contentType : 'application/json',
 		data : JSON.stringify(sData),
-		success : function(res){
+		success : function(res){			
 			if(res.success)
 				alert('Data saved successfully');
 			else
@@ -41,14 +44,34 @@ function save(){
 }
 
 function build(){
+	showLoading();
 	$.ajax({
 		url : '/api/strategy/build',
 		type : 'GET',
 		success : function(res){
-			console.log(res);
+			hideLoading();
+			alert(res.message);
 		},
 		error : function(){
-			console.error('error in building indices');	
+			hideLoading();
+			alert('network error');
 		}
 	});
 }
+
+function showLoading(){
+	var T = window.innerHeight/3 + 100;
+	var L = window.innerWidth/3 + 100;
+	$('#loading').css('position', 'absolute');
+	$('#loading').css('top', T + 'px');
+	$('#loading').css('left',L + 'px');
+	$('#loading').css('width','50px');
+	$('#loading').css('z-index','999');
+	$('#loading').show();
+}
+
+function hideLoading(){
+	$('#loading').hide();
+}
+
+
