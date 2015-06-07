@@ -12,8 +12,7 @@ function onAppReady(){
 	
 }
 
-function save(){
-	showLoading();
+function save(){	
 	var rgnCatData = regionCategory.getSaveJson();
 	var catBrandData = categoryBrands.getSaveJson();
 
@@ -44,6 +43,8 @@ function save(){
 }
 
 function build(){
+	if(!confirm('This action will delete the existing indices.\nAre you sure you want to continue?')) return;
+
 	showLoading();
 	$.ajax({
 		timeout : 1000 * 60 * 30,
