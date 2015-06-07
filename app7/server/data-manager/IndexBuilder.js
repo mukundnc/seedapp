@@ -198,7 +198,8 @@ IndexBuilder.prototype.add20KSalesDoc = function(sales20KDoc, cbOnComplete){
 }
 
 IndexBuilder.prototype.createCsv = function(products){
-	var keys = Object.keys(products[0]);
+	var csvProducts = this.convertToCsvProducts(products);
+	var keys = Object.keys(csvProducts[0]);
 	var comma = '\",\"';
 	var header = '\"';
 	keys.forEach(function(k){
@@ -206,7 +207,7 @@ IndexBuilder.prototype.createCsv = function(products){
 	});
 	header = header.substr(0, header.length-2);
 	header += '\n';
-	products.forEach(function(val){
+	csvProducts.forEach(function(val){
 		var str ='\"';
 		keys.forEach(function(k){
 			str += val[k] + comma;
@@ -224,4 +225,25 @@ IndexBuilder.prototype.createCsv = function(products){
 	}); 
 }
 
+IndexBuilder.prototype.convertToCsvProducts = function(products){
+	var csv = [];
+	products.forEach(function(p){
+		csv.push({
+			category : p.product.category,
+			type : p.product.type,
+			brand : p.product.brand,
+			model : p.product.model,
+			region : p.region.region,
+			state : p.region.state,
+			city : p.region.city,			
+			pincode : p.region.pincode,
+			timestamp : p.timestamp,
+			name : p.customer.name,
+			sex : p.customer.sex,
+			email : p.customer.email,
+			dob : p.customer.dob
+		});
+	});
+	return csv
+}
 module.exports = IndexBuilder;
