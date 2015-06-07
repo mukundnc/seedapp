@@ -46,6 +46,7 @@ function save(){
 function build(){
 	showLoading();
 	$.ajax({
+		timeout : 1000 * 60 * 30,
 		url : '/api/strategy/build',
 		type : 'GET',
 		success : function(res){
