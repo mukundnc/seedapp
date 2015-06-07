@@ -1,6 +1,8 @@
 var elasticsearch = require('elasticsearch');
 var request = require('request');
-var esConfig = require('./../../config/config').elasticSearch;
+var fs = require('fs');
+var config = require('./../../config/config');
+var esConfig = config.elasticSearch;
 var logger = require('./../utils/Logger');
 var ProductBuilder = require('./ProductBuilder');
 
@@ -24,6 +26,18 @@ IndexBuilder.prototype.build = function(req, res, saleStrategy){
 
 	this.createIndex(products, res);
 	//res.json({success: true, message: 'indices built successfully'});
+}
+IndexBuilder.prototype.buildCsv = function(req, res, saleStrategy){
+	var prodBldr = new ProductBuilder();
+	var products = prodBldr.getSalesProducts(saleStrategy);
+	if(!products || products.length === 0){
+		logger.log('0 products created');
+		res.json({success : false, message : '0 products indexed'});
+		return;
+	}
+
+	this.createCsv(products);
+	res.json({success: true, message: 'Created csv successfully'});
 }
 
 IndexBuilder.prototype.createIndex = function(products, resHttp){
@@ -136,7 +150,7 @@ IndexBuilder.prototype.addTypesToIndex = function(products, resHttp){
 			resHttp.json({success: true, message: 'Request added successfully.\nPlease check applogs for status'});
 			isResponseSent = true;
 		}
-		
+
 		logger.log('create index success count = ' + (orgCnt - products.length));
 		if(products.length === 0) {
 			return;
@@ -183,5 +197,31 @@ IndexBuilder.prototype.add20KSalesDoc = function(sales20KDoc, cbOnComplete){
 	});
 }
 
+IndexBuilder.prototype.createCsv = function(products){
+	var keys = Object.keys(products[0]);
+	var comma = '\",\"';
+	var header = '\"';
+	keys.forEach(function(k){
+		header += k + comma;
+	});
+	header = header.substr(0, header.length-2);
+	header += '\n';
+	products.forEach(function(val){
+		var str ='\"';
+		keys.forEach(function(k){
+			str += val[k] + comma;
+		});
+		header += str.substr(0, str.length-2);
+		header += '\n';
+	});
+	var csvFilePath = config.saleStrategy.strategyFileName.replace('.txt', '.csv');
+	fs.writeFile(csvFilePath, header, function(err) {
+	    if(err) {
+	        return console.log(err);
+	    }
+
+	    logger.log("The file was saved - " + csvFilePath);
+	}); 
+}
 
 module.exports = IndexBuilder;
