@@ -355,12 +355,14 @@ function getRootQuery(){
 							terms : {
 								field : 'type',
 								size : 50
-							}
-						},
-						brands : {
-							terms : {
-								field : 'brand',
-								size : 50
+							},
+							aggs : {
+								brands : {
+									terms : {
+										field : 'brand',
+										size : 50
+									}
+								}
 							}
 						}
 					}
@@ -375,12 +377,14 @@ function getRootQuery(){
 							terms : {
 								field : 'state',
 								size : 50
-							}
-						},
-						cities : {
-							terms : {
-								field : 'city',
-								size : 50
+							},
+							aggs : {
+								cities : {
+									terms : {
+										field : 'city',
+										size : 50
+									}
+								}
 							}
 						}
 					}
