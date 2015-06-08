@@ -349,12 +349,40 @@ function getRootQuery(){
 					terms : {
 						field : 'category',
 						size : 5
+					},
+					aggs : {
+						types : {
+							terms : {
+								field : 'type',
+								size : 50
+							}
+						},
+						brands : {
+							terms : {
+								field : 'brand',
+								size : 50
+							}
+						}
 					}
 				},
 				regions: {
 					terms : {
 						field : 'region',
 						size : 5
+					},
+					aggs : {
+						states : {
+							terms : {
+								field : 'state',
+								size : 50
+							}
+						},
+						cities : {
+							terms : {
+								field : 'city',
+								size : 50
+							}
+						}
 					}
 				},
 				yearly : {
