@@ -1,0 +1,37 @@
+.body-container{
+	width : 100%;
+}
+
+.tree-container {
+	position : relative;
+	height : 100%;
+	width : 20%;
+	float : left;
+}
+.searchbar-container{
+	position:relative;
+	top : 15px;
+	height : 10%;
+}
+.view-container{
+	position:relative;
+	height: 95%;
+	width : 80%;
+	float : left;
+}
+
+#tbSearch{
+	width : 60%;
+	height : 34px;
+}
+
+.search-icon{
+	background-color: #4d90fe;
+	height: 40px;
+	width : 50px;
+	display:inline-block;
+	float:right;
+	right: 36%;
+  	position: relative;
+}
+
