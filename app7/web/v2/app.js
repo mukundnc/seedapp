@@ -7,11 +7,9 @@ $(document).ready(function(){
 
 })
 
-function setViewPort(){
-	wHeight = window.innerHeight;
-	
-	$('.body-container').css({
-		'height' : wHeight + 'px'
-	});
-
+function setViewPort(){	
+	$('.body-container').css('height' , window.innerHeight + 'px');
+	var svg = d3.selectAll('svg');
+	svg.attr('width', $('.svg-container').width());
+	svg.attr('height', $('.svg-container').height());
 }
