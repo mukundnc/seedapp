@@ -5,7 +5,7 @@
 .tree-container {
 	position : relative;
 	height : 100%;
-	width : 20%;
+	width : 15%;
 	float : left;
 }
 .searchbar-container{
@@ -16,7 +16,7 @@
 .view-container{
 	position:relative;
 	height: 100%;
-	width : 80%;
+	width : 85%;
 	float : left;
 }
 

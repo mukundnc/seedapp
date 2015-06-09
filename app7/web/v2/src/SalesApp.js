@@ -1,5 +1,5 @@
 function SalesApp(){
-	this.init();
+		this.init();
 }
 
 SalesApp.prototype.init = function(){
