@@ -15,13 +15,13 @@
 }
 .view-container{
 	position:relative;
-	height: 95%;
+	height: 100%;
 	width : 80%;
 	float : left;
 }
 
 #tbSearch{
-	width : 60%;
+	width : 99%;
 	height : 34px;
 }
 
@@ -31,7 +31,17 @@
 	width : 50px;
 	display:inline-block;
 	float:right;
-	right: 36%;
+	top : -57%;
   	position: relative;
 }
+.graph-container{
+	position:relative;
+	height : 93%;
+}
+.svg-container{
+	position:relative;
+	height : 95%;
+	width : 100%;
+	background-color: rgba(52, 52, 62, 1);
 
+}
