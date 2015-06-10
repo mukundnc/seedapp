@@ -3,32 +3,35 @@ function SalesTimeView(){
 }
 
 SalesTimeView.prototype.renderCategorySalesInTime = function(catSalesInTime, options){
-	var yBlockWd = this.yearBlockWidth(catSalesInTime);
+	var yBlockWd = catSalesInTime.meta.yearBlockWidth;
 	var svg = d3.selectAll('svg');
 
 	var g = svg.append('g')
 		       .attr('transform', 'translate(' + options.frmStartX + ',' + options.frmStartY + ') scale(1, -1)');
     var xEnd = 0;	       
-    Object.keys(catSalesInTime).forEach((function(yKey){
-    	var catSaleInYear = catSalesInTime[yKey];
+    Object.keys(catSalesInTime.data).forEach((function(yKey){
+
+    	var catSaleInYear = catSalesInTime.data[yKey];
+
     	Object.keys(catSaleInYear).forEach((function(cKey){
-    		var c = catSaleInYear[cKey];
-    		g.append('rect')
-			 .attr({
-			 	x : c.x,
-			 	y : c.y,
-			 	width : c.W,
-			 	height : c.H,
-			 	style : this.getFillStyleForCategory(cKey)
-			 });
+
+    		 var c = catSaleInYear[cKey];
+
+			 this.addRect(g, c.x, c.y, c.W, c.H, cKey);									//category rect
+
 			 xEnd = c.x + c.W;
+
     	}).bind(this));
-    	this.addLine(g, xEnd, 0, xEnd, -6);          // x axis ticks
-    	this.addText(g, (xEnd-yBlockWd/2), 15, yKey);
+
+    	this.addLine(g, xEnd, 0, xEnd, -6);              								// x axis ticks
+
+    	this.addText(g, (xEnd-yBlockWd/2), 15, yKey);    								// year labels
+
     }).bind(this));
 
-    this.addLine(g, 0, 0, xEnd, 0);                  // x axis
-    this.addLine(g, 0, 0, 0, options.frmHeight);	 // y axis
+    this.addLine(g, 0, 0, xEnd, 0);                      								// x axis
+    this.addLine(g, 0, 0, 0, options.frmHeight);	     								// y axis
+    this.addYAxisLabels(g, xEnd, options.frmHeight, catSalesInTime.meta.yScale);		// y axis labels
 }
 
 SalesTimeView.prototype.getFillStyleForCategory = function(category){
@@ -41,7 +44,16 @@ SalesTimeView.prototype.getFillStyleForCategory = function(category){
 	}
 	return style;
 }
-
+SalesTimeView.prototype.addRect = function(g, x, y, w, h, category){
+	g.append('rect')
+	 .attr({
+	 	x : x,
+	 	y : y,
+	 	width : w,
+	 	height : h,
+	 	style : this.getFillStyleForCategory(category)
+	 });
+}
 SalesTimeView.prototype.addLine = function(g, px1, py1, px2, py2, s){
 	g.append('line')
 	 .attr({
@@ -53,24 +65,29 @@ SalesTimeView.prototype.addLine = function(g, px1, py1, px2, py2, s){
 	});
 }
 
-SalesTimeView.prototype.addText = function(g, x, y, label){
+SalesTimeView.prototype.addText = function(g, x, y, label, textAnchor){
 	g.append('g')
 	 .attr('transform', 'scale(1,-1)')
 	 .append('text')
 	 .attr({
 	 	x : x || 0,
 	 	y : y || 0,
-	 	'text-anchor' : 'middle',
+	 	'text-anchor' : textAnchor | 'middle',
 	 	style:'color:grey;cursor:default;font-size:11px;fill:grey;'
 	 })
 	 .text(label);
 }
 
-SalesTimeView.prototype.yearBlockWidth = function(catSalesInTime){
-	var w = 0;
-	var y1 = Object.keys(catSalesInTime)[0];
-	Object.keys(catSalesInTime[y1]).forEach(function(c){
-		w += (2 * catSalesInTime[y1][c].W);
-	});
-	return w;
+SalesTimeView.prototype.addYAxisLabels = function(g, w, h, yScale){
+	this.addLine(g, 0, h/4, w, h/4);
+	this.addLine(g, 0, h/2, w, h/2);
+	this.addLine(g, 0, 3*h/4, w, 3*h/4);
+	this.addLine(g, 0, h, w, h);
+
+	var max = yScale.domain()[1];
+	this.addText(g, -25, -h/4, Math.round(yScale(max/4)), null, 'end');
+	this.addText(g, -25, -h/2, Math.round(yScale(max/2)), null, 'end');
+	this.addText(g, -25, -3*h/4, Math.round(yScale(3*max/4)), null, 'end');
+	this.addText(g, -25, -h, Math.round(yScale(max)), null, 'end');
 }
+

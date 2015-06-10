@@ -36,7 +36,15 @@ SalesTimeModel.prototype.getCategorySalesInTime = function(salesCategories){
 			xS += (cW + padding);
 		}).bind(this));
 	}).bind(this));
-	return data;
+	
+	return {
+		data : data,
+		meta : {
+			yearBlockWidth : (4 * cW) + (4 * padding),
+			padding : padding,
+			yScale : yScale
+		}
+	};
 }
 
 SalesTimeModel.prototype.getScale = function(salesCategories){
