@@ -1,12 +1,12 @@
-function SalesApp(){
+function SalesAppController(){
 		this.init();
 }
 
-SalesApp.prototype.init = function(){
+SalesAppController.prototype.init = function(){
 	$.getJSON('/api', (this.onApiResponse).bind(this));
 }
 
-SalesApp.prototype.onApiResponse = function(resp){
+SalesAppController.prototype.onApiResponse = function(resp){
 	var options = {
 		frmStartX : 0,
 		frmStartY : 0,
@@ -16,8 +16,10 @@ SalesApp.prototype.onApiResponse = function(resp){
 	var salesTimeModel = new SalesTimeModel(options);
 	var catSalesInTime = salesTimeModel.getCategorySalesInTime(resp.results.aggregations.categories.buckets);
 
+	options.frmStartX = 50;
+	options.frmStartY = 250;
 	var salesTimeView = new SalesTimeView();
-	salesTimeView.renderCategorySalesInTime(catSalesInTime, {});
+	salesTimeView.renderCategorySalesInTime(catSalesInTime, options);
 return;
 
 	var svg = d3.selectAll('svg');
