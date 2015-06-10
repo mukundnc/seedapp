@@ -364,6 +364,13 @@ function getRootQuery(){
 									}
 								}
 							}
+						},
+						yearly : {
+						date_histogram : {
+								field : 'timestamp',
+								interval : 'year',
+								format : 'YYYY/MM/DD'
+							}
 						}
 					}
 				},
@@ -386,14 +393,14 @@ function getRootQuery(){
 									}
 								}
 							}
+						},
+						yearly : {
+							date_histogram : {
+								field : 'timestamp',
+								interval : 'year',
+								format : 'YYYY/MM/DD'
+							}
 						}
-					}
-				},
-				yearly : {
-					date_histogram : {
-						field : 'timestamp',
-						interval : 'year',
-						format : 'YYYY/MM/DD'
 					}
 				}
 			}			

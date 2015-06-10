@@ -7,10 +7,23 @@ SalesApp.prototype.init = function(){
 }
 
 SalesApp.prototype.onApiResponse = function(resp){
+	var options = {
+		frmStartX : 0,
+		frmStartY : 0,
+		frmWidth : $('.svg-container').width(),
+		frmHeight : $('.svg-container').height()/3
+	};
+	var salesTimeModel = new SalesTimeModel(options);
+	var catSalesInTime = salesTimeModel.getCategorySalesInTime(resp.results.aggregations.categories.buckets);
+
+	var salesTimeView = new SalesTimeView();
+	salesTimeView.renderCategorySalesInTime(catSalesInTime, {});
+return;
+
 	var svg = d3.selectAll('svg');
 
 	var g = svg.append('g')
-		.attr('transform', 'translate(50, 250) scale(1, -1)');
+		       .attr('transform', 'translate(50, 250) scale(1, -1)');
 
 	
 	var yearlySales = resp.results.aggregations.yearly.buckets;
