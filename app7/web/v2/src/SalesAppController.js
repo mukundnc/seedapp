@@ -16,7 +16,7 @@ SalesAppController.prototype.onApiResponse = function(resp){
 	var salesTimeModel = new SalesTimeModel(options);
 	var catSalesInTime = salesTimeModel.getCategorySalesInTime(resp.results.aggregations.categories.buckets);
 
-	options.frmStartX = 50;
+	options.frmStartX = 20;
 	options.frmStartY = 250;
 	var salesTimeView = new SalesTimeView();
 	salesTimeView.renderCategorySalesInTime(catSalesInTime, options);

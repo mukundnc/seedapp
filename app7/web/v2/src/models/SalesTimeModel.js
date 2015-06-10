@@ -13,7 +13,7 @@ SalesTimeModel.prototype.getCategorySalesInTime = function(salesCategories){
 	var yearsL = years.length;
 	var yearsW = (this.width - this.xStart) / yearsL;
 	var yearsH = (this.height - this.yStart) / yearsL;
-	var cW = padding = yearsW / (8 * yearsL);
+	var cW = padding = yearsW / 10;
 	var xS = this.xStart + padding;
 	var yS = this.yStart;
 	
