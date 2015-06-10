@@ -32,6 +32,7 @@ SalesTimeView.prototype.renderCategorySalesInTime = function(catSalesInTime, opt
     this.addLine(g, 0, 0, xEnd, 0);                      								// x axis
     this.addLine(g, 0, 0, 0, options.frmHeight);	     								// y axis
     this.addYAxisLabels(g, xEnd, options.frmHeight, catSalesInTime.meta.yScale);		// y axis labels
+    this.addCategoryMarkers(g, options.frmStartX);											// category markers
 }
 
 SalesTimeView.prototype.getFillStyleForCategory = function(category){
@@ -85,9 +86,29 @@ SalesTimeView.prototype.addYAxisLabels = function(g, w, h, yScale){
 	this.addLine(g, 0, h, w, h);
 
 	var max = yScale.domain()[1];
-	this.addText(g, -25, -h/4, Math.round(yScale(max/4)), null, 'end');
-	this.addText(g, -25, -h/2, Math.round(yScale(max/2)), null, 'end');
-	this.addText(g, -25, -3*h/4, Math.round(yScale(3*max/4)), null, 'end');
-	this.addText(g, -25, -h, Math.round(yScale(max)), null, 'end');
+	this.addText(g, -35, -h/4, Math.round(max/4), null, 'end');
+	this.addText(g, -35, -h/2, Math.round(max/2), null, 'end');
+	this.addText(g, -35, -3*h/4, Math.round(3*max/4), null, 'end');
+	this.addText(g, -35, -h, Math.round(max), null, 'end');
+
+	var y = (-h/2.5);
+	g.append('text')
+	 .attr('transform', 'scale(1,-1) rotate(-180, -50, ' + y + ')')
+	 .attr({
+	 	x : -50,
+	 	y : y,
+	 	style : 'writing-mode: tb; glyph-orientation-vertical: 90;color:grey;cursor:default;font-size:15px;fill:grey;'
+	 })
+	 .text('SALES');
 }
 
+SalesTimeView.prototype.addCategoryMarkers = function(g, xStart){
+	var arr = ['Clothing', 'Electronics', 'Automobile', 'Applicance'];
+	var x = xStart + 200;
+	var y = -40;
+	arr.forEach((function(c){
+		this.addRect(g, x, y, 10, 10, c);
+		this.addText(g, x+15, -y, c)
+		x+=80;
+	}).bind(this));
+}
