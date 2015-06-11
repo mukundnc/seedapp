@@ -154,17 +154,17 @@ SalesTimeView.prototype.handleCategorySelectClick = function(params){
 		}
 	}
 	for(var key in filterData){
-		var arcPath = new Path().getPathForSectorArcAroundCenter(xC, yC, rI, rO, thetaS, thetaE);	  		
-		g.append('path')
+		var arcPath = new Path().getPathForSectorArcAroundCenter(xC, yC, rI, rO, thetaS, thetaE);	  				    
+	    var txt = this.addText(g, arcPath.centroid.x-15, -(arcPath.centroid.y-5), filterData[key].name, 'end');
+	    var lStyle = 'color:grey;cursor:default;font-size:11px;fill:white;';
+	    txt.attr('style', lStyle);	
+	    g.append('path')
 	     .attr({
 	   	   d : arcPath.path.toString(),
 	   	   class : filterData[key].className,
 	   	   id : filterData[key].id,
 	  	   style : 'stroke:white; stroke-width: 1px; fill-opacity:0.4; fill:white'
-	    });	    
-	    var txt = this.addText(g, arcPath.centroid.x-15, -(arcPath.centroid.y-5), filterData[key].name, 'end');
-	    var lStyle = 'color:grey;cursor:default;font-size:11px;fill:black;';
-	    txt.attr('style', lStyle);
+	    });	
 
 		thetaS = thetaE + 5 * (Math.PI/180);
 		thetaE = thetaS + 45 * (Math.PI/180);
