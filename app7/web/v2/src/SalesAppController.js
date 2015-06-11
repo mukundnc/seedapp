@@ -14,7 +14,8 @@ SalesAppController.prototype.onApiResponse = function(resp){
 		frmStartX : 0,
 		frmStartY : 0,
 		frmWidth : W,
-		frmHeight : H/4
+		frmHeight : H/4,
+		controller : this
 	};
 	var salesTimeModel = new SalesTimeModel(options);
 	var catSalesInTime = salesTimeModel.getCategorySalesInTime(resp.results.aggregations.categories.buckets);
@@ -24,9 +25,4 @@ SalesAppController.prototype.onApiResponse = function(resp){
 	var salesTimeView = new SalesTimeView();
 	salesTimeView.renderCategorySalesInTime(catSalesInTime, options);
 	
-	var rgnSalesInTime = salesTimeModel.getCategorySalesInTime(resp.results.aggregations.regions.buckets);
-	options.frmStartX = 0.06 * W;
-	options.frmStartY = 0.70 * H;
-	var salesTimeView = new SalesTimeView();
-	salesTimeView.renderCategorySalesInTime(rgnSalesInTime, options);
 }

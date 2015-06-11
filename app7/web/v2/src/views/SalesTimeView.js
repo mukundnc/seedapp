@@ -36,8 +36,9 @@ SalesTimeView.prototype.renderCategorySalesInTime = function(catSalesInTime, opt
     this.addLine(g, 0, 0, xEnd, 0);                                                        // x axis
     this.addLine(g, 0, 0, 0, options.frmHeight);                                           // y axis
     this.addYAxisLabels(g, xEnd, options.frmHeight, catSalesInTime.meta.yScale);           // y axis labels
-    this.addCategoryMarkers(g, options.frmStartX, catSalesInTime);                                         // category markers
+    this.addCategoryMarkers(g, options.frmStartX, catSalesInTime);                         // category markers
     this.addEventHandlers();
+    this.addViewOptions(g, xEnd, options.frmHeight);
     this.animateCategoryHeights(g, allHeights);
 }
 
@@ -198,7 +199,50 @@ SalesTimeView.prototype.handleCategoryFilterClick = function(e, selFilterElem){
 	d3.select(selFilterElem.parentNode).remove();
 }
 
+SalesTimeView.prototype.addViewOptions = function(g, xStart, yMax){
+	var x = xStart + 30;
+	var y = 50;
+	var h = 25, w = 50;
+	
+	g.append('rect')
+	 .attr({
+	 	x : x,
+		y : y,
+		height : h,
+		width : w,
+		style : 'stroke-width : 1px; stroke : grey; fill:rgba(52, 52, 62, 1)',
+		class : 'view-opt'
+	 });
+	g.append('rect')
+	 .attr({
+	 	x : x,
+		y : y+h,
+		height : h,
+		width : w,
+		style : 'stroke-width : 1px; stroke : grey;fill:#4d90fe',
+		class : 'view-opt'
+	 });
+	 var cat = this.addText(g, x, -(y + 1.5 * h - 5), 'Categories');
+	 var rgn = this.addText(g, x+5, -(y + 0.5 * h - 5), 'Regions');
 
+	 cat.attr('style', 'color:grey;cursor:default;font-size:11px;fill:white;');
+	 cat.attr('class', 'view-opt-txt');
+	 rgn.attr('class', 'view-opt-txt');
+	 
+	 $('.view-opt').on('click', function(e){
+	 	$('.view-opt').attr('style', 'stroke-width : 1px; stroke : grey; fill:rgba(52, 52, 62, 1)');
+	 	$('.view-opt-txt').attr('style', 'color:grey;cursor:default;font-size:11px;fill:grey;');
+
+	 	var y = $(this).attr('y');
+	 	$(this).attr('style', 'stroke-width : 1px; stroke : grey;fill:#4d90fe');
+
+	 	if(parseInt(y) > 50)
+	 		cat.attr('style', 'color:grey;cursor:default;font-size:11px;fill:white;');
+	 	else
+	 		rgn.attr('style', 'color:grey;cursor:default;font-size:11px;fill:white;');
+	 	
+	 });
+}
 
 
 
