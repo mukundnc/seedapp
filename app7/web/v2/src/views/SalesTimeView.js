@@ -1,5 +1,4 @@
 function SalesTimeView(){
-
 }
 
 SalesTimeView.prototype.renderCategorySalesInTime = function(catSalesInTime, options){
@@ -126,7 +125,10 @@ SalesTimeView.prototype.addEventHandlers = function(g){
 			h : parseFloat(rect.attr('height')),
 			w : parseFloat(rect.attr('width'))
 		})
-	})
+	});
+	$('svg').on('mousedown', function(e){
+		$('.cat-filter-group').remove();
+	});
 }
 
 SalesTimeView.prototype.handleCategorySelectClick = function(params){
@@ -135,7 +137,10 @@ SalesTimeView.prototype.handleCategorySelectClick = function(params){
 	var rI = 40, rO = 70;
 	var thetaS = 15 * (Math.PI/180);
 	var thetaE = 60 * (Math.PI/180);
-	var g = d3.select('g').classed('cat-time', true).append('g');
+	var g = d3.select('g')
+	          .classed('cat-time', true)
+	          .append('g')
+	          .attr('class', 'cat-filter-group');
 	var filterData = {
 		types:{
 			name : 'Types',
