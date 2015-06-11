@@ -47,6 +47,6 @@
 
 }
 
-.s-cat {
+.s-cat, .cat-filter {
 	cursor: pointer
 }

@@ -135,24 +135,47 @@ SalesTimeView.prototype.handleCategorySelectClick = function(params){
 	var rI = 40, rO = 70;
 	var thetaS = 15 * (Math.PI/180);
 	var thetaE = 60 * (Math.PI/180);
-	var g = d3.select('g').classed('cat-time', true);
-
-	for(var i = 0 ; i < 3 ; i++){
+	var g = d3.select('g').classed('cat-time', true).append('g');
+	var filterData = {
+		types:{
+			name : 'Types',
+			className : 'cat-filter',
+			id : 'catFilterTypes'
+		},
+		brands:{
+			name : 'Brands',
+			className : 'cat-filter',
+			id : 'catFilterBrands'
+		},
+		states:{
+			name : 'State',
+			className : 'cat-filter',
+			id : 'catFilterStates'
+		}
+	}
+	for(var key in filterData){
 		var path = new Path().getPathForSectorArcAroundCenter(xC, yC, rI, rO, thetaS, thetaE);	  		
-		g.append('path')
-		  .attr({
-		  	d : path.toString(),
-		  	style : 'stroke:white; stroke-width: 1px; fill-opacity:0.4; fill:white'
-		  });
+		var arcPath = g.append('path')
+					   .attr({
+					   	 d : path.toString(),
+					   	 class : filterData[key].className,
+					   	 id : filterData[key].id,
+					  	 style : 'stroke:white; stroke-width: 1px; fill-opacity:0.4; fill:white'
+					   });
 
 		thetaS = thetaE + 5 * (Math.PI/180);
 		thetaE = thetaS + 45 * (Math.PI/180);
 	}
-	
 
+	var self = this;
+	$('.cat-filter').on('click', function(e){
+		self.handleCategoryFilterClick(e, this)
+	});
 }
 
-
+SalesTimeView.prototype.handleCategoryFilterClick = function(e, selFilterElem){
+	d3.select(selFilterElem.parentNode).remove();
+}
 
 
 
