@@ -23,4 +23,10 @@ SalesAppController.prototype.onApiResponse = function(resp){
 	options.frmStartY = 0.30 * H;
 	var salesTimeView = new SalesTimeView();
 	salesTimeView.renderCategorySalesInTime(catSalesInTime, options);
+	
+	var rgnSalesInTime = salesTimeModel.getCategorySalesInTime(resp.results.aggregations.regions.buckets);
+	options.frmStartX = 0.06 * W;
+	options.frmStartY = 0.70 * H;
+	var salesTimeView = new SalesTimeView();
+	salesTimeView.renderCategorySalesInTime(rgnSalesInTime, options);
 }

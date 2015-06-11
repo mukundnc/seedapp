@@ -36,7 +36,7 @@ SalesTimeView.prototype.renderCategorySalesInTime = function(catSalesInTime, opt
     this.addLine(g, 0, 0, xEnd, 0);                                                        // x axis
     this.addLine(g, 0, 0, 0, options.frmHeight);                                           // y axis
     this.addYAxisLabels(g, xEnd, options.frmHeight, catSalesInTime.meta.yScale);           // y axis labels
-    this.addCategoryMarkers(g, options.frmStartX);                                         // category markers
+    this.addCategoryMarkers(g, options.frmStartX, catSalesInTime);                                         // category markers
     this.addEventHandlers();
     this.animateCategoryHeights(g, allHeights);
 }
@@ -54,7 +54,10 @@ SalesTimeView.prototype.getFillStyleForCategory = function(category){
 		case 'Electronics' : style = 'stroke-width : 1px; stroke : white; fill: #90ee7e'; break;
 		case 'Applicance' : style = 'stroke-width : 1px; stroke : white; fill: #f45b5b'; break;
 		case 'Clothing' : style = 'stroke-width : 1px; stroke : white; fill: #7798BF'; break;
-	}
+		case 'East' : style = 'stroke-width : 1px; stroke : white; fill: #2b908f'; break;
+		case 'West' : style = 'stroke-width : 1px; stroke : white; fill: #90ee7e'; break;
+		case 'North' : style = 'stroke-width : 1px; stroke : white; fill: #f45b5b'; break;
+		case 'South' : style = 'stroke-width : 1px; stroke : white; fill: #7798BF'; break;	}
 	return style;
 }
 SalesTimeView.prototype.addRect = function(g, x, y, w, h, category){
@@ -114,8 +117,8 @@ SalesTimeView.prototype.addYAxisLabels = function(g, w, h, yScale){
 	 .text('SALES');
 }
 
-SalesTimeView.prototype.addCategoryMarkers = function(g, xStart){
-	var arr = ['Clothing', 'Electronics', 'Automobile', 'Applicance'];
+SalesTimeView.prototype.addCategoryMarkers = function(g, xStart, catSalesInTime){
+	var arr = Object.keys(catSalesInTime.data[2000]); 
 	var x = xStart + 200;
 	var y = -40;
 	arr.forEach((function(c){
