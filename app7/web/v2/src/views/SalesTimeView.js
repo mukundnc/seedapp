@@ -70,14 +70,14 @@ SalesTimeView.prototype.addLine = function(g, px1, py1, px2, py2, s){
 }
 
 SalesTimeView.prototype.addText = function(g, x, y, label, textAnchor){
-	g.append('g')
+	return g.append('g')
 	 .attr('transform', 'scale(1,-1)')
 	 .append('text')
 	 .attr({
 	 	x : x || 0,
 	 	y : y || 0,
 	 	'text-anchor' : textAnchor | 'middle',
-	 	style:'color:grey;cursor:default;font-size:11px;fill:grey;'
+	 	style: 'color:grey;cursor:default;font-size:11px;fill:grey;'
 	 })
 	 .text(label);
 }
@@ -154,14 +154,17 @@ SalesTimeView.prototype.handleCategorySelectClick = function(params){
 		}
 	}
 	for(var key in filterData){
-		var path = new Path().getPathForSectorArcAroundCenter(xC, yC, rI, rO, thetaS, thetaE);	  		
-		var arcPath = g.append('path')
-					   .attr({
-					   	 d : path.toString(),
-					   	 class : filterData[key].className,
-					   	 id : filterData[key].id,
-					  	 style : 'stroke:white; stroke-width: 1px; fill-opacity:0.4; fill:white'
-					   });
+		var arcPath = new Path().getPathForSectorArcAroundCenter(xC, yC, rI, rO, thetaS, thetaE);	  		
+		g.append('path')
+	     .attr({
+	   	   d : arcPath.path.toString(),
+	   	   class : filterData[key].className,
+	   	   id : filterData[key].id,
+	  	   style : 'stroke:white; stroke-width: 1px; fill-opacity:0.4; fill:white'
+	    });	    
+	    var txt = this.addText(g, arcPath.centroid.x-15, -(arcPath.centroid.y-5), filterData[key].name, 'end');
+	    var lStyle = 'color:grey;cursor:default;font-size:11px;fill:black;';
+	    txt.attr('style', lStyle);
 
 		thetaS = thetaE + 5 * (Math.PI/180);
 		thetaE = thetaS + 45 * (Math.PI/180);

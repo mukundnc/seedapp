@@ -33,11 +33,25 @@ Path.prototype.getPathForSectorArcAroundCenter = function(xC, yC, rI, rO, thetaS
 	var x4 = xC + rI * Math.cos(thetaE);	
 	var y4 = yC + rI * Math.sin(thetaE);
 
+	var xCodts = [x1, x2, x3, x4];
+	var yCodts = [y1, y2, y3, y4];
+
+	var xMin = d3.min(xCodts, function(d) { return d;});
+	var xMax = d3.max(xCodts, function(d) { return d;});
+	var yMin = d3.min(yCodts, function(d) { return d;});
+	var yMax = d3.max(yCodts, function(d) { return d;});
+
 	var path = new Path();
 	path.moveTo(x3, y3);
 	path.arc(rO, rO, 0, 0, 0, x2, y2);
 	path.lineTo(x1, y1);
 	path.arc(rI, rI, 0, 0, 1, x4, y4);
 
-	return path;
+	return {
+		path : path,
+		centroid : {
+			x : (xMax + xMin)/2,
+			y : (yMax + yMin)/2
+		}
+	}
 }
