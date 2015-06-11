@@ -10,7 +10,6 @@ SalesTimeView.prototype.renderCategorySalesInTime = function(catSalesInTime, opt
 	var g = svg.append('g')
 		       .attr('transform', 'translate(' + options.frmStartX + ',' + options.frmStartY + ') scale(1, -1)')
 		       .attr('class', 'cat-time');
-this.g = g;
     var xEnd = 0;	       
     Object.keys(catSalesInTime.data).forEach((function(yKey){
 
@@ -117,7 +116,7 @@ SalesTimeView.prototype.addCategoryMarkers = function(g, xStart){
 	}).bind(this));
 }
 
-SalesTimeView.prototype.addEventHandlers = function(){
+SalesTimeView.prototype.addEventHandlers = function(g){
 	var self = this;
 	$('.s-cat').on('click', function(e) {
 		var rect = d3.select(this);
@@ -136,11 +135,9 @@ SalesTimeView.prototype.handleCategorySelectClick = function(params){
 	var rI = 50, rO = 70;
 	var thetaS = 15 * (Math.PI/180);
 	var thetaE = 60 * (Math.PI/180);
-
-	var path = new Path().getPathForSectorArcAroundCenter(xC, yC, rI, rO, thetaS, thetaE);
-	  
-	//var g = d3.selectAll('cat-time');
-	this.g.append('path')
+	var path = new Path().getPathForSectorArcAroundCenter(xC, yC, rI, rO, thetaS, thetaE);	  
+	var g = d3.select('g').classed('cat-time', true);
+	g.append('path')
 	  .attr({
 	  	d : path.toString(),
 	  	style : 'stroke:white; stroke-width: 1px; fill-opacity:0.4; fill:white'
