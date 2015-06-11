@@ -132,16 +132,24 @@ SalesTimeView.prototype.addEventHandlers = function(g){
 SalesTimeView.prototype.handleCategorySelectClick = function(params){
 	var xC = params.x + params.w/2 ;
 	var yC = 0.75 * (params.h + params.y) ;
-	var rI = 50, rO = 70;
+	var rI = 40, rO = 70;
 	var thetaS = 15 * (Math.PI/180);
 	var thetaE = 60 * (Math.PI/180);
-	var path = new Path().getPathForSectorArcAroundCenter(xC, yC, rI, rO, thetaS, thetaE);	  
 	var g = d3.select('g').classed('cat-time', true);
-	g.append('path')
-	  .attr({
-	  	d : path.toString(),
-	  	style : 'stroke:white; stroke-width: 1px; fill-opacity:0.4; fill:white'
-	  });
+
+	for(var i = 0 ; i < 3 ; i++){
+		var path = new Path().getPathForSectorArcAroundCenter(xC, yC, rI, rO, thetaS, thetaE);	  		
+		g.append('path')
+		  .attr({
+		  	d : path.toString(),
+		  	style : 'stroke:white; stroke-width: 1px; fill-opacity:0.4; fill:white'
+		  });
+
+		thetaS = thetaE + 5 * (Math.PI/180);
+		thetaE = thetaS + 45 * (Math.PI/180);
+	}
+	
+
 }
 
 
