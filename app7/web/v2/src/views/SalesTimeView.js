@@ -3,11 +3,14 @@ function SalesTimeView(){
 }
 
 SalesTimeView.prototype.renderCategorySalesInTime = function(catSalesInTime, options){
+	this.options = options;
 	var yBlockWd = catSalesInTime.meta.yearBlockWidth;
 	var svg = d3.selectAll('svg');
 
 	var g = svg.append('g')
-		       .attr('transform', 'translate(' + options.frmStartX + ',' + options.frmStartY + ') scale(1, -1)');
+		       .attr('transform', 'translate(' + options.frmStartX + ',' + options.frmStartY + ') scale(1, -1)')
+		       .attr('class', 'cat-time');
+this.g = g;
     var xEnd = 0;	       
     Object.keys(catSalesInTime.data).forEach((function(yKey){
 
@@ -17,22 +20,23 @@ SalesTimeView.prototype.renderCategorySalesInTime = function(catSalesInTime, opt
 
     		 var c = catSaleInYear[cKey];
 
-			 this.addRect(g, c.x, c.y, c.W, c.H, cKey);									//category rect
+			 var r = this.addRect(g, c.x, c.y, c.W, c.H, cKey).attr('class', 's-cat');     //category rect
 
 			 xEnd = c.x + c.W;
 
     	}).bind(this));
 
-    	this.addLine(g, xEnd, 0, xEnd, -6);              								// x axis ticks
+    	this.addLine(g, xEnd, 0, xEnd, -6);                                                // x axis ticks
 
-    	this.addText(g, (xEnd-yBlockWd/2), 15, yKey);    								// year labels
+    	this.addText(g, (xEnd-yBlockWd/2), 15, yKey);                                      // year labels
 
     }).bind(this));
 
-    this.addLine(g, 0, 0, xEnd, 0);                      								// x axis
-    this.addLine(g, 0, 0, 0, options.frmHeight);	     								// y axis
-    this.addYAxisLabels(g, xEnd, options.frmHeight, catSalesInTime.meta.yScale);		// y axis labels
-    this.addCategoryMarkers(g, options.frmStartX);											// category markers
+    this.addLine(g, 0, 0, xEnd, 0);                                                        // x axis
+    this.addLine(g, 0, 0, 0, options.frmHeight);                                           // y axis
+    this.addYAxisLabels(g, xEnd, options.frmHeight, catSalesInTime.meta.yScale);           // y axis labels
+    this.addCategoryMarkers(g, options.frmStartX);                                         // category markers
+    this.addEventHandlers();
 }
 
 SalesTimeView.prototype.getFillStyleForCategory = function(category){
@@ -46,7 +50,7 @@ SalesTimeView.prototype.getFillStyleForCategory = function(category){
 	return style;
 }
 SalesTimeView.prototype.addRect = function(g, x, y, w, h, category){
-	g.append('rect')
+	return g.append('rect')
 	 .attr({
 	 	x : x,
 	 	y : y,
@@ -112,3 +116,61 @@ SalesTimeView.prototype.addCategoryMarkers = function(g, xStart){
 		x+=80;
 	}).bind(this));
 }
+
+SalesTimeView.prototype.addEventHandlers = function(){
+	var self = this;
+	$('.s-cat').on('click', function(e) {
+		var rect = d3.select(this);
+		self.handleCategorySelectClick({
+			x : parseFloat(rect.attr('x')),
+			y : parseFloat(rect.attr('y')),
+			h : parseFloat(rect.attr('height')),
+			w : parseFloat(rect.attr('width'))
+		})
+	})
+}
+
+SalesTimeView.prototype.handleCategorySelectClick = function(params){
+	var xC = params.x + params.w/2 ;
+	var yC = 0.75 * (params.h + params.y) ;
+	var rI = 50, rO = 70;
+	var thetaS = 15 * (Math.PI/180);
+	var thetaE = 60 * (Math.PI/180);
+
+	var x1 = xC + rI * Math.cos(thetaS);
+	var y1 = yC + rI * Math.sin(thetaS);
+
+	var x2 = xC + rO * Math.cos(thetaS);
+	var y2 = yC + rO * Math.sin(thetaS);
+
+	var x3 = xC + rO * Math.cos(thetaE);
+	var y3 = yC + rO * Math.sin(thetaE);
+
+	var x4 = xC + rI * Math.cos(thetaE);	
+	var y4 = yC + rI * Math.sin(thetaE);
+
+	var path = new Path();
+	path.moveTo(x3, y3);
+	path.arc(rO, rO, 0, 0, 0, x2, y2);
+	path.lineTo(x1, y1);
+	path.arc(rI, rI, 0, 0, 1, x4, y4);
+	  
+	//var g = d3.selectAll('cat-time');
+	this.g.append('path')
+	  .attr({
+	  	d : path.toString(),
+	  	style : 'stroke:white; stroke-width: 1px; fill-opacity:0.4; fill:white'
+	  });
+}
+
+
+
+
+
+
+
+
+
+
+
+
