@@ -9,7 +9,8 @@ SalesTimeView.prototype.renderCategorySalesInTime = function(catSalesInTime, opt
 	var g = svg.append('g')
 		       .attr('transform', 'translate(' + options.frmStartX + ',' + options.frmStartY + ') scale(1, -1)')
 		       .attr('class', 'cat-time');
-    var xEnd = 0;	       
+    var xEnd = 0;
+    var allHeights = [];	       
     Object.keys(catSalesInTime.data).forEach((function(yKey){
 
     	var catSaleInYear = catSalesInTime.data[yKey];
@@ -18,7 +19,9 @@ SalesTimeView.prototype.renderCategorySalesInTime = function(catSalesInTime, opt
 
     		 var c = catSaleInYear[cKey];
 
-			 var r = this.addRect(g, c.x, c.y, c.W, c.H, cKey).attr('class', 's-cat');     //category rect
+			 var r = this.addRect(g, c.x, c.y, c.W, 0, cKey).attr('class', 's-cat');      //category rect
+
+			 allHeights.push(c.H);
 
 			 xEnd = c.x + c.W;
 
@@ -35,8 +38,15 @@ SalesTimeView.prototype.renderCategorySalesInTime = function(catSalesInTime, opt
     this.addYAxisLabels(g, xEnd, options.frmHeight, catSalesInTime.meta.yScale);           // y axis labels
     this.addCategoryMarkers(g, options.frmStartX);                                         // category markers
     this.addEventHandlers();
+    this.animateCategoryHeights(g, allHeights);
 }
 
+SalesTimeView.prototype.animateCategoryHeights = function(g, heights){
+	g.selectAll('rect')
+	 .data(heights)
+	 .transition()
+	 .attr('height', function(h) { return h; })
+}
 SalesTimeView.prototype.getFillStyleForCategory = function(category){
 	var style = '';
 	switch(category){
