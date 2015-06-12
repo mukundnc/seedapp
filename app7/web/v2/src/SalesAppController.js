@@ -14,7 +14,7 @@ function SalesAppController(){
 		frmStartX : 0,
 		frmStartY : 0,
 		frmWidth : this.W,
-		frmHeight : this.H/4,
+		frmHeight : 0.25 * this.H,
 		controller : this,
 		viewType : 'category'		
 	};
@@ -34,7 +34,7 @@ SalesAppController.prototype.onApiResponse = function(resp){
 	this.rgnSalesInTime = salesTimeModel.getCategorySalesInTime(this.resp.results.aggregations.regions.buckets);
 	this.showSalesInTimeView(this.catSalesInTime);
 
-	this.options.frmHeight = 3 * this.options.frmHeight;
+	this.options.frmHeight = 0.55 * this.H;
 	var salesTableModel = new SalesTableModel(this.options);
 	this.catSalesTableModel = salesTableModel.getTableModel(this.resp.results.aggregations.categories.buckets);
 	this.rgnSalesTableModel = salesTableModel.getTableModel(this.resp.results.aggregations.regions.buckets);

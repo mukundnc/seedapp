@@ -3,8 +3,9 @@ function SalesTableModel(options){
 	this.rowW = 50;
 	this.rowH = 25;
 	this.colH = 25;
-	this.colW = 25;
+	this.colW = 105;
 	this.cellW = 50;
+	this.colOffset = 100;
 	this.meta = {yScaleMap : {}};
 }
 
@@ -12,7 +13,7 @@ SalesTableModel.prototype.getTableModel = function(allColsWithRowAsJson){
 	var cols = Object.keys(allColsWithRowAsJson);
 	var columns = [];
 
-	var cX = this.rowW;
+	var cX = this.rowW + this.colOffset;
 	var cY = this.options.frmHeight - this.colH - 10;
 
 	cols.forEach((function(c){

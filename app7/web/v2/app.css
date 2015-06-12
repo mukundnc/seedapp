@@ -50,3 +50,29 @@
 .s-cat, .cat-filter, .view-opt {
 	cursor: pointer
 }
+
+.col-rect{
+	stroke-width : 1px; 
+	stroke : grey; 
+	fill:rgba(52, 52, 62, 1);
+	cursor : pointer;
+}
+
+.col-text{
+	color:grey;
+	cursor:pointer;
+	font-size:11px;
+	fill:grey;
+}
+
+.col-select{
+	fill:#4d90fe;
+}
+
+.text-select{
+	fill : white;
+}
+
+
+
+
