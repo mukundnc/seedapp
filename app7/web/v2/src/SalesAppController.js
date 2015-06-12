@@ -3,6 +3,8 @@ function SalesAppController(){
 	this.catSalesInTime = null;
 	this.rgnSalesInTine = null;
 	this.salesTimeView = null;
+
+	this.catSalesTableModel = null;
 	
 	this.H = $('.svg-container').height();
 	this.W = $('.svg-container').width();
@@ -29,6 +31,11 @@ SalesAppController.prototype.onApiResponse = function(resp){
 	this.catSalesInTime = salesTimeModel.getCategorySalesInTime(this.resp.results.aggregations.categories.buckets);	
 	this.rgnSalesInTime = salesTimeModel.getCategorySalesInTime(this.resp.results.aggregations.regions.buckets);
 	this.showSalesInTimeView(this.catSalesInTime);
+
+	this.options.frmHeight = 3 * this.options.frmHeight;
+	var salesTableModel = new SalesTableModel(this.options);
+	this.catSalesTableModel = salesTableModel.getTableModel(this.resp.results.aggregations.categories.buckets);
+	
 }
 
 SalesAppController.prototype.activeViewChange = function(active){
@@ -51,4 +58,5 @@ SalesAppController.prototype.showSalesInTimeView = function(model){
 		this.salesTimeView = new SalesTimeView();
 	this.salesTimeView.renderCategorySalesInTime(model, this.options);	
 }
+
 
