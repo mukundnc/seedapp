@@ -51,26 +51,29 @@
 	cursor: pointer
 }
 
-.col-rect{
+.col-rect, .row-rect{
 	stroke-width : 1px; 
 	stroke : grey; 
 	fill:rgba(52, 52, 62, 1);
 	cursor : pointer;
 }
 
-.col-text{
+.col-text, .row-text{
 	color:grey;
 	cursor:pointer;
 	font-size:11px;
 	fill:grey;
 }
 
-.col-select{
+.col-select, .row-select{
 	fill:#4d90fe;
 }
 
-.text-select{
+.col-text-select, .row-text-select{
 	fill : white;
+	color:grey;
+	cursor:pointer;
+	font-size:11px;
 }
 
 

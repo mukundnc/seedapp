@@ -1,11 +1,13 @@
 function SalesTableModel(options){
 	this.options = options;
-	this.rowW = 50;
+	this.rowW = 80;
 	this.rowH = 25;
 	this.colH = 25;
 	this.colW = 105;
 	this.cellW = 50;
 	this.colOffset = 100;
+	this.rowStartX = 0;
+	this.rowStartY = 200;
 	this.meta = {yScaleMap : {}};
 }
 
@@ -77,8 +79,8 @@ SalesTableModel.prototype.getSalesRowsForColumn = function(colJson, xStart, ySta
 	var rowKey = this.getRowKeyForColumn(colJson);
 	var buckets = colJson[rowKey].buckets;
 	var rows = [];
-	var rX = 0;
-	var rY = 0;
+	var rX = this.rowStartX;
+	var rY = this.rowStartY;
 
 	buckets.forEach((function(b){
 		rows.push({
