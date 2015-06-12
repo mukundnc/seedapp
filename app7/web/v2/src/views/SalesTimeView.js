@@ -5,7 +5,7 @@ SalesTimeView.prototype.clear = function(){
 	$('svg').empty();
 }
 
-SalesTimeView.prototype.renderCategorySalesInTime = function(catSalesInTime, options){
+SalesTimeView.prototype.render = function(catSalesInTime, options){
 	this.options = options;
 	var yBlockWd = catSalesInTime.meta.yearBlockWidth;
 	var svg = d3.selectAll('svg');

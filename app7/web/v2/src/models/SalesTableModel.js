@@ -23,8 +23,6 @@ SalesTableModel.prototype.getTableModel = function(allColsWithRowAsJson){
 	
 	}).bind(this));
 
-console.log(columns);
-
 	return {
 		columns : columns,
 		meta : this.meta

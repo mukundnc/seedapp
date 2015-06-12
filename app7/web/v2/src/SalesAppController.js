@@ -5,6 +5,8 @@ function SalesAppController(){
 	this.salesTimeView = null;
 
 	this.catSalesTableModel = null;
+	this.rgnSalesTableModel = null;
+	this.salesTableView = null;
 	
 	this.H = $('.svg-container').height();
 	this.W = $('.svg-container').width();
@@ -35,7 +37,24 @@ SalesAppController.prototype.onApiResponse = function(resp){
 	this.options.frmHeight = 3 * this.options.frmHeight;
 	var salesTableModel = new SalesTableModel(this.options);
 	this.catSalesTableModel = salesTableModel.getTableModel(this.resp.results.aggregations.categories.buckets);
-	
+	this.rgnSalesTableModel = salesTableModel.getTableModel(this.resp.results.aggregations.regions.buckets);
+	this.showSalesTableView(this.catSalesTableModel);
+}
+
+SalesAppController.prototype.showSalesInTimeView = function(model){
+	this.options.frmStartX = 0.06 * this.W;
+	this.options.frmStartY = 0.30 * this.H;
+	if(!this.salesTimeView)
+		this.salesTimeView = new SalesTimeView();
+	this.salesTimeView.render(model, this.options);	
+}
+
+SalesAppController.prototype.showSalesTableView = function(model){	
+	this.options.frmStartX = 0.06 * this.W;
+	this.options.frmStartY = 0.95 * this.H;
+	if(!this.salesTableView)
+		this.salesTableView = new SalesTableView();
+	this.salesTableView.render(model, this.options);	
 }
 
 SalesAppController.prototype.activeViewChange = function(active){
@@ -49,14 +68,6 @@ SalesAppController.prototype.activeViewChange = function(active){
 			this.showSalesInTimeView(this.rgnSalesInTime);
 			break;
 	}
-}
-
-SalesAppController.prototype.showSalesInTimeView = function(model){
-	this.options.frmStartX = 0.06 * this.W;
-	this.options.frmStartY = 0.30 * this.H;
-	if(!this.salesTimeView)
-		this.salesTimeView = new SalesTimeView();
-	this.salesTimeView.renderCategorySalesInTime(model, this.options);	
 }
 
 
