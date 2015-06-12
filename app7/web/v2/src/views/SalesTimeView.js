@@ -1,6 +1,10 @@
 function SalesTimeView(){
 }
 
+SalesTimeView.prototype.clear = function(){
+	$('svg').empty();
+}
+
 SalesTimeView.prototype.renderCategorySalesInTime = function(catSalesInTime, options){
 	this.options = options;
 	var yBlockWd = catSalesInTime.meta.yearBlockWidth;
@@ -203,14 +207,20 @@ SalesTimeView.prototype.addViewOptions = function(g, xStart, yMax){
 	var x = xStart + 30;
 	var y = 50;
 	var h = 25, w = 50;
-	
+	var sCat = 'stroke-width : 1px; stroke : grey;fill:#4d90fe';
+	var sRgn = 'stroke-width : 1px; stroke : grey;fill:#4d90fe';
+	if(this.options.viewType === 'category')
+		sCat = 'stroke-width : 1px; stroke : grey; fill:rgba(52, 52, 62, 1)';
+	else
+		sRgn = 'stroke-width : 1px; stroke : grey; fill:rgba(52, 52, 62, 1)';
+
 	g.append('rect')
 	 .attr({
 	 	x : x,
 		y : y,
 		height : h,
 		width : w,
-		style : 'stroke-width : 1px; stroke : grey; fill:rgba(52, 52, 62, 1)',
+		style : sCat,
 		class : 'view-opt'
 	 });
 	g.append('rect')
@@ -219,16 +229,20 @@ SalesTimeView.prototype.addViewOptions = function(g, xStart, yMax){
 		y : y+h,
 		height : h,
 		width : w,
-		style : 'stroke-width : 1px; stroke : grey;fill:#4d90fe',
+		style : sRgn,
 		class : 'view-opt'
 	 });
 	 var cat = this.addText(g, x, -(y + 1.5 * h - 5), 'Categories');
 	 var rgn = this.addText(g, x+5, -(y + 0.5 * h - 5), 'Regions');
 
-	 cat.attr('style', 'color:grey;cursor:default;font-size:11px;fill:white;');
+	 if(this.options.viewType === 'category')
+	 	cat.attr('style', 'color:grey;cursor:default;font-size:11px;fill:white;');
+	 else	 	
+	 	rgn.attr('style', 'color:grey;cursor:default;font-size:11px;fill:white;');
+	
 	 cat.attr('class', 'view-opt-txt');
 	 rgn.attr('class', 'view-opt-txt');
-	 
+	 var self = this;
 	 $('.view-opt').on('click', function(e){
 	 	$('.view-opt').attr('style', 'stroke-width : 1px; stroke : grey; fill:rgba(52, 52, 62, 1)');
 	 	$('.view-opt-txt').attr('style', 'color:grey;cursor:default;font-size:11px;fill:grey;');
@@ -236,11 +250,16 @@ SalesTimeView.prototype.addViewOptions = function(g, xStart, yMax){
 	 	var y = $(this).attr('y');
 	 	$(this).attr('style', 'stroke-width : 1px; stroke : grey;fill:#4d90fe');
 
-	 	if(parseInt(y) > 50)
+	 	var active = '';
+	 	if(parseInt(y) > 50){
 	 		cat.attr('style', 'color:grey;cursor:default;font-size:11px;fill:white;');
-	 	else
+	 		active = 'category';
+	 	}
+	 	else{
 	 		rgn.attr('style', 'color:grey;cursor:default;font-size:11px;fill:white;');
-	 	
+	 		active = 'region';
+	 	}
+	 	self.options.controller.activeViewChange(active);
 	 });
 }
 
