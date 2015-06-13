@@ -143,12 +143,24 @@ SalesTableView.prototype.showSalesChartForCurrentSelection = function(){
 	var W = 700;
 	var xMax = xStart + W;
 	var yMax = yStart + H;
+	var xStartAxis = xStart;
 	this.drawAxes(g, xStart, yStart, xMax, yMax);
+	var allHeights = [];
 	selRow.cells.forEach((function(c){
-		this.addCellRect(g, xStart, c.y, W/n, c.h, 'cell-rect');
+		this.addCellRect(g, xStart, c.y, W/n, 0, 'cell-rect');
+		allHeights.push(c.h)
 		xStart += W/n;
 		this.addCellLabel(g, xStart, c.y, c.name, W/n, 'cell-text');
 	}).bind(this));
+	this.addYAxisLabels(g, xStartAxis, xMax, H, this.meta.yScaleMap[selRowName]);
+	this.animateCategoryHeights(g, allHeights);
+}
+
+SalesTableView.prototype.animateCategoryHeights = function(g, heights){
+	g.selectAll('rect')
+	 .data(heights)
+	 .transition()
+	 .attr('height', function(h) { return h; })
 }
 
 SalesTableView.prototype.getTableChartGroup = function(){
@@ -206,5 +218,38 @@ SalesTableView.prototype.addCellLabel = function(g, x, y, text, barWidth, cssTex
 	}
 }
 
+SalesTableView.prototype.addYAxisLabels = function(g, xStart, w, h, yScale){
+	// this.addLine(g, xStart, h/4, w, h/4);
+	// this.addLine(g, xStart, h/2, w, h/2);
+	// this.addLine(g, xStart, 3*h/4, w, 3*h/4);
+	// this.addLine(g, xStart, h, w, h);
 
+	var max = yScale.domain()[1];
+	var xc = xStart-10;
+	this.addText(g, xc, -h/4, Math.round(max/4), null, 'end');
+	this.addText(g, xc, -h/2, Math.round(max/2), null, 'end');
+	this.addText(g, xc, -3*h/4, Math.round(3*max/4), null, 'end');
+	this.addText(g, xc, -h, Math.round(max), null, 'end');
+
+	var y = (-h/2.5);
+	g.append('text')
+	 .attr('transform', 'scale(1,-1) rotate(-180, -50, ' + y + ')')
+	 .attr({
+	 	x : -230,
+	 	y : y+20,
+	 	style : 'writing-mode: tb; glyph-orientation-vertical: 90;color:grey;cursor:default;font-size:15px;fill:grey;'
+	 })
+	 .text('SALES');
+}
+
+SalesTableView.prototype.addLine = function(g, px1, py1, px2, py2, s){
+	g.append('line')
+	 .attr({
+		x1 : px1 || 0,
+		y1 : py1 || 0,
+		x2 : px2 || 0,
+		y2 : py2 || 0,
+		style : s || 'stroke-width : 1px; stroke : grey;'
+	});
+}
 

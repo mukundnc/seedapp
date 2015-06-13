@@ -106,7 +106,7 @@ SalesTableModel.prototype.getSalesCellsForRow = function(cellsJson, rowKey){
 	var buckets = cellsJson[cellKey].buckets;
 	var cells = [];
 
-	this.setYscaleForRow(buckets, rowKey);
+	this.setYscaleForRow(buckets, cellsJson.key);
 	
 	buckets.forEach((function(b){
 		cells.push({
@@ -115,7 +115,7 @@ SalesTableModel.prototype.getSalesCellsForRow = function(cellsJson, rowKey){
 			x : cX,
 			y : cY,
 			w : this.cellW,
-			h : this.meta.yScaleMap[rowKey](b.doc_count)
+			h : this.meta.yScaleMap[cellsJson.key](b.doc_count)
 		});
 		cX += this.cellW;
 	}).bind(this));
