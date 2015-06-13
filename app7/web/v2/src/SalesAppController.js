@@ -39,6 +39,15 @@ SalesAppController.prototype.onApiResponse = function(resp){
 	this.catSalesTableModel = salesTableModel.getTableModel(this.resp.results.aggregations.categories.buckets);
 	this.rgnSalesTableModel = salesTableModel.getTableModel(this.resp.results.aggregations.regions.buckets);
 	this.showSalesTableView(this.catSalesTableModel);
+
+	this.options = {
+		frmStartX : 0,
+		frmStartY : 0,
+		frmWidth : this.W,
+		frmHeight : 0.25 * this.H,
+		controller : this,
+		viewType : 'category'		
+	};
 }
 
 SalesAppController.prototype.showSalesInTimeView = function(model){
@@ -63,9 +72,11 @@ SalesAppController.prototype.activeViewChange = function(active){
 	switch(active){
 		case 'category' : 
 			this.showSalesInTimeView(this.catSalesInTime);
+			this.showSalesTableView(this.catSalesTableModel);
 			break;
 		case 'region' : 
 			this.showSalesInTimeView(this.rgnSalesInTime);
+			this.showSalesTableView(this.rgnSalesTableModel);
 			break;
 	}
 }
