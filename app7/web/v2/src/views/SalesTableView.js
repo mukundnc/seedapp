@@ -147,7 +147,7 @@ SalesTableView.prototype.showSalesChartForCurrentSelection = function(){
 	selRow.cells.forEach((function(c){
 		this.addCellRect(g, xStart, c.y, W/n, c.h, 'cell-rect');
 		xStart += W/n;
-		this.addCellLabel(g, xStart, c.y, c.name, 'cell-text');
+		this.addCellLabel(g, xStart, c.y, c.name, W/n, 'cell-text');
 	}).bind(this));
 }
 
@@ -192,12 +192,18 @@ SalesTableView.prototype.addCellRect = function(g, x, y, w, h, cssRect){
 	return r;
 }
 
-SalesTableView.prototype.addCellLabel = function(g, x, y, text, cssText){
-	var xT = x - 15;
-	var yT = -10;
-	var t = this.addText(g, xT, yT, text, cssText, 'end');
-
-	t.attr('transform', 'rotate(-30, ' + xT + ',' + yT + ') scale(1, 1) ');
+SalesTableView.prototype.addCellLabel = function(g, x, y, text, barWidth, cssText){
+	if(this.options.viewType === 'category'){
+		var xT = x - barWidth/2;
+		var yT = -10;
+		this.addText(g, xT, yT, text, cssText, 'middle');
+	}
+	else{
+		var xT = x - 15;
+		var yT = -10;
+		var t = this.addText(g, xT, yT, text, cssText, 'end');
+		t.attr('transform', 'rotate(-30, ' + xT + ',' + yT + ') scale(1, 1) ');
+	}
 }
 
 

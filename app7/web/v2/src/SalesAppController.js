@@ -38,7 +38,7 @@ SalesAppController.prototype.onApiResponse = function(resp){
 	var salesTableModel = new SalesTableModel(this.options);
 	this.catSalesTableModel = salesTableModel.getTableModel(this.resp.results.aggregations.categories.buckets);
 	this.rgnSalesTableModel = salesTableModel.getTableModel(this.resp.results.aggregations.regions.buckets);
-	this.showSalesTableView(this.rgnSalesTableModel);
+	this.showSalesTableView(this.catSalesTableModel);
 }
 
 SalesAppController.prototype.showSalesInTimeView = function(model){
