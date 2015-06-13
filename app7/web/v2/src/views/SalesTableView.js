@@ -146,11 +146,13 @@ SalesTableView.prototype.showSalesChartForCurrentSelection = function(){
 	var xStartAxis = xStart;
 	this.drawAxes(g, xStart, yStart, xMax, yMax);
 	var allHeights = [];
+	var i = 1;
 	selRow.cells.forEach((function(c){
-		this.addCellRect(g, xStart, c.y, W/n, 0, 'cell-rect');
+		this.addCellRect(g, xStart, c.y, W/n, 0, 'cell-rect-'+i);
 		allHeights.push(c.h)
 		xStart += W/n;
 		this.addCellLabel(g, xStart, c.y, c.name, W/n, 'cell-text');
+		i++;
 	}).bind(this));
 	this.addYAxisLabels(g, xStartAxis, xMax, H, this.meta.yScaleMap[selRowName]);
 	this.animateCategoryHeights(g, allHeights);
