@@ -102,8 +102,8 @@ SalesTableView.prototype.getRowGroup = function(){
 }
 
 SalesTableView.prototype.selectDefaultRow = function(){
-	d3.select('.row-rect').classed('row-select', true);
-	d3.select('.row-text').classed('row-text-select', true);
+	this.getLastElemnentInD3Sel(d3.selectAll('.row-rect')).classed('row-select', true);
+	this.getLastElemnentInD3Sel(d3.selectAll('.row-text')).classed('row-text-select', true);
 }
 
 SalesTableView.prototype.addRowEventHandlers = function(){
@@ -119,4 +119,11 @@ SalesTableView.prototype.onRowChange = function(selRowElem){
 	d3.select(selRowElem).select('rect').attr('class', 'row-select');
 	d3.select(selRowElem).select('text').attr('class', 'row-text-select');
 	//this.showRowsForCurrentSelection();
+}
+
+SalesTableView.prototype.getLastElemnentInD3Sel = function(d3Sel){
+	if(d3Sel.empty()) return null;
+
+	var cnt = d3Sel[0].length;
+	return d3.select(d3Sel[0][cnt-1]);
 }
