@@ -51,14 +51,14 @@
 	cursor: pointer
 }
 
-.col-rect, .row-rect{
+.col-rect, .row-rect, .cell-rect{
 	stroke-width : 1px; 
 	stroke : grey; 
 	fill:rgba(52, 52, 62, 1);
 	cursor : pointer;
 }
 
-.col-text, .row-text{
+.col-text, .row-text, .cell-text{
 	color:grey;
 	cursor:pointer;
 	font-size:11px;
@@ -76,6 +76,9 @@
 	font-size:11px;
 }
 
-
+.chart-axis{
+	stroke-width : 1px; 
+	stroke : grey;
+}
 
 

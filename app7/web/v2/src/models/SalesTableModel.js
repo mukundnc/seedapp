@@ -8,6 +8,8 @@ function SalesTableModel(options){
 	this.colOffset = 100;
 	this.rowStartX = 0;
 	this.rowStartY = 200;
+	this.cellStartX = this.rowStartX + this.rowW + 100;
+	this.cellStartY = 20;
 	this.meta = {yScaleMap : {}};
 }
 
@@ -98,8 +100,8 @@ SalesTableModel.prototype.getSalesRowsForColumn = function(colJson, xStart, ySta
 }
 
 SalesTableModel.prototype.getSalesCellsForRow = function(cellsJson, rowKey){
-	var cX = this.rowW + 50;
-	var cY = this.rowH + 50;
+	var cX = this.cellStartX;
+	var cY = this.cellStartY;
 	var cellKey = this.getCellKeyForRow(rowKey);
 	var buckets = cellsJson[cellKey].buckets;
 	var cells = [];
@@ -133,8 +135,8 @@ SalesTableModel.prototype.setYscaleForRow = function(cells, rowKey){
 				return v;
 			 });
 
-	var rS = 0;
-	var rE = this.options.frmHeight;
+	var rS = this.cellStartY;
+	var rE = this.options.frmHeight - this.colH - 50;
 
 	var yScale = d3.scale.linear()
 						 .domain([dS, dE])

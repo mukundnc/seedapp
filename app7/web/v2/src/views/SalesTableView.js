@@ -104,6 +104,7 @@ SalesTableView.prototype.getRowGroup = function(){
 SalesTableView.prototype.selectDefaultRow = function(){
 	this.getLastElemnentInD3Sel(d3.selectAll('.row-rect')).classed('row-select', true);
 	this.getLastElemnentInD3Sel(d3.selectAll('.row-text')).classed('row-text-select', true);
+	this.showSalesChartForCurrentSelection();
 }
 
 SalesTableView.prototype.addRowEventHandlers = function(){
@@ -118,7 +119,7 @@ SalesTableView.prototype.onRowChange = function(selRowElem){
 	d3.selectAll('.row-text-select').classed('row-text-select', false).classed('row-text', true);
 	d3.select(selRowElem).select('rect').attr('class', 'row-select');
 	d3.select(selRowElem).select('text').attr('class', 'row-text-select');
-	//this.showRowsForCurrentSelection();
+	this.showSalesChartForCurrentSelection();
 }
 
 SalesTableView.prototype.getLastElemnentInD3Sel = function(d3Sel){
@@ -127,3 +128,77 @@ SalesTableView.prototype.getLastElemnentInD3Sel = function(d3Sel){
 	var cnt = d3Sel[0].length;
 	return d3.select(d3Sel[0][cnt-1]);
 }
+
+SalesTableView.prototype.showSalesChartForCurrentSelection = function(){
+	var selColName =  d3.select('.col-text-select').text();
+	var selRowName = d3.select('.row-text-select').text();
+	var selCol = _.where(this.model.columns, {name : selColName})[0];
+	var selRow = _.where(selCol.rows, {name : selRowName})[0];
+	var g = this.getTableChartGroup();
+	g.html('');
+	var n = selRow.cells.length;
+	var xStart = selRow.cells[0].x;
+	var yStart = selRow.cells[0].y;
+	var H = 280;
+	var W = 700;
+	var xMax = xStart + W;
+	var yMax = yStart + H;
+	this.drawAxes(g, xStart, yStart, xMax, yMax);
+	selRow.cells.forEach((function(c){
+		this.addCellRect(g, xStart, c.y, W/n, c.h, 'cell-rect');
+		xStart += W/n;
+		this.addCellLabel(g, xStart, c.y, c.name, 'cell-text');
+	}).bind(this));
+}
+
+SalesTableView.prototype.getTableChartGroup = function(){
+	var g = d3.select('.sales-tbchart-group');
+	if(g.empty()){
+		g = d3.select('.sales-table-group')
+			  .append('g')
+			  .attr('class', 'sales-tbchart-group');
+	}
+	return g;
+}
+
+SalesTableView.prototype.drawAxes = function(g, xStart, yStart, xMax, yMax){
+	g.append('line')
+	 .attr({
+	 	x1 : xStart,
+	 	y1 : yStart,
+	 	x2 : xMax,
+	 	y2 : yStart,
+	 	class : 'chart-axis'
+	 });
+	g.append('line')
+	 .attr({
+	 	x1 : xStart,
+	 	y1 : yStart,
+	 	x2 : xStart,
+	 	y2 : yMax,
+	 	class : 'chart-axis'
+	 });
+}
+
+SalesTableView.prototype.addCellRect = function(g, x, y, w, h, cssRect){
+	var r = g.append('rect')
+			 .attr({
+			 	x : x,
+			 	y : y,
+			 	width : w,
+			 	height : h,
+			 	class : cssRect
+			 });
+	return r;
+}
+
+SalesTableView.prototype.addCellLabel = function(g, x, y, text, cssText){
+	var xT = x - 15;
+	var yT = -10;
+	var t = this.addText(g, xT, yT, text, cssText, 'end');
+
+	t.attr('transform', 'rotate(-30, ' + xT + ',' + yT + ') scale(1, 1) ');
+}
+
+
+
