@@ -41,9 +41,10 @@ body{
 
 .tree-container {
 	position : relative;
-	height : 100%;
+	height : 94%;
 	width : 15%;
 	float : left;
+	background-color: #353535;
 }
 
 .view-container{
@@ -61,7 +62,7 @@ body{
 	position:relative;
 	height : 95%;
 	width : 100%;
-	background-color: rgba(52, 52, 62, 1);
+	background-color: #353535;
 
 }
 
@@ -72,7 +73,7 @@ body{
 .col-rect, .row-rect, .cell-rect{
 	stroke-width : 1px; 
 	stroke : grey; 
-	fill:rgba(52, 52, 62, 1);
+	fill:#353535;
 	cursor : pointer;
 }
 
