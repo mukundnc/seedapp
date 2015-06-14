@@ -128,10 +128,10 @@ Logo.prototype.drawK = function(){
 	var y2 = this.gData.yEnd;
 	var x3 = x1;
 	var y3 = y2/4;
-	var dx = 20;
+	var dx = 15;
 	var dy = y3;
 	var x4 = x3 + dx;
-	var y4 = y3 + dy;
+	var y4 = y3 + dy-2;
 	var x5 = x3 + dx;
 	var y5 = y3 - dy +2;
 
