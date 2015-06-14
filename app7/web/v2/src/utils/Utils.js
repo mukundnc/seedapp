@@ -61,8 +61,7 @@ function SvgUtils(){
 }
 
 SvgUtils.prototype.addText = function(g, x, y, text, cssText, textAlign){
-	var t = g.append('g')
-			 .append('text')
+	var t = g.append('text')
 			 .attr({
 			 	x : x,
 			 	y : y,
@@ -71,6 +70,13 @@ SvgUtils.prototype.addText = function(g, x, y, text, cssText, textAlign){
 			 })
 			 .text(text);
 	return t;	
+}
+
+SvgUtils.prototype.addTextXForm = function(g, x, y, text, cssText, textAlign){
+	var gX = g.append('g').attr('transform', 'scale(1, -1)');
+	var t = this.addText(gX, x, y, text, cssText, textAlign);
+	g.append(t);
+	return gX;
 }
 
 SvgUtils.prototype.addLine = function(g, x1, y1, x2, y2, cssLine){
