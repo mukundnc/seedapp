@@ -1,5 +1,42 @@
+
+body{
+	margin-top:0px;
+	margin-left: 0px;
+}
 .body-container{
 	width : 100%;
+}
+.header-container{
+	position: relative;
+	background: #4d5359;
+}
+.searchbar-container{
+	position:relative;
+	height : 10%;
+	padding : 10px 0px 10px 9px;
+}
+
+#tbSearch{
+	position:relative;
+	left : 12%;
+	width : 50%;
+	height : 30px;
+	border-radius: 2px;
+	font-size: 15px;
+}
+
+.search-icon{
+	position: relative;
+	float:left;
+	display:inline-block;
+	left:65%;
+	background-color: #4d5359;
+	border-radius:2px;
+}
+
+.search-icon img{
+	height: 35px;
+	width : 35px;
 }
 
 .tree-container {
@@ -9,11 +46,6 @@
 	float : left;
 }
 
-.searchbar-container{
-	position:relative;
-	top : 15px;
-	height : 10%;
-}
 .view-container{
 	position:relative;
 	height: 100%;
@@ -21,23 +53,9 @@
 	float : left;
 }
 
-#tbSearch{
-	width : 99%;
-	height : 34px;
-}
-
-.search-icon{
-	background-color: #4d90fe;
-	height: 40px;
-	width : 50px;
-	display:inline-block;
-	float:right;
-	top : -57%;
-  	position: relative;
-}
 .graph-container{
 	position:relative;
-	height : 93%;
+	height : 99%;
 }
 .svg-container{
 	position:relative;
@@ -98,12 +116,7 @@
 
 
 
-.cell-rect-1{
-	stroke-width : 1px; 
-	stroke : grey; 
-	cursor : pointer;
-	fill : #fc6c85;
-}
+
 .cell-rect-2{
 	stroke-width : 1px; 
 	stroke : grey; 
@@ -152,7 +165,7 @@
 	cursor : pointer;
 	fill : #c5718b;
 }
-.cell-rect-10{
+.cell-rect-1{
 	stroke-width : 1px; 
 	stroke : grey; 
 	cursor : pointer;
