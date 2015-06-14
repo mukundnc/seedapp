@@ -119,6 +119,13 @@ body{
 	fill:grey;
 }
 
+.snode-text-select{
+	color:white;
+	cursor:pointer;
+	font-size:17px;
+	fill:white;
+}
+
 .snode-marker-line{
 	stroke : grey;
 	stroke-width : 1px;

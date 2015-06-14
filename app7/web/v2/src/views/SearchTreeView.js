@@ -12,10 +12,11 @@ function SearchTreeView(options){
 	  	width : this.W
 	  })
 	this.addRoot();
-	this.hOffset = 20;
+	this.hOffset = 30;
 	this.wOffset = 20;
 	this.currX = this.left + this.wOffset;
 	this.currY = this.top;
+
 }
 
 SearchTreeView.prototype.addRoot = function(){
@@ -38,9 +39,25 @@ SearchTreeView.prototype.add = function(params){
 	var x3 = x1 + this.wOffset;
 	var y3 = y2;
 	var g = this.getG();
+	this.clearSelection();
 	this.utils.addLine(g, x1, y1, x2, y2, 'snode-marker-line');
 	this.utils.addLine(g, x2, y2, x3, y3, 'snode-marker-line');
-	this.utils.addText(g, x3, y3 + 5,  params.name, 'snode-text', 'start');
+	var gT = this.utils.addText(g, x3, y3 + 5,  params.name, 'snode-text-select', 'start');
+	gT.attr('id', params.id);
 	this.currX = x2;
 	this.currY = y2;
+	var self = this;
+	$('#'+params.id).on('click', function(e){
+		self.onSelectionChange(this);
+	});}
+
+SearchTreeView.prototype.onSelectionChange = function(selTxtElem){
+	this.clearSelection();
+	d3.select(selTxtElem).attr('class', 'snode-text-select');
 }
+
+SearchTreeView.prototype.clearSelection = function(currSel){
+	d3.selectAll('.snode-text-select').classed('snode-text-select', false).classed('snode-text', true);
+}
+
+
