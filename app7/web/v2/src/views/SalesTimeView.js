@@ -2,13 +2,13 @@ function SalesTimeView(){
 }
 
 SalesTimeView.prototype.clear = function(){
-	$('svg').empty();
+	$('.svg-view').empty();
 }
 
 SalesTimeView.prototype.render = function(catSalesInTime, options){
 	this.options = options;
 	var yBlockWd = catSalesInTime.meta.yearBlockWidth;
-	var svg = d3.selectAll('svg');
+	var svg = d3.selectAll('.svg-view');
 
 	var g = svg.append('g')
 		       .attr('transform', 'translate(' + options.frmStartX + ',' + options.frmStartY + ') scale(1, -1)')
@@ -144,7 +144,7 @@ SalesTimeView.prototype.addEventHandlers = function(g){
 			w : parseFloat(rect.attr('width'))
 		})
 	});
-	$('svg').on('mousedown', function(e){
+	$('.svg-view').on('mousedown', function(e){
 		$('.cat-filter-group').remove();
 	});
 }

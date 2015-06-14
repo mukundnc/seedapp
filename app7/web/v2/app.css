@@ -44,15 +44,18 @@ body{
 .tree-container {
 	position : relative;
 	height : 94%;
-	width : 15%;
+	width : 14%;
 	float : left;
 	background-color: #353535;
+	border-right-color: grey;
+	border-right-style: solid;
+	border-right-width: 1px;
 }
 
 .view-container{
 	position:relative;
 	height: 100%;
-	width : 85%;
+	width : 85.9%;
 	float : left;
 }
 
