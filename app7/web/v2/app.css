@@ -13,23 +13,25 @@ body{
 .searchbar-container{
 	position:relative;
 	height : 10%;
-	padding : 10px 0px 10px 9px;
+	padding : 2px 0px 0px 0px;
 }
 
 #tbSearch{
 	position:relative;
-	left : 12%;
+	left : 1%;
 	width : 50%;
 	height : 30px;
 	border-radius: 2px;
 	font-size: 15px;
+	top : -10px;
 }
 
 .search-icon{
 	position: relative;
 	float:left;
 	display:inline-block;
-	left:65%;
+	top:13px;
+	left:69%;
 	background-color: #4d5359;
 	border-radius:2px;
 }

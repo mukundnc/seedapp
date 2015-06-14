@@ -4,9 +4,9 @@ $(document).ready(function(){
 })
 
 function Logo(){
-	this.H = 60;
-	this.W = 250;
-	this.lGap = 10;
+	this.H = 45;
+	this.W = 205;
+	this.lGap = 7;
 	this.setViewport();
 }
 
@@ -27,9 +27,9 @@ Logo.prototype.render = function(){
 	this.drawE4();}
 
 Logo.prototype.drawG = function(){
-	var cx = 27;
-	var cy = 27;
-	var r = 25;
+	var cx = 22;
+	var cy = 22;
+	var r = 20;
 
 	var xS = cx + r;
 	var yS = cy;
