@@ -2,13 +2,13 @@ function SalesTimeView(){
 }
 
 SalesTimeView.prototype.clear = function(){
-	$('.svg-view').empty();
+	d3.select('.svg-container').select('.svg-view').html('');
 }
 
 SalesTimeView.prototype.render = function(catSalesInTime, options){
 	this.options = options;
 	var yBlockWd = catSalesInTime.meta.yearBlockWidth;
-	var svg = d3.selectAll('.svg-view');
+	var svg = d3.select('.svg-container').select('.svg-view');
 
 	var g = svg.append('g')
 		       .attr('transform', 'translate(' + options.frmStartX + ',' + options.frmStartY + ') scale(1, -1)')

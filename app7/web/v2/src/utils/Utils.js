@@ -55,3 +55,32 @@ Path.prototype.getPathForSectorArcAroundCenter = function(xC, yC, rI, rO, thetaS
 		}
 	}
 }
+
+function SvgUtils(){
+
+}
+
+SvgUtils.prototype.addText = function(g, x, y, text, cssText, textAlign){
+	var t = g.append('g')
+			 .append('text')
+			 .attr({
+			 	x : x,
+			 	y : y,
+			 	class : cssText || 'col-text',
+			 	'text-anchor' : textAlign || 'middle'
+			 })
+			 .text(text);
+	return t;	
+}
+
+SvgUtils.prototype.addLine = function(g, x1, y1, x2, y2, cssLine){
+	var l = g.append('line')
+	 		 .attr({
+	 			x1 : x1,
+	 			y1 : y1,
+	 			x2 : x2,
+	 			y2 : y2,
+	 			class : cssLine
+	 		});
+	return l;
+}

@@ -105,6 +105,24 @@ body{
 	stroke : grey;
 }
 
+.snode-root-text{
+	color:grey;
+	cursor:pointer;
+	font-size:20px;
+	fill:grey;
+}
+
+.snode-text{
+	color:grey;
+	cursor:pointer;
+	font-size:15px;
+	fill:grey;
+}
+
+.snode-marker-line{
+	stroke : grey;
+	stroke-width : 1px;
+}
 
 
 
@@ -123,6 +141,21 @@ body{
 
 
 
+
+
+
+
+
+
+
+
+
+.cell-rect-1{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #653040;
+}
 .cell-rect-2{
 	stroke-width : 1px; 
 	stroke : grey; 
@@ -171,7 +204,7 @@ body{
 	cursor : pointer;
 	fill : #c5718b;
 }
-.cell-rect-1{
+.cell-rect-10{
 	stroke-width : 1px; 
 	stroke : grey; 
 	cursor : pointer;
