@@ -20,7 +20,7 @@ function HomeController(appController){
 	};
 }
 
-HomeController.prototype.renderHome = function(apiResp){
+HomeController.prototype.renderView = function(apiResp){
 	this.resp = apiResp;
 	this.initModels(apiResp);
 	this.options = {

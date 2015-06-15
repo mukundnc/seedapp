@@ -1,6 +1,7 @@
 function SalesAppController(){
 	this.apiResp = null;
 	this.homeController = new HomeController(this);
+	this.categoryController = new CategoryController(this);
 	this.init();
 	this.queryIdVsControllerAction = {};
 	this.searchTreeView = new SearchTreeView({controller : this});
@@ -15,8 +16,8 @@ SalesAppController.prototype.init = function(){
 
 SalesAppController.prototype.onApiResponse = function(resp){
 	this.resp = resp;
-	this.homeController.renderHome(resp);
-	this.queryIdVsControllerAction['q0'] = this.homeController.renderHome;
+	this.homeController.renderView(resp);
+	this.queryIdVsControllerAction['q0'] = this.homeController.renderView;
 	this.searchTreeView.add({id : 'q0', name : 'home'});
 }
 
@@ -47,8 +48,20 @@ SalesAppController.prototype.executeQuery = function(query, qid){
 }
 
 SalesAppController.prototype.onQueryResponse = function(qid, result){
-	console.log(qid);
-	console.log(result);
+	if(!result.success){
+		console.error(result.message);
+		return
+	}
+
+	switch(result.query.searchContext){
+		case 1 :
+		case 2 : 
+		case 3 : 
+		case 4 :
+			this.queryIdVsControllerAction[qid] = this.categoryController.renderView;
+			this.categoryController.renderView(qid, result);
+			break;
+	}
 }
 
 
