@@ -44,6 +44,7 @@ SalesAppController.prototype.getControllerActionForQueryId = function(qid){
 }
 
 SalesAppController.prototype.executeQuery = function(query, qid){
+	$('#tbSearch').val(query);
 	$.getJSON('/api/search?q=' + query, this.onQueryResponse.bind(this, qid));
 }
 

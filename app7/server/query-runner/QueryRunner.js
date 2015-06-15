@@ -5,6 +5,7 @@ var qb = require('./ESQueryBuilder');
 var dtm = require('./../utils/DateTime');
 var config = require('./../../config/config');
 var logger = require('./../utils/Logger');
+var QueryAggregator = require('./QueryAggregator');
 
 
 function QueryRunner(){
@@ -46,14 +47,14 @@ QueryRunner.prototype.run = function(antlrQueryObject, cbOnDone){
 	}
 
 	allSrcTargets.forEach((function(st){
-		this.runSingle(st, antlrQueryObject.searchContext, onComplete);
+		this.runSingle(st, antlrQueryObject, onComplete);
 	}).bind(this));
 }
 
-QueryRunner.prototype.runSingle = function(srcTargetFilter, searchContext, cbOnDone){
+QueryRunner.prototype.runSingle = function(srcTargetFilter, antlrQueryObject, cbOnDone){
 	var qHlpr = new ESQueryHelper();
 	var esQuery = qHlpr.getESQuery(srcTargetFilter.source, srcTargetFilter.target, srcTargetFilter.filters);
-	this.applyAggregatorsToESQuery(esQuery, searchContext);
+	this.applyAggregatorsToESQuery(esQuery, antlrQueryObject);
 	this.client.search(esQuery, function(err, res){
 		if(err){
 			logger.log(err);
@@ -118,148 +119,9 @@ QueryRunner.prototype.getSourceTargetAndFilterBreakDown = function(queryAndFilte
 }
 
 
-QueryRunner.prototype.applyAggregatorsToESQuery = function(esQuery, searchContext){
-	var agg = new qb.QueryAggregator().getDefault();
-	var sc = config.searchContext;
-
-	switch(searchContext){
-		case sc.category_in_region : 
-			delete agg.aggs.categories;
-			delete agg.aggs.models;
-			delete agg.aggs.regions;
-			delete agg.aggs.cities;
-			break;
-		case sc.category_in_state : 
-			delete agg.aggs.categories;
-			delete agg.aggs.models;
-			delete agg.aggs.regions;
-			delete agg.aggs.states;
-			break;
-		case sc.category_in_city : 
-			delete agg.aggs.categories;
-			delete agg.aggs.regions;
-			delete agg.aggs.states;
-			delete agg.aggs.cities;
-			break;
-		case sc.type_in_region : 
-			delete agg.aggs.categories;
-			delete agg.aggs.types;
-			delete agg.aggs.cities;
-			delete agg.aggs.regions;
-			break;
-		case sc.type_in_state : 
-			delete agg.aggs.categories;
-			delete agg.aggs.types;
-			delete agg.aggs.regions;
-			delete agg.aggs.states;
-			break;
-		case sc.type_in_city : 
-			delete agg.aggs.categories;
-			delete agg.aggs.types;
-			delete agg.aggs.regions;
-			delete agg.aggs.states;
-			delete agg.aggs.cities;
-			break;
-		case sc.brand_in_region : 
-			delete agg.aggs.brands;
-			delete agg.aggs.regions;
-			delete agg.aggs.cities;
-			delete agg.aggs.models;
-			break;
-		case sc.brand_in_state : 
-			delete agg.aggs.brands;
-			delete agg.aggs.regions;
-			delete agg.aggs.cities;
-			delete agg.aggs.states;
-			break;
-		case sc.brand_in_city : 
-			delete agg.aggs.brands;
-			delete agg.aggs.regions;
-			delete agg.aggs.states;
-			delete agg.aggs.cities;
-			break;
-		case sc.model_in_region : 
-			delete agg.aggs.categories;
-			delete agg.aggs.types;
-			delete agg.aggs.brands;
-			delete agg.aggs.models;
-			delete agg.aggs.regions;
-			delete agg.aggs.cities;
-			break;
-		case sc.model_in_state : 
-			delete agg.aggs.categories;
-			delete agg.aggs.types;
-			delete agg.aggs.brands;
-			delete agg.aggs.models;
-			delete agg.aggs.regions;
-			delete agg.aggs.states;
-			break;
-		case sc.model_in_city : 
-			delete agg.aggs.categories;
-			delete agg.aggs.types;
-			delete agg.aggs.brands;
-			delete agg.aggs.models;
-			delete agg.aggs.regions;
-			delete agg.aggs.states;
-			delete agg.aggs.cities;
-			break;
-		case sc.category : 
-			delete agg.aggs.categories;
-			delete agg.aggs.models;
-			delete agg.aggs.states;
-			delete agg.aggs.cities;
-			break;
-		case sc.type : 
-			delete agg.aggs.categories;
-			delete agg.aggs.types;
-			delete agg.aggs.models;
-			delete agg.aggs.states;
-			delete agg.aggs.cities;
-			break;
-		case sc.brand : 
-			delete agg.aggs.brands;
-			delete agg.aggs.states;
-			delete agg.aggs.cities;
-			break;
-		case sc.region : 
-			delete agg.aggs.types;
-			delete agg.aggs.brands;
-			delete agg.aggs.models;
-			delete agg.aggs.regions;
-			delete agg.aggs.cities;
-			break;
-		case sc.state : 
-			delete agg.aggs.types;
-			delete agg.aggs.brands;
-			delete agg.aggs.models;
-			delete agg.aggs.regions;
-			delete agg.aggs.states;
-			break;
-		case sc.model : 
-			delete agg.aggs.categories;
-			delete agg.aggs.types;
-			delete agg.aggs.brands;
-			delete agg.aggs.models;
-			delete agg.aggs.states;
-			delete agg.aggs.cities;
-			break;
-		case sc.city : 
-			delete agg.aggs.types;
-			delete agg.aggs.brands;
-			delete agg.aggs.models;
-			delete agg.aggs.regions;
-			delete agg.aggs.states;
-			delete agg.aggs.cities;
-			break;
-		default : 
-			delete agg.aggs.types;
-			delete agg.aggs.brands;
-			delete agg.aggs.models;
-			delete agg.aggs.states;
-			delete agg.aggs.cities;
-	}
-
-	esQuery.body.aggs = agg.aggs;
+QueryRunner.prototype.applyAggregatorsToESQuery = function(esQuery, antlrQueryObject){
+	var agg = new QueryAggregator();
+	esQuery.body.aggs = agg.getAggregates(antlrQueryObject).aggs;	
 }
 
 
