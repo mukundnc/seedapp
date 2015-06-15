@@ -123,23 +123,23 @@ allProducts = allProducts.concat(createProductLine('Clothing', 'Jeans', 'Stryker
 allProducts = allProducts.concat(createProductLine('Clothing', 'Jeans', 'Killer', Jeans_Killer));
 allProducts = allProducts.concat(createProductLine('Clothing', 'Jeans', 'Pepe', Jeans_Pepe));
 
-allProducts = allProducts.concat(createProductLine('Applicance', 'Refrigrator', 'Godrej', Refrige_Godrej));
-allProducts = allProducts.concat(createProductLine('Applicance', 'Refrigrator', 'Voltas', Refrige_Voltas));
-allProducts = allProducts.concat(createProductLine('Applicance', 'Refrigrator', 'Alwyn', Refrige_Alwyn));
-allProducts = allProducts.concat(createProductLine('Applicance', 'Refrigrator', 'GE', Refrige_GE));
-allProducts = allProducts.concat(createProductLine('Applicance', 'Refrigrator', 'Videocon', Refrige_Videcon));
+allProducts = allProducts.concat(createProductLine('Appliance', 'Refrigrator', 'Godrej', Refrige_Godrej));
+allProducts = allProducts.concat(createProductLine('Appliance', 'Refrigrator', 'Voltas', Refrige_Voltas));
+allProducts = allProducts.concat(createProductLine('Appliance', 'Refrigrator', 'Alwyn', Refrige_Alwyn));
+allProducts = allProducts.concat(createProductLine('Appliance', 'Refrigrator', 'GE', Refrige_GE));
+allProducts = allProducts.concat(createProductLine('Appliance', 'Refrigrator', 'Videocon', Refrige_Videcon));
 
-allProducts = allProducts.concat(createProductLine('Applicance', 'TV', 'LG', TV_LG));
-allProducts = allProducts.concat(createProductLine('Applicance', 'TV', 'Samsung', TV_Samsung));
-allProducts = allProducts.concat(createProductLine('Applicance', 'TV', 'Sony', TV_Sony));
-allProducts = allProducts.concat(createProductLine('Applicance', 'TV', 'Panasonic', TV_Panasonic));
-allProducts = allProducts.concat(createProductLine('Applicance', 'TV', 'Toshiba', TV_Toshiba));
+allProducts = allProducts.concat(createProductLine('Appliance', 'TV', 'LG', TV_LG));
+allProducts = allProducts.concat(createProductLine('Appliance', 'TV', 'Samsung', TV_Samsung));
+allProducts = allProducts.concat(createProductLine('Appliance', 'TV', 'Sony', TV_Sony));
+allProducts = allProducts.concat(createProductLine('Appliance', 'TV', 'Panasonic', TV_Panasonic));
+allProducts = allProducts.concat(createProductLine('Appliance', 'TV', 'Toshiba', TV_Toshiba));
 
-allProducts = allProducts.concat(createProductLine('Applicance', 'AC', 'Carrier', AC_Carrier));
-allProducts = allProducts.concat(createProductLine('Applicance', 'AC', 'Lyod', AC_Lyod));
-allProducts = allProducts.concat(createProductLine('Applicance', 'AC', 'BlueStar', AC_BlueStar));
-allProducts = allProducts.concat(createProductLine('Applicance', 'AC', 'Hitachi', AC_Hitachi));
-allProducts = allProducts.concat(createProductLine('Applicance', 'AC', 'Kenstar', AC_Kenstar));
+allProducts = allProducts.concat(createProductLine('Appliance', 'AC', 'Carrier', AC_Carrier));
+allProducts = allProducts.concat(createProductLine('Appliance', 'AC', 'Lyod', AC_Lyod));
+allProducts = allProducts.concat(createProductLine('Appliance', 'AC', 'BlueStar', AC_BlueStar));
+allProducts = allProducts.concat(createProductLine('Appliance', 'AC', 'Hitachi', AC_Hitachi));
+allProducts = allProducts.concat(createProductLine('Appliance', 'AC', 'Kenstar', AC_Kenstar));
 
 allProducts = allProducts.concat(createProductLine('Automobile', 'Bike', 'Bajaj', Bike_Bajaj));
 allProducts = allProducts.concat(createProductLine('Automobile', 'Bike', 'Hero', Bike_Hero));

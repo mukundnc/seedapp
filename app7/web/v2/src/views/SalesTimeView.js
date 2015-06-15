@@ -61,7 +61,7 @@ SalesTimeView.prototype.getFillStyleForCategory = function(category){
 	switch(category){
 		case 'Automobile' : style = 'stroke-width : 1px; stroke : white; fill: #2b908f'; break;
 		case 'Electronics' : style = 'stroke-width : 1px; stroke : white; fill: #90ee7e'; break;
-		case 'Applicance' : style = 'stroke-width : 1px; stroke : white; fill: #f45b5b'; break;
+		case 'Appliance' : style = 'stroke-width : 1px; stroke : white; fill: #f45b5b'; break;
 		case 'Clothing' : style = 'stroke-width : 1px; stroke : white; fill: #7798BF'; break;
 		case 'East' : style = 'stroke-width : 1px; stroke : white; fill: #2b908f'; break;
 		case 'West' : style = 'stroke-width : 1px; stroke : white; fill: #90ee7e'; break;

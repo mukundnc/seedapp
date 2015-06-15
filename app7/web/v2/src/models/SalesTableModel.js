@@ -51,7 +51,7 @@ SalesTableModel.prototype.getRowKeyForColumn = function(colJson){
 		case 'Clothing':
 		case 'Electronics':
 		case 'Automobile':
-		case 'Applicance':
+		case 'Appliance':
 			rowKey = 'types';
 			break;
 		case 'North':
