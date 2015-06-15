@@ -79,3 +79,7 @@ HomeController.prototype.activeViewChange = function(active){
 			break;
 	}	
 }
+
+HomeController.prototype.showQueryView = function(query){
+	this.appController.showQueryView(query);
+}

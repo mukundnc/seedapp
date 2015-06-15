@@ -6,7 +6,6 @@ SalesTableView.prototype.render = function(model, options){
 	this.model = model;
 	this.options = options;
 	this.meta = model.meta;
-console.log(model);
 	
 	var g = this.addTableGroup();
 	model.columns.forEach((function(col){		

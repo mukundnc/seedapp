@@ -23,8 +23,12 @@ SalesTimeView.prototype.render = function(catSalesInTime, options){
 
     		 var c = catSaleInYear[cKey];
 
-			 var r = this.addRect(g, c.x, c.y, c.W, 0, cKey).attr('class', 's-cat');      //category rect
-
+			 var r = this.addRect(g, c.x, c.y, c.W, 0, cKey)                              //category rect
+			 			 .attr({
+			 			 	class :  's-cat',
+			 			 	category : cKey,
+			 			 	year : yKey.replace('s', '')
+			 			 });
 			 allHeights.push(c.H);
 
 			 xEnd = c.x + c.W;
@@ -136,12 +140,14 @@ SalesTimeView.prototype.addCategoryMarkers = function(g, xStart, catSalesInTime)
 SalesTimeView.prototype.addEventHandlers = function(g){
 	var self = this;
 	$('.s-cat').on('click', function(e) {
-		var rect = d3.select(this);
+		var rect = d3.select('.svg-container').select('.s-cat');
 		self.handleCategorySelectClick({
 			x : parseFloat(rect.attr('x')),
 			y : parseFloat(rect.attr('y')),
 			h : parseFloat(rect.attr('height')),
-			w : parseFloat(rect.attr('width'))
+			w : parseFloat(rect.attr('width')),
+			category : rect.attr('category'),
+			year : parseInt(rect.attr('year'))
 		})
 	});
 	$('.svg-view').on('mousedown', function(e){
@@ -150,6 +156,14 @@ SalesTimeView.prototype.addEventHandlers = function(g){
 }
 
 SalesTimeView.prototype.handleCategorySelectClick = function(params){
+	this.clear();
+	var q = 'ID_CAT where date from ID_YEAR/01/01 and date to ID_YEAR/12/31';
+	q = strReplaceAll('ID_CAT', params.category, q);
+	q = strReplaceAll('ID_YEAR', params.year, q);
+	this.options.controller.showQueryView(q);
+}
+
+SalesTimeView.prototype.handleCategorySelectClick_old = function(params){
 	var xC = params.x + params.w/2 ;
 	var yC = 0.75 * (params.h + params.y) ;
 	var rI = 40, rO = 70;

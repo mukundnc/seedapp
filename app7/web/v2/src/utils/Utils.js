@@ -56,6 +56,10 @@ Path.prototype.getPathForSectorArcAroundCenter = function(xC, yC, rI, rO, thetaS
 	}
 }
 
+function strReplaceAll(find, replace, str) {
+  return str.replace(new RegExp(find, 'g'), replace);
+}
+
 function SvgUtils(){
 
 }
