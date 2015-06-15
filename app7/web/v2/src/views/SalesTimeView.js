@@ -139,8 +139,8 @@ SalesTimeView.prototype.addCategoryMarkers = function(g, xStart, catSalesInTime)
 
 SalesTimeView.prototype.addEventHandlers = function(g){
 	var self = this;
-	$('.s-cat').on('click', function(e) {
-		var rect = d3.select('.svg-container').select('.s-cat');
+	d3.select('.svg-container').selectAll('.s-cat').on('click', function(e) {
+		var rect = d3.select(this);
 		self.handleCategorySelectClick({
 			x : parseFloat(rect.attr('x')),
 			y : parseFloat(rect.attr('y')),

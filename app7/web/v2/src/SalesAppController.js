@@ -52,14 +52,16 @@ SalesAppController.prototype.onQueryResponse = function(qid, result){
 		console.error(result.message);
 		return
 	}
-
+	var treeText = '';
 	switch(result.query.searchContext){
 		case 1 :
+			treeText = result.query.query.category[0];
 		case 2 : 
 		case 3 : 
 		case 4 :
 			this.queryIdVsControllerAction[qid] = this.categoryController.renderView;
 			this.categoryController.renderView(qid, result);
+			this.searchTreeView.add({id : qid, name : treeText});
 			break;
 	}
 }
