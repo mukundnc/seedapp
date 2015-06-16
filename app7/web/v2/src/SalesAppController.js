@@ -63,6 +63,7 @@ SalesAppController.prototype.onQueryResponse = function(qid, result){
 		case 2 : 
 		case 3 : 
 		case 4 :
+		default:
 			this.queryIdVsController[qid] = this.categoryController;
 			this.categoryController.renderView(qid, result);
 			this.searchTreeView.add({id : qid, name : treeText});
