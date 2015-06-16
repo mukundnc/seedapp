@@ -69,8 +69,7 @@ QueryAggreagator.prototype.getAggregates = function(query){
 			agg = this.getCityAgg();
 			break;		
 	}
-	console.log(JSON.stringify(agg));
-	return agg || {};
+	return agg;
 }
 
 QueryAggreagator.prototype.init = function(){
@@ -358,7 +357,7 @@ QueryAggreagator.prototype.getTypeInStateAgg = function(){
 	var keyCategory = 'brands';
 	var keyRegions = 'cities';
 	var aggCategory = this.getBrandAggTemplate();
-	var aggRegion = this.getStateAggTemplate();
+	var aggRegion = this.getCityAggTemplate();
 	if(this.hasModel()){
 		keyCategory = 'models';
 		aggCategory = this.getModelAggTemplate();
@@ -462,9 +461,9 @@ QueryAggreagator.prototype.getModelInRegionAgg = function(){
 	return aggs;	
 }
 
-QueryAggreagator.prototype.getModelnStateAgg = function(){
+QueryAggreagator.prototype.getModelInStateAgg = function(){
 	var keyRegions = 'cities';
-	var aggRegion = this.getStateAggTemplate();
+	var aggRegion = this.getCityAggTemplate();
 	var aggs = {aggs : {}};
 	aggs.aggs[keyRegions] = aggRegion[keyRegions];
 	return aggs;	
