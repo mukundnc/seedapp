@@ -6,7 +6,7 @@ function SalesAppController(){
 	this.queryIdVsControllerAction = {};
 	this.searchTreeView = new SearchTreeView({controller : this});
 	this.queryIndex = 1;
-	this.queryIndices = {};
+	this.queryIndices = {'q0': 'show automobile, electronics, appliances, cloths'};
 }
 
 
@@ -17,7 +17,7 @@ SalesAppController.prototype.init = function(){
 SalesAppController.prototype.onApiResponse = function(resp){
 	this.resp = resp;
 	this.homeController.renderView(resp);
-	this.queryIdVsControllerAction['q0'] = this.homeController.renderView;
+	this.queryIdVsControllerAction['q0'] = this.homeController;
 	this.searchTreeView.add({id : 'q0', name : 'home'});
 }
 
@@ -35,6 +35,7 @@ SalesAppController.prototype.getQueryId = function(query){
 	if(!qid){
 		qid = 'q' + this.queryIndex;
 		this.queryIndex++;
+		this.queryIndices[qid] = query;
 	}
 	return qid;
 }
@@ -60,11 +61,15 @@ SalesAppController.prototype.onQueryResponse = function(qid, result){
 		case 2 : 
 		case 3 : 
 		case 4 :
-			this.queryIdVsControllerAction[qid] = this.categoryController.renderView;
+			this.queryIdVsControllerAction[qid] = this.categoryController;
 			this.categoryController.renderView(qid, result);
 			this.searchTreeView.add({id : qid, name : treeText});
 			break;
 	}
 }
 
+SalesAppController.prototype.onSearchNodeSelectionChange = function(qid){
+	$('#tbSearch').val(this.queryIndices[qid]);
+	this.queryIdVsControllerAction[qid].renderView(qid);
+}
 

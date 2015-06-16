@@ -54,6 +54,8 @@ SearchTreeView.prototype.add = function(params){
 SearchTreeView.prototype.onSelectionChange = function(selTxtElem){
 	this.clearSelection();
 	d3.select(selTxtElem).attr('class', 'snode-text-select');
+	d3.select('.svg-container').select('.svg-view').html('');
+	this.options.controller.onSearchNodeSelectionChange($(selTxtElem).attr('id'));
 }
 
 SearchTreeView.prototype.clearSelection = function(currSel){
