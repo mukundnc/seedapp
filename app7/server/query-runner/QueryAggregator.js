@@ -69,6 +69,7 @@ QueryAggreagator.prototype.getAggregates = function(query){
 			agg = this.getCityAgg();
 			break;		
 	}
+	this.addTimeAggregate(agg);
 	return agg;
 }
 
@@ -546,5 +547,33 @@ QueryAggreagator.prototype.getCityAgg = function(){
 	aggs.aggs[keyCategory] = aggCategory[keyCategory];
 	return aggs;	
 }
+
+QueryAggreagator.prototype.addTimeAggregate = function(agg){
+	if(Object.keys(agg.aggs).length === 0) return;
+	var root = agg.aggs;
+
+	Object.keys(root).forEach((function(k){
+		var t = this.getTimeAggregate();
+		var tKey = Object.keys(t)[0];
+		root[k].aggs[tKey] = t[tKey];
+	}).bind(this));
+
+	console.log(JSON.stringify(agg));
+}
+
+QueryAggreagator.prototype.getTimeAggregate = function(){
+	if(!this.hasDates){
+		return {
+			yearly : {
+				date_histogram : {
+					field : 'timestamp',
+					interval : 'year',
+					format : 'YYYY/MM/DD'
+				}
+			}
+		}
+	}
+}
+
 
 module.exports = QueryAggreagator;
