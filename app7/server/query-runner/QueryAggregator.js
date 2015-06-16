@@ -555,24 +555,83 @@ QueryAggreagator.prototype.addTimeAggregate = function(agg){
 	Object.keys(root).forEach((function(k){
 		var t = this.getTimeAggregate();
 		var tKey = Object.keys(t)[0];
-		root[k].aggs[tKey] = t[tKey];
+		if(root[k].aggs)
+			root[k].aggs[tKey] = t[tKey];
 	}).bind(this));
 
 	console.log(JSON.stringify(agg));
 }
 
 QueryAggreagator.prototype.getTimeAggregate = function(){
-	if(!this.hasDates){
-		return {
-			yearly : {
-				date_histogram : {
-					field : 'timestamp',
-					interval : 'year',
-					format : 'YYYY/MM/DD'
-				}
+	if(!this.hasDates)
+		return this.getYearlyTimeAgg();
+	var tDiff = this.getTimeDiffData();
+
+	if(tDiff.isLT2Months)
+		return this.getDailyTimeAgg();
+
+	if(!tDiff.isGT5Years)
+		return this.getMonthlyTimeAgg();
+
+	return this.getYearlyTimeAgg();
+}
+
+
+QueryAggreagator.prototype.getTimeDiffData = function(){
+	var dates = [];
+	this.filters.forEach(function(f){
+		if(f.filter.isDate)
+			dates.push(new Date(f.filter.value));
+	});
+	var dStart = dates[1] > dates[0] ? dates[0] : dates[1];
+	var dEnd = dates[1] > dates[0] ? dates[1] : dates[0];
+	var dMs = dEnd - dStart;
+	var dDays = dMs/(1000 * 60 * 60 * 24);
+	var daysIn5Years = 365 * 5;
+
+	return {
+		isGT5Years : dDays >= daysIn5Years,
+		isLT2Months : dDays < 61
+	}
+}
+
+QueryAggreagator.prototype.getYearlyTimeAgg = function(){
+	return {
+		yearly : {
+			date_histogram : {
+				field : 'timestamp',
+				interval : 'year',
+				format : 'YYYY/MM/DD'
 			}
 		}
-	}
+	}	
+
+}
+
+QueryAggreagator.prototype.getMonthlyTimeAgg = function(){
+	return {
+		monthly : {
+			date_histogram : {
+				field : 'timestamp',
+				interval : 'month',
+				format : 'YYYY/MM/DD'
+			}
+		}
+	}	
+
+}
+
+QueryAggreagator.prototype.getDailyTimeAgg = function(){
+	return {
+		daily : {
+			date_histogram : {
+				field : 'timestamp',
+				interval : 'day',
+				format : 'YYYY/MM/DD'
+			}
+		}
+	}	
+
 }
 
 
