@@ -559,7 +559,6 @@ QueryAggreagator.prototype.addTimeAggregate = function(agg){
 			root[k].aggs[tKey] = t[tKey];
 	}).bind(this));
 
-	console.log(JSON.stringify(agg));
 }
 
 QueryAggreagator.prototype.getTimeAggregate = function(){
