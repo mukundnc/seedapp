@@ -1,7 +1,10 @@
+var _ = require('underscore');
 var QueryParseListenerBase = require('./antlr/generated/salesListener').salesListener;
 var ExpressionBuilder = require('./ExpressionBuilder');
 var logger = require('./../utils/Logger');
 var sc = require('./../../config/config').searchContext;
+var allRegions = require('./../data-manager/Regions');
+var dict = require('./../../config/Dictionary');
 
 function QueryParseListener(cbOnExitQuery){
 	QueryParseListenerBase.call(this);
@@ -103,12 +106,12 @@ QueryParseListener.prototype.enterSingle_entity = function(ctx) {
 	if(ctx.stateSpec())
 		this.addSingleKeyToMemory('state', ctx.stateSpec(), sc.state);
 
-	if(ctx.modelSpec())
-		this.addSingleKeyToMemory('model', ctx.modelSpec(), sc.model);
-
-	if(ctx.citySpec())
-		this.addSingleKeyToMemory('city', ctx.citySpec(), sc.city);
-	
+	if(ctx.modelSpec()){
+		if(this.isCitySpec(ctx.modelSpec()))
+			this.addSingleKeyToMemory('city', ctx.modelSpec(), sc.city);
+		else 
+			this.addSingleKeyToMemory('model', ctx.modelSpec(), sc.model);
+	}
 };
 
 
@@ -142,5 +145,16 @@ QueryParseListener.prototype.addDoubleKeysToMemory = function(key1, spec1, key2,
 	spec2.forEach((function(s){
 		this.memory.query[key2].push(s.getText());
 	}).bind(this));
+}
+
+QueryParseListener.prototype.isCitySpec = function(spec){
+	if (spec.length === 0) return false;
+	
+	var arr = [];
+	spec.forEach(function(s){
+		arr.push(s.getText());
+	});
+	var res = _.where(allRegions, {'city' : dict.getDomainQualifiedStr(arr[0])});
+	return res && res.length > 0;
 }
 module.exports = QueryParseListener;
