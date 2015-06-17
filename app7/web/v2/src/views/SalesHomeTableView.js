@@ -1,8 +1,8 @@
-function SalesTableView(){
+function SalesHomeTableView(){
 
 }
 
-SalesTableView.prototype.render = function(model, options){
+SalesHomeTableView.prototype.render = function(model, options){
 	this.model = model;
 	this.options = options;
 	this.meta = model.meta;
@@ -16,7 +16,7 @@ SalesTableView.prototype.render = function(model, options){
 	this.showRowsForCurrentSelection();
 }
 
-SalesTableView.prototype.addTableGroup = function(){
+SalesHomeTableView.prototype.addTableGroup = function(){
 	var transform = 'translate(' + this.options.frmStartX  + ',' + this.options.frmStartY + ') scale(1, -1)';
 	var css = 'sales-table-group';	
 	var g = d3.select('.svg-container').select('.svg-view')
@@ -29,7 +29,7 @@ SalesTableView.prototype.addTableGroup = function(){
 	return g;
 }
 
-SalesTableView.prototype.addRectLabel = function(g, x, y, w, h, text, cssGroup, cssRect, cssText, textAlign){
+SalesHomeTableView.prototype.addRectLabel = function(g, x, y, w, h, text, cssGroup, cssRect, cssText, textAlign){
 	var gLabel = g.append('g').attr('class', cssGroup);
 	var r = gLabel.append('rect')
 			 .attr({
@@ -43,7 +43,7 @@ SalesTableView.prototype.addRectLabel = function(g, x, y, w, h, text, cssGroup, 
 	return gLabel;
 }
 
-SalesTableView.prototype.addText = function(g, x, y, text, cssText, textAlign){
+SalesHomeTableView.prototype.addText = function(g, x, y, text, cssText, textAlign){
 	var t = g.append('g')
 			 .attr('transform', 'scale(1, -1)')
 			 .append('text')
@@ -57,19 +57,19 @@ SalesTableView.prototype.addText = function(g, x, y, text, cssText, textAlign){
 	return t;	
 }
 
-SalesTableView.prototype.selectDefaultColumn = function(){
+SalesHomeTableView.prototype.selectDefaultColumn = function(){
 	d3.select('.col-rect').classed('col-select', true);
 	d3.select('.col-text').classed('col-text-select', true);
 }
 
-SalesTableView.prototype.addColumnEventHandlers = function(){
+SalesHomeTableView.prototype.addColumnEventHandlers = function(){
 	var self = this;
 	$('.col-group').on('click', function(e){
 		self.onColumnChange(this);
 	})
 }
 
-SalesTableView.prototype.onColumnChange = function(selColElem){
+SalesHomeTableView.prototype.onColumnChange = function(selColElem){
 	d3.selectAll('.col-select').classed('col-select', false).classed('col-rect', true);
 	d3.selectAll('.col-text-select').classed('col-text-select', false).classed('col-text', true);
 	d3.select(selColElem).select('rect').attr('class', 'col-select');
@@ -77,7 +77,7 @@ SalesTableView.prototype.onColumnChange = function(selColElem){
 	this.showRowsForCurrentSelection();
 }
 
-SalesTableView.prototype.showRowsForCurrentSelection = function(){
+SalesHomeTableView.prototype.showRowsForCurrentSelection = function(){
 	var selCol = d3.select('.col-text-select').text();
 	var selColRows = _.where(this.model.columns, {name : selCol})[0];
 	var g = this.getRowGroup();
@@ -90,7 +90,7 @@ SalesTableView.prototype.showRowsForCurrentSelection = function(){
 	this.addRowEventHandlers();
 }
 
-SalesTableView.prototype.getRowGroup = function(){
+SalesHomeTableView.prototype.getRowGroup = function(){
 	var g = d3.select('.sales-row-group');
 	if(g.empty()) {
 		g = d3.select('.sales-table-group')
@@ -100,20 +100,20 @@ SalesTableView.prototype.getRowGroup = function(){
 	return g;
 }
 
-SalesTableView.prototype.selectDefaultRow = function(){
+SalesHomeTableView.prototype.selectDefaultRow = function(){
 	this.getLastElemnentInD3Sel(d3.selectAll('.row-rect')).classed('row-select', true);
 	this.getLastElemnentInD3Sel(d3.selectAll('.row-text')).classed('row-text-select', true);
 	this.showSalesChartForCurrentSelection();
 }
 
-SalesTableView.prototype.addRowEventHandlers = function(){
+SalesHomeTableView.prototype.addRowEventHandlers = function(){
 	var self = this;
 	$('.row-group').on('click', function(e){
 		self.onRowChange(this);
 	})
 }
 
-SalesTableView.prototype.onRowChange = function(selRowElem){
+SalesHomeTableView.prototype.onRowChange = function(selRowElem){
 	d3.selectAll('.row-select').classed('row-select', false).classed('row-rect', true);
 	d3.selectAll('.row-text-select').classed('row-text-select', false).classed('row-text', true);
 	d3.select(selRowElem).select('rect').attr('class', 'row-select');
@@ -121,14 +121,14 @@ SalesTableView.prototype.onRowChange = function(selRowElem){
 	this.showSalesChartForCurrentSelection();
 }
 
-SalesTableView.prototype.getLastElemnentInD3Sel = function(d3Sel){
+SalesHomeTableView.prototype.getLastElemnentInD3Sel = function(d3Sel){
 	if(d3Sel.empty()) return null;
 
 	var cnt = d3Sel[0].length;
 	return d3.select(d3Sel[0][cnt-1]);
 }
 
-SalesTableView.prototype.showSalesChartForCurrentSelection = function(){
+SalesHomeTableView.prototype.showSalesChartForCurrentSelection = function(){
 	var selColName =  d3.select('.col-text-select').text();
 	var selRowName = d3.select('.row-text-select').text();
 	var selCol = _.where(this.model.columns, {name : selColName})[0];
@@ -157,14 +157,14 @@ SalesTableView.prototype.showSalesChartForCurrentSelection = function(){
 	this.animateCategoryHeights(g, allHeights);
 }
 
-SalesTableView.prototype.animateCategoryHeights = function(g, heights){
+SalesHomeTableView.prototype.animateCategoryHeights = function(g, heights){
 	g.selectAll('rect')
 	 .data(heights)
 	 .transition()
 	 .attr('height', function(h) { return h; })
 }
 
-SalesTableView.prototype.getTableChartGroup = function(){
+SalesHomeTableView.prototype.getTableChartGroup = function(){
 	var g = d3.select('.sales-tbchart-group');
 	if(g.empty()){
 		g = d3.select('.sales-table-group')
@@ -174,7 +174,7 @@ SalesTableView.prototype.getTableChartGroup = function(){
 	return g;
 }
 
-SalesTableView.prototype.drawAxes = function(g, xStart, yStart, xMax, yMax){
+SalesHomeTableView.prototype.drawAxes = function(g, xStart, yStart, xMax, yMax){
 	g.append('line')
 	 .attr({
 	 	x1 : xStart,
@@ -193,7 +193,7 @@ SalesTableView.prototype.drawAxes = function(g, xStart, yStart, xMax, yMax){
 	 });
 }
 
-SalesTableView.prototype.addCellRect = function(g, x, y, w, h, cssRect){
+SalesHomeTableView.prototype.addCellRect = function(g, x, y, w, h, cssRect){
 	var r = g.append('rect')
 			 .attr({
 			 	x : x,
@@ -205,7 +205,7 @@ SalesTableView.prototype.addCellRect = function(g, x, y, w, h, cssRect){
 	return r;
 }
 
-SalesTableView.prototype.addCellLabel = function(g, x, y, text, barWidth, cssText){
+SalesHomeTableView.prototype.addCellLabel = function(g, x, y, text, barWidth, cssText){
 	if(this.options.viewType === 'category'){
 		var xT = x - barWidth/2;
 		var yT = -10;
@@ -219,7 +219,7 @@ SalesTableView.prototype.addCellLabel = function(g, x, y, text, barWidth, cssTex
 	}
 }
 
-SalesTableView.prototype.addYAxisLabels = function(g, xStart, w, h, yScale){
+SalesHomeTableView.prototype.addYAxisLabels = function(g, xStart, w, h, yScale){
 	// this.addLine(g, xStart, h/4, w, h/4);
 	// this.addLine(g, xStart, h/2, w, h/2);
 	// this.addLine(g, xStart, 3*h/4, w, 3*h/4);
@@ -243,7 +243,7 @@ SalesTableView.prototype.addYAxisLabels = function(g, xStart, w, h, yScale){
 	 .text('SALES');
 }
 
-SalesTableView.prototype.addLine = function(g, px1, py1, px2, py2, s){
+SalesHomeTableView.prototype.addLine = function(g, px1, py1, px2, py2, s){
 	g.append('line')
 	 .attr({
 		x1 : px1 || 0,

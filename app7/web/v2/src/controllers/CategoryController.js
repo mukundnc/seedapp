@@ -8,5 +8,17 @@ CategoryController.prototype.renderView = function(qid, results){
 		this.qIdResults[qid] = results;
 
 	var resParser = new ResponseParser();
-	resParser.parse(this.qIdResults[qid])
+	var uiObject = resParser.parse(this.qIdResults[qid]);
+
+	var xOrg = 50;
+	var yOrg = 50;
+	H = $('.svg-container').height();
+	W = $('.svg-container').width();
+	var options = {
+		width : W,
+		height : 0.5 * H
+	};
+
+	var modelFactory = new SalesTableModel();
+	var salesTableModel = modelFactory.getModel(uiObject, options);
 }

@@ -1,4 +1,4 @@
-function SalesTimeModel(options){
+function SalesHomeTimeModel(options){
 	this.xStart = options.frmStartX;
 	this.yStart = options.frmStartY;
 	this.width = options.frmWidth;
@@ -6,7 +6,7 @@ function SalesTimeModel(options){
 }
 
 
-SalesTimeModel.prototype.getCategorySalesInTime = function(salesCategories){
+SalesHomeTimeModel.prototype.getCategorySalesInTime = function(salesCategories){
 	var yScale = this.getScale(salesCategories);
 
 	var years = salesCategories[0].yearly.buckets;
@@ -47,7 +47,7 @@ SalesTimeModel.prototype.getCategorySalesInTime = function(salesCategories){
 	};
 }
 
-SalesTimeModel.prototype.getScale = function(salesCategories){
+SalesHomeTimeModel.prototype.getScale = function(salesCategories){
 	var allYears = [];
 	salesCategories.forEach(function(sc){
 		allYears = allYears.concat(sc.yearly.buckets);

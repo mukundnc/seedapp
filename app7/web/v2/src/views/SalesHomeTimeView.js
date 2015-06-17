@@ -1,11 +1,11 @@
-function SalesTimeView(){
+function SalesHomeTimeView(){
 }
 
-SalesTimeView.prototype.clear = function(){
+SalesHomeTimeView.prototype.clear = function(){
 	d3.select('.svg-container').select('.svg-view').html('');
 }
 
-SalesTimeView.prototype.render = function(catSalesInTime, options){
+SalesHomeTimeView.prototype.render = function(catSalesInTime, options){
 	this.options = options;
 	var yBlockWd = catSalesInTime.meta.yearBlockWidth;
 	var svg = d3.select('.svg-container').select('.svg-view');
@@ -50,13 +50,13 @@ SalesTimeView.prototype.render = function(catSalesInTime, options){
     this.animateCategoryHeights(g, allHeights);
 }
 
-SalesTimeView.prototype.animateCategoryHeights = function(g, heights){
+SalesHomeTimeView.prototype.animateCategoryHeights = function(g, heights){
 	g.selectAll('rect')
 	 .data(heights)
 	 .transition()
 	 .attr('height', function(h) { return h; })
 }
-SalesTimeView.prototype.getFillStyleForCategory = function(category){
+SalesHomeTimeView.prototype.getFillStyleForCategory = function(category){
 	var style = '';
 	switch(category){
 		case 'Automobile' : style = 'stroke-width : 1px; stroke : white; fill: #2b908f'; break;
@@ -69,7 +69,7 @@ SalesTimeView.prototype.getFillStyleForCategory = function(category){
 		case 'South' : style = 'stroke-width : 1px; stroke : white; fill: #7798BF'; break;	}
 	return style;
 }
-SalesTimeView.prototype.addRect = function(g, x, y, w, h, category){
+SalesHomeTimeView.prototype.addRect = function(g, x, y, w, h, category){
 	return g.append('rect')
 	 .attr({
 	 	x : x,
@@ -79,7 +79,7 @@ SalesTimeView.prototype.addRect = function(g, x, y, w, h, category){
 	 	style : this.getFillStyleForCategory(category)
 	 });
 }
-SalesTimeView.prototype.addLine = function(g, px1, py1, px2, py2, s){
+SalesHomeTimeView.prototype.addLine = function(g, px1, py1, px2, py2, s){
 	g.append('line')
 	 .attr({
 		x1 : px1 || 0,
@@ -90,7 +90,7 @@ SalesTimeView.prototype.addLine = function(g, px1, py1, px2, py2, s){
 	});
 }
 
-SalesTimeView.prototype.addText = function(g, x, y, label, textAnchor){
+SalesHomeTimeView.prototype.addText = function(g, x, y, label, textAnchor){
 	return g.append('g')
 	 .attr('transform', 'scale(1,-1)')
 	 .append('text')
@@ -103,7 +103,7 @@ SalesTimeView.prototype.addText = function(g, x, y, label, textAnchor){
 	 .text(label);
 }
 
-SalesTimeView.prototype.addYAxisLabels = function(g, w, h, yScale){
+SalesHomeTimeView.prototype.addYAxisLabels = function(g, w, h, yScale){
 	this.addLine(g, 0, h/4, w, h/4);
 	this.addLine(g, 0, h/2, w, h/2);
 	this.addLine(g, 0, 3*h/4, w, 3*h/4);
@@ -126,7 +126,7 @@ SalesTimeView.prototype.addYAxisLabels = function(g, w, h, yScale){
 	 .text('SALES');
 }
 
-SalesTimeView.prototype.addCategoryMarkers = function(g, xStart, catSalesInTime){
+SalesHomeTimeView.prototype.addCategoryMarkers = function(g, xStart, catSalesInTime){
 	var arr = Object.keys(catSalesInTime.data[2000]); 
 	var x = xStart + 200;
 	var y = -40;
@@ -137,7 +137,7 @@ SalesTimeView.prototype.addCategoryMarkers = function(g, xStart, catSalesInTime)
 	}).bind(this));
 }
 
-SalesTimeView.prototype.addEventHandlers = function(g){
+SalesHomeTimeView.prototype.addEventHandlers = function(g){
 	var self = this;
 	d3.select('.svg-container').selectAll('.s-cat').on('click', function(e) {
 		var rect = d3.select(this);
@@ -155,7 +155,7 @@ SalesTimeView.prototype.addEventHandlers = function(g){
 	});
 }
 
-SalesTimeView.prototype.handleCategorySelectClick = function(params){
+SalesHomeTimeView.prototype.handleCategorySelectClick = function(params){
 	this.clear();
 	var q = 'ID_CAT where date from ID_YEAR/01/01 and date to ID_YEAR/12/31';
 	q = strReplaceAll('ID_CAT', params.category, q);
@@ -163,7 +163,7 @@ SalesTimeView.prototype.handleCategorySelectClick = function(params){
 	this.options.controller.showQueryView(q);
 }
 
-SalesTimeView.prototype.handleCategorySelectClick_old = function(params){
+SalesHomeTimeView.prototype.handleCategorySelectClick_old = function(params){
 	var xC = params.x + params.w/2 ;
 	var yC = 0.75 * (params.h + params.y) ;
 	var rI = 40, rO = 70;
@@ -213,11 +213,11 @@ SalesTimeView.prototype.handleCategorySelectClick_old = function(params){
 	});
 }
 
-SalesTimeView.prototype.handleCategoryFilterClick = function(e, selFilterElem){
+SalesHomeTimeView.prototype.handleCategoryFilterClick = function(e, selFilterElem){
 	d3.select(selFilterElem.parentNode).remove();
 }
 
-SalesTimeView.prototype.addViewOptions = function(g, xStart, yMax){
+SalesHomeTimeView.prototype.addViewOptions = function(g, xStart, yMax){
 	var x = xStart + 30;
 	var y = 50;
 	var h = 25, w = 50;

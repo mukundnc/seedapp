@@ -1,4 +1,4 @@
-function SalesTableModel(options){
+function SalesHomeTableModel(options){
 	this.options = options;
 	this.rowW = 80;
 	this.rowH = 25;
@@ -13,7 +13,7 @@ function SalesTableModel(options){
 	this.meta = {yScaleMap : {}};
 }
 
-SalesTableModel.prototype.getTableModel = function(allColsWithRowAsJson){
+SalesHomeTableModel.prototype.getTableModel = function(allColsWithRowAsJson){
 	var cols = Object.keys(allColsWithRowAsJson);
 	var columns = [];
 
@@ -34,7 +34,7 @@ SalesTableModel.prototype.getTableModel = function(allColsWithRowAsJson){
 	}
 }
 
-SalesTableModel.prototype.getSalesColumn = function(colJson, xStart, yStart){
+SalesHomeTableModel.prototype.getSalesColumn = function(colJson, xStart, yStart){
 	return {
 		name : colJson.key,
 		x : xStart,
@@ -45,7 +45,7 @@ SalesTableModel.prototype.getSalesColumn = function(colJson, xStart, yStart){
 	}
 }
 
-SalesTableModel.prototype.getRowKeyForColumn = function(colJson){
+SalesHomeTableModel.prototype.getRowKeyForColumn = function(colJson){
 	var rowKey = '';
 	switch(colJson.key){
 		case 'Clothing':
@@ -64,7 +64,7 @@ SalesTableModel.prototype.getRowKeyForColumn = function(colJson){
 	return rowKey;
 }
 
-SalesTableModel.prototype.getCellKeyForRow = function(rowKey){
+SalesHomeTableModel.prototype.getCellKeyForRow = function(rowKey){
 	var cellKey = '';
 	switch(rowKey){
 		case 'types':
@@ -77,7 +77,7 @@ SalesTableModel.prototype.getCellKeyForRow = function(rowKey){
 	return cellKey;	
 }
 
-SalesTableModel.prototype.getSalesRowsForColumn = function(colJson, xStart, yStart){
+SalesHomeTableModel.prototype.getSalesRowsForColumn = function(colJson, xStart, yStart){
 	var rowKey = this.getRowKeyForColumn(colJson);
 	var buckets = colJson[rowKey].buckets;
 	var rows = [];
@@ -99,7 +99,7 @@ SalesTableModel.prototype.getSalesRowsForColumn = function(colJson, xStart, ySta
 	return rows;
 }
 
-SalesTableModel.prototype.getSalesCellsForRow = function(cellsJson, rowKey){
+SalesHomeTableModel.prototype.getSalesCellsForRow = function(cellsJson, rowKey){
 	var cX = this.cellStartX;
 	var cY = this.cellStartY;
 	var cellKey = this.getCellKeyForRow(rowKey);
@@ -123,7 +123,7 @@ SalesTableModel.prototype.getSalesCellsForRow = function(cellsJson, rowKey){
 	return cells;
 }
 
-SalesTableModel.prototype.setYscaleForRow = function(cells, rowKey){
+SalesHomeTableModel.prototype.setYscaleForRow = function(cells, rowKey){
 	var allVals = [];
 	cells.forEach(function(c){
 		allVals.push(c.doc_count)

@@ -39,12 +39,12 @@ HomeController.prototype.renderView = function(apiResp){
 HomeController.prototype.initModels = function(resp){
 	if(this.catSalesInTime && this.rgnSalesInTime && this.catSalesTableModel && this.rgnSalesTableModel) return;
 	
-	var salesTimeModel = new SalesTimeModel(this.options);
+	var salesTimeModel = new SalesHomeTimeModel(this.options);
 	this.catSalesInTime = salesTimeModel.getCategorySalesInTime(this.resp.results.aggregations.categories.buckets);	
 	this.rgnSalesInTime = salesTimeModel.getCategorySalesInTime(this.resp.results.aggregations.regions.buckets);
 
 	this.options.frmHeight = 0.55 * this.H;
-	var salesTableModel = new SalesTableModel(this.options);
+	var salesTableModel = new SalesHomeTableModel(this.options);
 	this.catSalesTableModel = salesTableModel.getTableModel(this.resp.results.aggregations.categories.buckets);
 	this.rgnSalesTableModel = salesTableModel.getTableModel(this.resp.results.aggregations.regions.buckets);
 	
@@ -53,7 +53,7 @@ HomeController.prototype.showSalesInTimeView = function(model){
 	this.options.frmStartX = 0.06 * this.W;
 	this.options.frmStartY = 0.30 * this.H;
 	if(!this.salesTimeView)
-		this.salesTimeView = new SalesTimeView();
+		this.salesTimeView = new SalesHomeTimeView();
 	this.salesTimeView.render(model, this.options);	
 }
 
@@ -61,7 +61,7 @@ HomeController.prototype.showSalesTableView = function(model){
 	this.options.frmStartX = 0.06 * this.W;
 	this.options.frmStartY = 0.95 * this.H;
 	if(!this.salesTableView)
-		this.salesTableView = new SalesTableView();
+		this.salesTableView = new SalesHomeTableView();
 	this.salesTableView.render(model, this.options);	
 }
 
