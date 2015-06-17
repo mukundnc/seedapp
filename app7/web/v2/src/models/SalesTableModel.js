@@ -9,65 +9,97 @@ SalesTableModel.prototype.init = function(options){
 	this.colW = 105;
 	this.cellW = 50;
 	this.colOffset = 100;
-	this.cellStartX = this.xOrg + this.rowW + 100;
+	this.rowStartX = 0;
+	this.rowStartY = 200;
+	this.cellStartX = this.rowStartX + this.rowW + 100;
 	this.cellStartY = 20;
-	this.meta = {};
+	this.cellStartY = 20;
 }
 
-SalesTableModel.prototype.getModel = function(uiObject, options){
+SalesTableModel.prototype.getModel = function(uiObjects, options){
 	this.init(options);
 	var tables = [];
-	Object.keys(uiObject).forEach((function(tableKey){
-		var table = this.getTable(uiObject[tableKey]);
-		tables.push(table);
+	uiObjects.forEach((function(uiObject){
+		Object.keys(uiObject).forEach((function(tableKey){
+			if(tableKey === 'key1' || tableKey === 'key2'){
+				var table = this.getTable(uiObject[tableKey]);
+				tables.push(table);
+			}
+		}).bind(this));
 	}).bind(this));
-	return tables
+console.log(tables);	
+	return tables;
 }
 
-
-
 SalesTableModel.prototype.getTable = function(uiTableObj){
+	var levels = this.getLevelDepth(uiTableObj);
+	switch(levels){
+		case 3 : return this.getTableFor3Levels(uiTableObj); break;
+		case 2 : return this.getTableFor2Levels(uiTableObj); break;
+		case 1 : return this.getTableFor1Level1(uiTableObj); break;
+	}
+}
+
+SalesTableModel.prototype.getLevelDepth = function(uiTableObj){
+	var levels = 1;
+	var yearKeys = ['yearly', 'monthly', 'daily'];
+	var pivot = uiTableObj.items;
+	while(pivot.length > 0){
+		if(yearKeys.indexOf(pivot[0].key) === -1)
+			pivot = pivot[0].items;
+		else if(pivot[1] && pivot[1].items && pivot[1].items.length > 0)
+			pivot = pivot[1].items;
+		else
+			break;
+		levels++;
+	}
+	return levels/2;
+}
+
+SalesTableModel.prototype.getTableFor3Levels = function(uiTableObj){
 	var columns = [];
 	var cX = this.rowW + this.colOffset;
 	var cY = this.options.height - this.colH - 10;
-	this.meta[uiTableObj.key] = { yScaleMap : {}};
 	uiTableObj.items.forEach((function(item){		
-		this.getColumn(item, cX, cY, uiTableObj.key);
+		columns.push(this.getColumn3l(item, cX, cY));
 		cX += this.colW;
 	}).bind(this));
 
 	return {
 		tableTitle : uiTableObj.key,
-		columns : columns
-	}
+		columns : columns,
+		levels : 3
+	}	
 }
 
-SalesTableModel.prototype.getColumn = function(uiColObj, xStart, yStart, tableKey){
+SalesTableModel.prototype.getColumn3l = function(uiColObj, xStart, yStart){
 	return {
 		key : uiColObj.key,
 		x : xStart,
 		y : yStart,
 		h : this.colH,
 		w : this.colW,
-		rows : this.getRowsForColumn(uiColObj, xStart, yStart, tableKey)
+		rows : this.getRowsForColumn3l(uiColObj, xStart, yStart)
 	}
 }
 
-SalesTableModel.prototype.getRowsForColumn = function(uiColObj, xStart, yStart, tableKey){
-	var rowKey = this.getRowKeyForColumn(colJson);
-	var uiRows = uiColObj.items[rowKey];
+SalesTableModel.prototype.getRowsForColumn3l = function(uiColObj, xStart, yStart){
+	var rowKey = this.getRowKeyForColumn(uiColObj);
+	var uiRows = uiColObj.items[rowKey].items;
 	var rows = [];
 	var rX = this.rowStartX;
 	var rY = this.rowStartY;
 
 	uiRows.forEach((function(b){
+		var yScale = this.getYscaleForRow(b.items[0].items);
 		rows.push({
 			x : rX,
 			y : rY,
 			w : this.rowW,
 			h : this.rowH,
 			key : b.key,
-			cells : this.getCellsForRow(b, rowKey, tableKey)
+			yScale : yScale,
+			cells : this.getCellsForRow3l(b, yScale )
 		});
 		rY += this.rowH;
 	}).bind(this));
@@ -75,13 +107,11 @@ SalesTableModel.prototype.getRowsForColumn = function(uiColObj, xStart, yStart, 
 	return rows;
 }
 
-SalesTableModel.prototype.getSalesCellsForRow = function(uiRowObj, rowKey, tableKey){
+SalesTableModel.prototype.getCellsForRow3l = function(uiRowObj, yScale){
 	var cX = this.cellStartX;
 	var cY = this.cellStartY;
-	var uiCells = uiRowObj.items;
+	var uiCells = uiRowObj.items[0].items || uiRowObj.items;
 	var cells = [];
-
-	this.setYscaleForRow(uiCells, tableKey, uiCells.key);
 	
 	uiCells.forEach((function(b){
 		cells.push({
@@ -90,7 +120,7 @@ SalesTableModel.prototype.getSalesCellsForRow = function(uiRowObj, rowKey, table
 			x : cX,
 			y : cY,
 			w : this.cellW,
-			h : this.meta[tableKey].yScaleMap[uiCells.key](b.doc_count)
+			h : yScale(b.doc_count)
 		});
 		cX += this.cellW;
 	}).bind(this));
@@ -100,14 +130,14 @@ SalesTableModel.prototype.getSalesCellsForRow = function(uiRowObj, rowKey, table
 
 SalesTableModel.prototype.getRowKeyForColumn = function(uiColObj){
 	var timeKeys = ['yearly', 'monthly', 'daily'];
-	for(var key in uiColObj){
-		var rObj = uiColObj[key];
+	for(var key in uiColObj.items){
+		var rObj = uiColObj.items[key];
 		if(timeKeys.indexOf(rObj.key) === -1)
 			return key;
 	}
 }
 
-SalesTableModel.prototype.setYscaleForRow = function(uiCellObj, tableKey, rowKey){
+SalesTableModel.prototype.getYscaleForRow = function(uiCellObj){
 	var allVals = [];
 	uiCellObj.forEach(function(c){
 		allVals.push(c.doc_count)
@@ -120,11 +150,71 @@ SalesTableModel.prototype.setYscaleForRow = function(uiCellObj, tableKey, rowKey
 			 });
 
 	var rS = this.cellStartY;
-	var rE = this.options.frmHeight - this.colH - 50;
+	var rE = this.options.height - this.colH - 50;
 
 	var yScale = d3.scale.linear()
 						 .domain([dS, dE])
 						 .range([rS, rE]);
 
-	this.meta[tableKey].yScaleMap[rowKey] = yScale;
+	return yScale;
+}
+
+SalesTableModel.prototype.getTableFor2Levels = function(uiTableObj){
+	var columns = [];
+	var cX = this.rowW + this.colOffset;
+	var cY = this.options.height - this.colH - 10;
+	uiTableObj.items.forEach((function(item){		
+		columns.push(this.getColumn2l(item, cX, cY));
+		cX += this.colW;
+	}).bind(this));
+
+	return {
+		tableTitle : uiTableObj.key,
+		columns : columns,
+		levels : 2
+	}	
+}
+
+
+SalesTableModel.prototype.getColumn2l = function(uiColObj, xStart, yStart){
+	var yScale = this.getYscaleForRow(uiColObj.items[0].items);
+	return {
+		key : uiColObj.key,
+		x : xStart,
+		y : yStart,
+		h : this.colH,
+		w : this.colW,
+		cells : this.getCellsForRow3l(uiColObj, yScale)
+	}
+}
+
+SalesTableModel.prototype.getTableFor1Level1 = function(uiTableObj){
+	var yScale = this.getYscaleForRow(uiTableObj.items);
+	var cells = this.getCellsForRow1l(uiTableObj, yScale);	
+	return {
+		tableTitle : uiTableObj.key,
+		cells : cells,
+		levels : 1
+	}	
+}
+
+SalesTableModel.prototype.getCellsForRow1l = function(uiRowObj, yScale){
+	var cX = this.cellStartX;
+	var cY = this.cellStartY;
+	var uiCells = uiRowObj.items;
+	var cells = [];
+	
+	uiCells.forEach((function(b){
+		cells.push({
+			key : b.key,
+			count : b.doc_count,
+			x : cX,
+			y : cY,
+			w : this.cellW,
+			h : yScale(b.doc_count)
+		});
+		cX += this.cellW;
+	}).bind(this));
+
+	return cells;
 }

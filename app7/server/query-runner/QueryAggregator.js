@@ -170,7 +170,8 @@ QueryAggreagator.prototype.getModelAggTemplate = function(){
 			terms : {
 				field : 'model',
 				size : 100
-			}
+			},
+			aggs : {}
 		}
 	}
 }
@@ -205,7 +206,8 @@ QueryAggreagator.prototype.getCityAggTemplate = function(){
 			terms : {
 				field : 'city',
 				size : 50
-			}
+			},
+			aggs : {}
 		}
 	}
 }
@@ -549,6 +551,7 @@ QueryAggreagator.prototype.getCityAgg = function(){
 }
 
 QueryAggreagator.prototype.addTimeAggregate = function(agg){
+	if(!agg.aggs) return;
 	if(Object.keys(agg.aggs).length === 0) return;
 	var root = agg.aggs;
 
