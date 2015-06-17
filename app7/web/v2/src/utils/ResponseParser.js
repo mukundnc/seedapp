@@ -5,9 +5,11 @@ function ResponseParser (){
 ResponseParser.prototype.parse = function(apiRes){
 	var uiObjects = [];
 	apiRes.results.forEach((function(result){
-		var uiObject = this.getUIObjectForAggregation(result.aggregations);
-		uiObject.queryDetails = result.qSource;
-		uiObjects.push(uiObject);
+		if(result.aggregations){
+			var uiObject = this.getUIObjectForAggregation(result.aggregations);
+			uiObject.queryDetails = result.qSource;
+			uiObjects.push(uiObject);
+		}
 	}).bind(this));
 	console.log(uiObjects);
 	return uiObjects;
