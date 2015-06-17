@@ -34,6 +34,7 @@ console.log(tables);
 SalesTableModel.prototype.getTable = function(uiTableObj){
 	var levels = this.getLevelDepth(uiTableObj);
 	switch(levels){
+		case 4 : 
 		case 3 : return this.getTableFor3Levels(uiTableObj); break;
 		case 2 : return this.getTableFor2Levels(uiTableObj); break;
 		case 1 : return this.getTableFor1Level1(uiTableObj); break;
