@@ -11,7 +11,6 @@ ResponseParser.prototype.parse = function(apiRes){
 			uiObjects.push(uiObject);
 		}
 	}).bind(this));
-	console.log(uiObjects);
 	return uiObjects;
 }
 

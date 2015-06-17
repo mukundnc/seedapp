@@ -26,8 +26,7 @@ SalesTableModel.prototype.getModel = function(uiObjects, options){
 				tables.push(table);
 			}
 		}).bind(this));
-	}).bind(this));
-console.log(tables);	
+	}).bind(this));	
 	return tables;
 }
 
