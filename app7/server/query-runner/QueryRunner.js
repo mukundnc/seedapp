@@ -61,6 +61,8 @@ QueryRunner.prototype.runSingle = function(srcTargetFilter, antlrQueryObject, cb
 			cbOnDone({success : false, results : 'error in ES query execute'});
 		}
 		else{
+			res.qSource = srcTargetFilter.source;
+			res.qTarget = srcTargetFilter.target;
 			cbOnDone({success : true, results : res});
 		}
 	});	
