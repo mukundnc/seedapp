@@ -23,7 +23,7 @@ SearchTreeView.prototype.addRoot = function(){
 	var g = d3.select('.svg-tree')
 	  		  .append('g')
 	  		  .attr('class', 'snode-container');
-	this.utils.addText(g, this.left, this.top, 'Search', 'snode-root-text', 'start');
+	this.utils.addText(g, this.left, this.top, 'SALES', 'snode-root-text', 'start');
 
 }
 
