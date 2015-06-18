@@ -10,8 +10,6 @@ CategoryController.prototype.renderView = function(qid, results){
 	var resParser = new ResponseParser();
 	var uiObject = resParser.parse(this.qIdResults[qid]);
 
-	var xOrg = 50;
-	var yOrg = 50;
 	H = $('.svg-container').height();
 	W = $('.svg-container').width();
 	var options = {
@@ -19,6 +17,14 @@ CategoryController.prototype.renderView = function(qid, results){
 		height : 0.5 * H
 	};
 
-	var modelFactory = new SalesTableModel();
-	var salesTableModel = modelFactory.getModel(uiObject, options);
+	var tableModel = new SalesTableModel();
+	var salesTableModel = tableModel.getModel(uiObject, options);
+
+	options = {
+		width : W,
+		height : 0.25 * H
+	};
+
+	var timeModel = new SalesTimeModel();
+	var salesTimeModel = timeModel.getModel(uiObject, options);
 }
