@@ -572,7 +572,7 @@ QueryAggreagator.prototype.getTimeAggregate = function(){
 	if(tDiff.isLT2Months)
 		return this.getDailyTimeAgg();
 
-	if(!tDiff.isGT5Years)
+	if(!tDiff.isGT1Year)
 		return this.getMonthlyTimeAgg();
 
 	return this.getYearlyTimeAgg();
@@ -589,10 +589,10 @@ QueryAggreagator.prototype.getTimeDiffData = function(){
 	var dEnd = dates[1] > dates[0] ? dates[1] : dates[0];
 	var dMs = dEnd - dStart;
 	var dDays = dMs/(1000 * 60 * 60 * 24);
-	var daysIn5Years = 365 * 5;
+	var daysIn1Year = 366;
 
 	return {
-		isGT5Years : dDays >= daysIn5Years,
+		isGT1Year : dDays >= daysIn1Year,
 		isLT2Months : dDays < 61
 	}
 }
@@ -603,12 +603,7 @@ QueryAggreagator.prototype.getYearlyTimeAgg = function(){
 			date_histogram : {
 				field : 'timestamp',
 				interval : 'year',
-				format : 'YYYY/MM/DD',
-				min_doc_count : 0,
-				extended_bounds : {
-					min : '2000/01/01',
-					max : '2014/12/31'
-				}
+				format : 'YYYY/MM/DD'
 			}
 		}
 	}	
@@ -621,12 +616,7 @@ QueryAggreagator.prototype.getMonthlyTimeAgg = function(){
 			date_histogram : {
 				field : 'timestamp',
 				interval : 'month',
-				format : 'YYYY/MM/DD',
-				min_doc_count : 0,
-				extended_bounds : {
-					min : '2000/01/01',
-					max : '2014/12/31'
-				}
+				format : 'YYYY/MM/DD'
 			}
 		}
 	}	
@@ -639,12 +629,7 @@ QueryAggreagator.prototype.getDailyTimeAgg = function(){
 			date_histogram : {
 				field : 'timestamp',
 				interval : 'day',
-				format : 'YYYY/MM/DD',
-				min_doc_count : 0,
-				extended_bounds : {
-					min : '2000/01/01',
-					max : '2014/12/31'
-				}
+				format : 'YYYY/MM/DD'
 			}
 		}
 	}	

@@ -40,18 +40,12 @@ CategoryController.prototype.initModels = function(qid, uiObject){
 }
 
 CategoryController.prototype.renderTimeView = function(qid){
-	var tableModel = this.tableModels[qid];
 	var timeModel = this.timeModels[qid];
-	var titles = [];
-	tableModel.forEach(function(tm){
-		titles.push(strToFirstUpper(tm.tableTitle));
-	});
 	var options = {
 		xOrg : 90,
 		yOrg : 0.3 * this.H,
 		w : this.W,
-		h : 0.35 * this.H,
-		titles : titles
+		h : 0.35 * this.H
 	}
 	var timeView = new SalesTimeView();
 	timeView.render(timeModel, options);

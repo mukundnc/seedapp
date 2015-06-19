@@ -11,16 +11,19 @@ SalesTimeModel.prototype.getModel = function(uiTimeObjs, options){
 	this.init(options);	
 	var times = {
 		key1 : {
-			timeGroups : []
+			timeGroups : [],
+			type : null
 		},
 		key2 : {
-			timeGroups : []
+			timeGroups : [],
+			type : null
 		}
 	};
 	uiTimeObjs.forEach((function(uiTimeObj){
 		Object.keys(uiTimeObj).forEach((function(key){
 			if(key === 'key1' || key === 'key2'){
 				times[key].timeGroups = this.getTimeGroups(uiTimeObj[key].items);
+				times[key].type = uiTimeObj[key].key;
 			}
 		}).bind(this));
 	}).bind(this));
@@ -28,6 +31,7 @@ SalesTimeModel.prototype.getModel = function(uiTimeObjs, options){
 }
 
 SalesTimeModel.prototype.getTimeGroups = function(uiTimeItems){
+console.log(uiTimeItems);
 	var tKey = this.getTimeGroupKey(uiTimeItems[0].items);
 	var iGroups = this.getTimeItemGroups(uiTimeItems);
 	var timeGroups = [];
