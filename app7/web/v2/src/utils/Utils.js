@@ -110,3 +110,15 @@ SvgUtils.prototype.addRectLabel = function(g, x, y, w, h, text, cssGroup, cssRec
 			 this.addTextXForm(gLabel, x+w/6, -(y+h/2-3), text, cssText, textAlign);
 	return gLabel;
 }
+
+SvgUtils.prototype.addRect = function(g, x, y, w, h, cssRect){
+	var r = g.append('rect')
+	         .attr({
+	         	x : x,
+	         	y : y,
+	         	height : h,
+	         	width : w,
+	         	class : cssRect
+	         });
+	return r
+}

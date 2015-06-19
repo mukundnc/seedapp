@@ -74,9 +74,10 @@ SalesTimeModel.prototype.getTimeGroup = function(uiTimeItems, tKey){
 	var itemKeys = Object.keys(uiTimeItems[0].items[tKey].items);
 	var lblKey = uiTimeItems[0].items[tKey].key
 	var blocks = [];
-	var blockW = this.options.width/itemKeys.length;
+	var frameW = this.options.width - 300;
+	var blockW = frameW/itemKeys.length;
 	var barW = padding = blockW/(2*uiTimeItems.length);
-	var xStart = padding;
+	var xStart = 0;
 	var yScale = this.getYScaleForTimeGroup(uiTimeItems, tKey);
 
 	itemKeys.forEach((function(itemKey){

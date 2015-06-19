@@ -109,4 +109,19 @@ SalesTimeView.prototype.onTimeGroupBackNext = function(selBackNext){
 SalesTimeView.prototype.renderTimeGroup = function(timeGroup){
 	var g = this.getTimeSvgGroup();
 	g.html('');
+	var xEnd = 0;
+	timeGroup.blocks.forEach((function(block){
+		var i = 1;
+		block.bars.forEach((function(bar){
+			this.renderBar(g, bar, 'bar-' + i);
+			i++;
+		}).bind(this));
+		xEnd = block.xEnd;
+	}).bind(this));
+}
+
+SalesTimeView.prototype.renderBar = function(g, bar, cssRect){
+	if(bar.h === 0) return;
+
+	this.utils.addRect(g, bar.x, bar.y, bar.w, bar.h, cssRect);
 }
