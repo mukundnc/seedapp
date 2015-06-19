@@ -57,7 +57,10 @@ Path.prototype.getPathForSectorArcAroundCenter = function(xC, yC, rI, rO, thetaS
 }
 
 function strReplaceAll(find, replace, str) {
-  return str.replace(new RegExp(find, 'g'), replace);
+ 	return str.replace(new RegExp(find, 'g'), replace);
+}
+function strToFirstUpper(str){
+	return str.replace(str[0], str[0].toUpperCase());
 }
 
 function SvgUtils(){
@@ -79,7 +82,6 @@ SvgUtils.prototype.addText = function(g, x, y, text, cssText, textAlign){
 SvgUtils.prototype.addTextXForm = function(g, x, y, text, cssText, textAlign){
 	var gX = g.append('g').attr('transform', 'scale(1, -1)');
 	var t = this.addText(gX, x, y, text, cssText, textAlign);
-	g.append(t);
 	return gX;
 }
 
@@ -93,4 +95,18 @@ SvgUtils.prototype.addLine = function(g, x1, y1, x2, y2, cssLine){
 	 			class : cssLine
 	 		});
 	return l;
+}
+
+SvgUtils.prototype.addRectLabel = function(g, x, y, w, h, text, cssGroup, cssRect, cssText, textAlign){
+	var gLabel = g.append('g').attr('class', cssGroup);
+	var r = gLabel.append('rect')
+			 .attr({
+			 	x : x,
+			 	y : y,
+			 	height : h,
+			 	width : w,
+			 	class : cssRect
+			 });
+			 this.addTextXForm(gLabel, x+w/6, -(y+h/2-3), text, cssText, textAlign);
+	return gLabel;
 }

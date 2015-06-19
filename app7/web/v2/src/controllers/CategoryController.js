@@ -44,7 +44,7 @@ CategoryController.prototype.renderTimeView = function(qid){
 	var timeModel = this.timeModels[qid];
 	var titles = [];
 	tableModel.forEach(function(tm){
-		titles.push(tm.tableTitle);
+		titles.push(strToFirstUpper(tm.tableTitle));
 	});
 	var options = {
 		xOrg : 90,

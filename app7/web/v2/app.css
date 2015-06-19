@@ -76,25 +76,25 @@ body{
 	cursor: pointer
 }
 
-.col-rect, .row-rect, .cell-rect{
+.col-rect, .row-rect, .cell-rect, .st-rect{
 	stroke-width : 1px; 
 	stroke : grey; 
 	fill:#353535;
 	cursor : pointer;
 }
 
-.col-text, .row-text, .cell-text{
+.col-text, .row-text, .cell-text, .st-text{
 	color:grey;
 	cursor:pointer;
 	font-size:11px;
 	fill:grey;
 }
 
-.col-select, .row-select{
+.col-select, .row-select, .st-select{
 	fill:#4d90fe;
 }
 
-.col-text-select, .row-text-select{
+.col-text-select, .row-text-select, .st-text-select{
 	fill : white;
 	color:grey;
 	cursor:pointer;

@@ -24,7 +24,6 @@ SalesTimeModel.prototype.getModel = function(uiTimeObjs, options){
 			}
 		}).bind(this));
 	}).bind(this));
-	console.log(times);
 	return times;
 }
 
