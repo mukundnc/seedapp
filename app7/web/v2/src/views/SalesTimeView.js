@@ -74,7 +74,8 @@ SalesTimeView.prototype.onTimeLabelChange = function(selTimeLabel){
 }
 
 SalesTimeView.prototype.addTimeGroupBackNext = function(tgCount){
-	//if(tgCount < 6) return;
+	if(tgCount < 6) return;
+	
 	var g = this.getTimeLabelsSvgGroup();
 	var xS = this.options.w - 250;
 	var yS = this.options.h - 120;
