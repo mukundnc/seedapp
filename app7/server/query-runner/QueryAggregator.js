@@ -603,7 +603,12 @@ QueryAggreagator.prototype.getYearlyTimeAgg = function(){
 			date_histogram : {
 				field : 'timestamp',
 				interval : 'year',
-				format : 'YYYY/MM/DD'
+				format : 'YYYY/MM/DD',
+				min_doc_count : 0,
+				extended_bounds : {
+					min : '2000/01/01',
+					max : '2014/12/31'
+				}
 			}
 		}
 	}	
@@ -616,7 +621,12 @@ QueryAggreagator.prototype.getMonthlyTimeAgg = function(){
 			date_histogram : {
 				field : 'timestamp',
 				interval : 'month',
-				format : 'YYYY/MM/DD'
+				format : 'YYYY/MM/DD',
+				min_doc_count : 0,
+				extended_bounds : {
+					min : '2000/01/01',
+					max : '2014/12/31'
+				}
 			}
 		}
 	}	
@@ -629,7 +639,12 @@ QueryAggreagator.prototype.getDailyTimeAgg = function(){
 			date_histogram : {
 				field : 'timestamp',
 				interval : 'day',
-				format : 'YYYY/MM/DD'
+				format : 'YYYY/MM/DD',
+				min_doc_count : 0,
+				extended_bounds : {
+					min : '2000/01/01',
+					max : '2014/12/31'
+				}
 			}
 		}
 	}	

@@ -49,7 +49,7 @@ SalesTimeModel.prototype.getTimeGroupKey = function(uiTimeItems){
 }
 
 SalesTimeModel.prototype.getTimeItemGroups = function(uiTimeItems){
-	if(uiTimeItems.length < 5) return [uiTimeItems];
+	if(uiTimeItems.length < 6) return [uiTimeItems];
 
 	var bContinue = true;
 	var groups = [];
@@ -90,7 +90,7 @@ SalesTimeModel.prototype.getTimeGroup = function(uiTimeItems, tKey){
 		uiTimeItems.forEach((function(uiTimeItem){
 			
 			var itemData = uiTimeItem.items[tKey].items[itemKey];
-
+			
 			block.bars.push(this.getBarForTimeItem(xStart, 0, barW, yScale(itemData.doc_count)));
 
 			block.label = this.getBlockLabel(itemData, lblKey);
