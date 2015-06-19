@@ -5,22 +5,14 @@ function SalesAppController(){
 	this.init();
 	this.queryIdVsController = {};
 	this.searchTreeView = new SearchTreeView({controller : this});
-	this.queryIndex = 1;
-	this.queryIndices = {'show automobile, electronics, appliances, cloths' : 'q0'};
+	this.queryIndex = 0;
+	this.queryIndices = {};
 }
 
 
 SalesAppController.prototype.init = function(){
-	$.getJSON('/api', (this.onApiResponse).bind(this));
 	$('#tbSearch').on('keydown', this.onKeyDown.bind(this));
 	$('.search-icon').on('click', this.onSearchClick.bind(this));
-}
-
-SalesAppController.prototype.onApiResponse = function(resp){
-	this.resp = resp;
-	this.homeController.renderView(resp);
-	this.queryIdVsController['q0'] = this.homeController;
-	this.searchTreeView.add({id : 'q0', name : 'home'});
 }
 
 SalesAppController.prototype.showQueryView = function(query){
@@ -48,7 +40,10 @@ SalesAppController.prototype.getControllerForQueryId = function(qid){
 
 SalesAppController.prototype.executeQuery = function(query, qid){
 	$('#tbSearch').val(query);
-	$.getJSON('/api/search?q=' + query, this.onQueryResponse.bind(this, qid));
+	if(query === 'sales')
+		$.getJSON('/api', this.onQueryResponse.bind(this, qid));
+	else
+		$.getJSON('/api/search?q=' + query, this.onQueryResponse.bind(this, qid));
 }
 
 SalesAppController.prototype.onQueryResponse = function(qid, result){
@@ -56,19 +51,17 @@ SalesAppController.prototype.onQueryResponse = function(qid, result){
 		console.error(result.message);
 		return
 	}
-	var treeText = '';
-	switch(result.query.searchContext){
-		case 1 :
-			treeText = result.query.query.category[0];
-		case 2 : 
-		case 3 : 
-		case 4 :
-		default:
-			this.queryIdVsController[qid] = this.categoryController;
-			this.categoryController.renderView(qid, result);
-			this.searchTreeView.add({id : qid, name : treeText});
-			break;
+	
+	if(this.getQueryById(qid) === 'sales'){
+		this.queryIdVsController[qid] = this.homeController;
+		this.homeController.renderView(result);
 	}
+	else{
+		this.queryIdVsController[qid] = this.categoryController;
+		this.categoryController.renderView(qid, result);
+	}
+	var treeText = this.getTreeText(result);
+	this.searchTreeView.add({id : qid, name : treeText});
 }
 
 SalesAppController.prototype.onSearchNodeSelectionChange = function(qid){
@@ -91,4 +84,14 @@ SalesAppController.prototype.getQueryById = function(qid){
 		if(this.queryIndices[query] === qid)
 			return query;
 	}
+}
+
+SalesAppController.prototype.getTreeText = function(apiRes){
+	if(apiRes.success){
+		if(apiRes.results.aggregations && apiRes.results.hits.hits.length > 0 && !apiRes.query)
+			return 'Home';
+
+		return apiRes.results[0].qSource.value;
+	}
+	return 'No Results';
 }

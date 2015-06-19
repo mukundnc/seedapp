@@ -5,6 +5,11 @@ function SalesTimeView(){
 SalesTimeView.prototype.init = function(timeModel, options){
 	this.options = options;
 	this.model = timeModel;
+	this.clear();
+}
+
+SalesTimeView.prototype.clear = function(){
+	d3.select('.svg-container').select('.svg-view').html('');
 }
 
 SalesTimeView.prototype.render = function(timeModel, options){
