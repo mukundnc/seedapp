@@ -91,7 +91,7 @@ SalesAppController.prototype.getTreeText = function(apiRes){
 		if(apiRes.results.aggregations && apiRes.results.hits.hits.length > 0 && !apiRes.query)
 			return 'Home';
 
-		return apiRes.results[0].qSource.value;
+		return strToFirstUpper(apiRes.results[0].qSource.value);
 	}
 	return 'No Results';
 }
