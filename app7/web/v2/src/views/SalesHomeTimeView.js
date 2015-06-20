@@ -6,6 +6,7 @@ SalesHomeTimeView.prototype.clear = function(){
 }
 
 SalesHomeTimeView.prototype.render = function(catSalesInTime, options){
+	this.clear();
 	this.options = options;
 	var yBlockWd = catSalesInTime.meta.yearBlockWidth;
 	var svg = d3.select('.svg-container').select('.svg-view');
