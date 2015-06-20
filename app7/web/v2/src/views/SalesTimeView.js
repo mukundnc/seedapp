@@ -5,6 +5,7 @@ function SalesTimeView(){
 SalesTimeView.prototype.init = function(timeModel, options){
 	this.options = options;
 	this.model = timeModel;
+	this.currTimeModelIndex = 0;
 	this.clear();
 }
 
@@ -83,18 +84,21 @@ SalesTimeView.prototype.addTimeGroupLabels = function(){
 
 SalesTimeView.prototype.renderTimeGroupForCurrentSelection = function(){
 	var g = this.getTimeLabelsSvgGroup();
-	var selRect = d3.selectAll('.st-select');
-	var id = selRect.attr('id');
-	var key = '';
-	for( var k in this.model){
-		if(this.model[k].type === id){
-			key = k;
-			break;
-		}
-	}
+	var key = this.getModelKeyForCurrentSelection();
+	this.currTimeModelIndex = 0;
 	var timeGroups = this.model[key].timeGroups;
 	this.addTimeGroupBackNext(timeGroups.length);
-	this.renderTimeGroup(timeGroups[0]);
+	this.renderTimeGroup(timeGroups[this.currTimeModelIndex]);
+}
+
+SalesTimeView.prototype.getModelKeyForCurrentSelection = function(){
+	var selRect = d3.selectAll('.st-select');
+	var id = selRect.attr('id');
+	for( var k in this.model){
+		if(this.model[k].type === id){
+			return k;
+		}
+	}
 }
 
 SalesTimeView.prototype.onTimeLabelChange = function(selTimeLabel){
@@ -139,6 +143,24 @@ SalesTimeView.prototype.onTimeGroupBackNext = function(selBackNext){
 	d3.selectAll('.st-bn-text-select').classed('st-bn-text-select', false).classed('st-bn-text', true);
 	d3.select(selBackNext).select('rect').attr('class', 'st-bn-select');
 	d3.select(selBackNext).select('text').attr('class', 'st-bn-text-select');
+	var id = d3.select(selBackNext).attr('id');
+	var modelKey = this.getModelKeyForCurrentSelection();
+	var timeGroups = this.model[modelKey].timeGroups;
+	if(id === 'stBack'){
+		this.currTimeModelIndex--;
+		if(this.currTimeModelIndex < 0){
+			this.currTimeModelIndex = 0;
+			return;
+		}
+	}
+	else{
+		this.currTimeModelIndex++;		
+		if(this.currTimeModelIndex >= timeGroups.length){
+			this.currTimeModelIndex = timeGroups.length-1;
+			return;
+		}
+	}
+	this.renderTimeGroup(timeGroups[this.currTimeModelIndex]);
 }
 
 SalesTimeView.prototype.renderTimeGroup = function(timeGroup){
