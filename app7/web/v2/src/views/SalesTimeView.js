@@ -37,7 +37,19 @@ SalesTimeView.prototype.getTimeLabelsSvgGroup = function(){
 	          .select('.svg-view')
 	          .append('g')
 		      .attr('transform', 'translate(' + this.options.xOrg + ',' + this.options.yOrg + ') scale(1, -1)')
-		      .attr('class', 'sales-time-label');
+		      .attr('class', 'sales-time-labels');
+	}
+	return g;
+}
+
+SalesTimeView.prototype.getBackNextLabelsSvgGroup = function(){
+	var g = d3.select('.svg-container').select('.svg-view').select('.back-next-labels');
+	if(g.empty()){
+		g = d3.select('.svg-container')
+	          .select('.svg-view')
+	          .append('g')
+		      .attr('transform', 'translate(' + this.options.xOrg + ',' + this.options.yOrg + ') scale(1, -1)')
+		      .attr('class', 'back-next-labels');
 	}
 	return g;
 }
@@ -45,20 +57,22 @@ SalesTimeView.prototype.getTimeLabelsSvgGroup = function(){
 SalesTimeView.prototype.addTimeGroupLabels = function(){
 	var g = this.getTimeLabelsSvgGroup();
 	var xS = this.options.w - 250;
-	var yS = this.options.h - 90;
+	var yS = this.options.h - 65;
 	var rH = 25;
 	var rW = 70;
 	var gR = null;
+	var arr = [];
 	Object.keys(this.model).forEach((function(mk){
 		if(this.model[mk].timeGroups.length > 0){
 			gR = this.utils.addRectLabel(g, xS, yS, rW, rH, strToFirstUpper(this.model[mk].type), 'st-labels', 'st-rect', 'st-text', 'start');
 			gR.select('rect').attr('id', this.model[mk].type);
-			yS += rH;
+			yS -= rH;
+			arr.push(gR);
 		}
 	}).bind(this));
-	if(!gR.empty()){
-		gR.select('rect').classed('st-select', true);
-		gR.select('text').classed('st-text-select', true);
+	if(!arr[0].empty()){
+		arr[0].select('rect').classed('st-select', true);
+		arr[0].select('text').classed('st-text-select', true);
 	}
 	var self = this;
 	$('.st-labels').on('click', function(e){
@@ -92,11 +106,12 @@ SalesTimeView.prototype.onTimeLabelChange = function(selTimeLabel){
 }
 
 SalesTimeView.prototype.addTimeGroupBackNext = function(tgCount){
-	var g = this.getTimeLabelsSvgGroup();
+	var g = this.getBackNextLabelsSvgGroup();	
 	g.html('');
 
-	if(tgCount < 6) return;
-		
+	if(tgCount < 2) return;
+	
+	var g = this.getBackNextLabelsSvgGroup();	
 	var xS = this.options.w - 250;
 	var yS = this.options.h - 120;
 	var rH = 15;
