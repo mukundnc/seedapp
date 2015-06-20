@@ -176,7 +176,11 @@ SalesTimeModel.prototype.getYAxisLabelsForModelKey = function(modelKey, uiTimeOb
 						 .domain([dS, dE])
 						 .range([rS, rE]);
 	var labels = [];
-	var arr = [0.25 * dE, 0.5 * dE, 0.75 * dE, dE];
+	var dR = dE - dS;
+	var arr = [];
+	for(var i = dS+dR/4 ; i <= dE ; i+=dR/4){
+		arr.push(i)
+	}
 	arr.forEach(function(d){
 		labels.push({
 			label : Math.round(d),
