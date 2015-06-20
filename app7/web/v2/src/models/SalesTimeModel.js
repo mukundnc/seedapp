@@ -94,10 +94,14 @@ SalesTimeModel.prototype.getTimeGroup = function(uiTimeItems, tKey){
 		uiTimeItems.forEach((function(uiTimeItem){
 			
 			var itemData = uiTimeItem.items[tKey].items[itemKey];
-			
-			block.bars.push(this.getBarForTimeItem(xStart, 0, barW, yScale(itemData.doc_count)));
 
-			block.label = this.getBlockLabel(itemData, lblKey);
+			var refItem = uiTimeItems[0].items[tKey].items[itemKey];
+
+			var docCount = this.getDocCountWrtToRef(uiTimeItem, refItem, tKey, lblKey, yScale);
+			
+			block.bars.push(this.getBarForTimeItem(xStart, 0, barW, docCount));
+
+			block.label = this.getBlockLabel(refItem, lblKey);
 
 			xStart += (padding + barW);
 
@@ -114,6 +118,30 @@ SalesTimeModel.prototype.getTimeGroup = function(uiTimeItems, tKey){
 		yScale : yScale,
 		blocks : blocks
 	}
+}
+
+SalesTimeModel.prototype.getDocCountWrtToRef = function(currItem, refItem, tKey, lblKey, yScale){
+	var currItems = currItem.items[tKey].items;
+	var refDate = new Date(refItem.key);
+
+	for(var i = 0 ; i < currItems.length ; i++){
+		var currDate = new Date (currItems[i].key);
+		if(refDate.getFullYear() === currDate.getFullYear()){
+			if(lblKey === 'yearly' && currItems[i].doc_count > 0)
+				return yScale(currItems[i].doc_count);
+
+			if(refDate.getMonth() === currDate.getMonth()){
+				if(lblKey === 'monthly' && currItems[i].doc_count > 0)
+				return yScale(currItems[i].doc_count);
+
+				if(refDate.getDate() === currDate.getDate()){
+					if(lblKey === 'daily' && currItems[i].doc_count > 0)
+					return yScale(currItems[i].doc_count);
+				}
+			}
+		}
+	}
+	return 0;
 }
 
 SalesTimeModel.prototype.getBarForTimeItem = function(xStart, yStart, w, h){

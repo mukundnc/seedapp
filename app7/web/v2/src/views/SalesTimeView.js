@@ -50,12 +50,16 @@ SalesTimeView.prototype.addTimeGroupLabels = function(){
 	var rW = 70;
 	var gR = null;
 	Object.keys(this.model).forEach((function(mk){
-		gR = this.utils.addRectLabel(g, xS, yS, rW, rH, strToFirstUpper(this.model[mk].type), 'st-labels', 'st-rect', 'st-text', 'start');
-		gR.select('rect').attr('id', this.model[mk].type);
-		yS += rH;
+		if(this.model[mk].timeGroups.length > 0){
+			gR = this.utils.addRectLabel(g, xS, yS, rW, rH, strToFirstUpper(this.model[mk].type), 'st-labels', 'st-rect', 'st-text', 'start');
+			gR.select('rect').attr('id', this.model[mk].type);
+			yS += rH;
+		}
 	}).bind(this));
-	gR.select('rect').classed('st-select', true);
-	gR.select('text').classed('st-text-select', true);
+	if(!gR.empty()){
+		gR.select('rect').classed('st-select', true);
+		gR.select('text').classed('st-text-select', true);
+	}
 	var self = this;
 	$('.st-labels').on('click', function(e){
 		self.onTimeLabelChange(this);
