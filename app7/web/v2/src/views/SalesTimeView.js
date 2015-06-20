@@ -234,8 +234,8 @@ SalesTimeView.prototype.addMarkers = function(g, xEnd, timeGroup){
 	var i = 1;
 	timeGroup.contentLabels.forEach((function(c){
 		this.utils.addRect(g, x, y, 10, 10, 'bar-'+i);
-		this.utils.addTextXForm(g, x + 30, -y, c, 'col-text', 'middle');
-		x+=80;
+		this.utils.addTextXForm(g, x + 40, -y, c, 'col-text', 'middle');
+		x+=100;
 		i++;
 	}).bind(this));
 }
