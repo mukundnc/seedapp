@@ -30,9 +30,13 @@ CategoryController.prototype.initModels = function(qid, uiObject){
 	}
 
 	if(!this.timeModels[qid]){
+		var dd = this.getDateDetails(qid);
 		var options = {
 			width : this.W,
-			height : 0.25 * this.H
+			height : 0.25 * this.H,
+			startDate : dd.startDate,
+			endDate : dd.endDate,
+			dateDist : dd.dist
 		};
 		var timeModel = new SalesTimeModel();
 		this.timeModels[qid] = timeModel.getModel(uiObject, options);
@@ -48,14 +52,45 @@ CategoryController.prototype.renderTimeView = function(qid){
 		h : 0.35 * this.H
 	}
 	var timeView = new SalesTimeView();
-	timeView.render(timeModel, options);
+	timeView.render(timeModel[0], options);
 }
 
 CategoryController.prototype.renderTableView = function(qid){
 
 }
 
+CategoryController.prototype.getDateDetails = function(qid){
+	var results = this.qIdResults[qid];
+	if(!results.query.filters){
+		return {
+			startDate : '2000/01/01',
+			endDate : '2014/12/31',
+			dist : 'yearly'
+		}
+	}
+	var arr = []
+	var filters = results.query.filters.and.concat(results.query.filters.or);
+	filters.forEach(function(f){
+		if(f.filter.isDate){
+			arr.push(f.filter.value);
+		}
+	});
 
+	var details = {
+		startDate : arr[0],
+		endDate : arr[1],
+		dist : 'yearly'
+	};
+	var diff = new Date(arr[1]) - new Date (arr[0]);
+	var dDays = diff/(1000 * 60 * 60 * 24);
+
+	if(dDays < 61)
+		details.dist = 'daily'
+	else if(dDays < 366)
+		details.dist = 'monthly'
+
+	return details;
+}
 
 
 
