@@ -98,7 +98,7 @@ SalesTimeView.prototype.addXAxis = function(){
 	var xAxis = this.model.axes.x;
 	this.utils.addLine(g, xAxis.xStart, 0, xAxis.xEnd, 0, 'chart-axis');
 	xAxis.labels.forEach((function(l){
-		this.utils.addTextXForm(g, (l.xStart + l.xEnd)/2, 10, l.label, 'st-text', 'middle');
+		this.utils.addTextXForm(g, (l.xStart + l.xEnd)/2, 15, l.label, 'st-text', 'middle');
 		this.utils.addLine(g, l.xEnd, 0, l.xEnd, -6, 'chart-axis');
 	}).bind(this));
 }
@@ -201,7 +201,7 @@ SalesTimeView.prototype.showTimeGroupView = function(){
 			i++;
 		}).bind(this));
 	}
-
+	this.addTimeGroupContentMarkers(g);
 	this.animateCategoryHeights(g, allHeights);
 }
 
@@ -212,4 +212,31 @@ SalesTimeView.prototype.animateCategoryHeights = function(g, heights){
 	 .attr('height', function(h) { return h; })
 }
 
+SalesTimeView.prototype.addTimeGroupContentMarkers = function(g){
+	var modelKey = this.getViewKeyForCurrentSelection();
+	var timeGroup = this.model[modelKey].timeGroups[this.currTimeModelIndex];
+	var key = Object.keys(timeGroup)[0];
+	var labels = [];
+	timeGroup[key].forEach(function(l){
+		labels.push(l.label);
+	});
 
+	var maxStrLen = d3.max(labels, function(s) { return s.length; });
+	var d1 = 40;
+	var d2 = d1 + 40;
+	if(maxStrLen > 10){
+		d2 += 30;
+		d1 += 20;
+	}
+
+	var x = this.model.axes.x.xEnd/4;
+	var y = -40;
+	var i = 1;
+	labels.forEach((function(c){
+		this.utils.addRect(g, x, y, 10, 10, 'bar-'+i);
+		this.utils.addTextXForm(g, x + d1, -y, c, 'col-text', 'middle');
+		x+=d2;
+		i++;
+	}).bind(this));
+
+}
