@@ -73,6 +73,7 @@ SalesTimeView.prototype.onViewTypeChange = function(selTimeLabel){
 	d3.selectAll('.st-text-select').classed('st-text-select', false).classed('st-text', true);
 	d3.select(selTimeLabel).select('rect').attr('class', 'st-select');
 	d3.select(selTimeLabel).select('text').attr('class', 'st-text-select');
+	this.currTimeModelIndex = 0;
 	this.getGroupById(this.groups.axes).html('');
 	this.addAxes();
 	this.showTimeView();
