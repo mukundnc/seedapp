@@ -67,7 +67,7 @@ SalesTimeModel.prototype.getXAxisLabels = function(timeModel, frameWidth){
 	if(this.options.dateDist === 'daily')
 		divisor = (dEnd - dStart + ts24Hrs)/(1000 * 60 * 60 * 24) ;
 	else if(this.options.dateDist === 'monthly')
-		divisor = (dEnd - dStart + ts24Hrs)/(1000 * 60 * 60 * 24 * 30);
+		divisor = dEnd.getMonth() - dStart.getMonth() + 1;
 	
 	var labelW = frameWidth/divisor;
 	var labels = [];
