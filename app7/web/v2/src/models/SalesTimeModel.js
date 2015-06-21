@@ -13,6 +13,7 @@ SalesTimeModel.prototype.getModel = function(uiTimeObjs, options){
 	for(var i = 0 ; i < uiTimeObjs.length; i++){
 		var timeModel = this.getModeltemplate();
 		this.initAxes(timeModel, uiTimeObjs[i]);
+		this.initTimeGroups(timeModel, uiTimeObjs[i]);
 		timeModels.push(timeModel);
 	}
 	
@@ -196,8 +197,121 @@ SalesTimeModel.prototype.getYAxisLabelsForModelKey = function(modelKey, uiTimeOb
 	}
 }
 
+SalesTimeModel.prototype.initTimeGroups = function(timeModel, uiTimeObj){
+	for(var key in uiTimeObj){
+		if(key === 'key1' || key === 'key2'){
+			timeModel[key].timeGroups = this.getTimeGroups(uiTimeObj[key].items, key, timeModel)
+		}
+	}
 
+	if(timeModel.key2.type){
+		var timeTypes = ['yearly', 'monthly', 'daily'];
+		if(timeTypes.indexOf(timeModel.key1.type) !== -1){
+			var key1Copy = JSON.parse(JSON.stringiyfy(timeModel.key1));
+			timeModel.key1 = timeModel.key2;
+			timeModel.key2 = key1Copy;
+		}
+	}
+}
 
+SalesTimeModel.prototype.getTimeGroups = function(uiTimeItems, modelKey, timeModel){
+	var timeItemGroups = this.getTimeItemGroups(uiTimeItems);
+	for (var i = 0 ; i < timeItemGroups.length ; i++){
+		timeModel[modelKey].timeGroups.push(this.getTimeGroupForTimeGroupItem(timeItemGroups[i], modelKey, timeModel));
+	}
+}
+
+SalesTimeModel.prototype.getTimeItemGroups = function(uiTimeItems){
+	if(uiTimeItems.length < 6) return [uiTimeItems];
+
+	var bContinue = true;
+	var groups = [];
+	while(bContinue){
+		var group = [];
+		for(i = 0 ; i < 5 ; i++){
+			var t = uiTimeItems.pop();
+			if(t)
+				group.push(t);
+			else{
+				bContinue = false;
+				break;
+			}
+		}
+		if(group.length > 0)
+			groups.push(group);
+	}
+	return groups;
+}
+
+SalesTimeModel.prototype.getTimeGroupForTimeGroupItem = function(uiTimeItems, modelKey, timeModel){
+	var timeGroup = {};
+	var yScale = timeModel.axes.y[modelKey].yScale;
+	timeModel.axes.x.labels.forEach((function(label){
+		timeGroup[label.label] = this.getTimeContentsInLabel(uiTimeItems, label, yScale);
+	}).bind(this));
+}
+
+SalesTimeModel.prototype.getTimeContentsInLabel = function(uiTimeItems, label, yScale){
+	var timeContents = [];
+	var xStart = label.xStart;
+	var yStart = label.yStart;
+	var blockW = label.xEnd - label.xStart;
+	var barW = padding = blockW / (2 * uiTimeItems.length);
+
+	var tKey = this.getTimeGroupKey(uiTimeItems[0].items);
+	uiTimeItems.forEach((function(uiTimeItem){
+		var timeItems = uiTimeItem.items[tKey].items;
+		timeContents.push[{
+			label : uiTimeItem.key,
+			x : xStart,
+			y : yStart,
+			w : barW,
+			h : this.getMeasuredValue(timeItems, label.label, yScale)
+		}];
+		xStart += (barW + padding);
+
+	}).bind(this));
+	return timeContents;
+}
+
+SalesTimeModel.prototype.getMeasuredValue = function(timeItems, label, yScale){	
+	for(var i = 0 ; timeItems.length ; i++){
+		var item = timeItems[i];
+		var itemDate = new Date(item.key)
+		if(this.options.dateDist === 'yearly'){
+			if(itemDate.getFullYear().toString() === label)
+				return yScale(item.doc_count); 
+		}
+		else if(this.options.dateDist === 'monthly'){
+			if(itemDate.getMonth() === this.getMonthFromLabel(label))
+				return yScale(item.doc_count); 
+		}
+		else if(this.options.dateDist === 'daily'){
+			if(itemDate.getDate() === parseInt(label))
+				return yScale(item.doc_count); 
+		}
+	}
+	return 0;
+}
+
+SalesTimeModel.prototype.getMonthFromLabel = function(monthLabel){
+	var sMonth = monthLabel.split('-')[0];
+	var map = {
+		Jan : 0,
+		Feb : 1,
+		Mar : 2,
+		Apr : 3,
+		May : 4,
+		Jun : 5,
+		Jul : 6,
+		Aug : 7,
+		Sep : 8,
+		Oct : 9,
+		Nov : 10,
+		Dec : 11
+	};
+	return map[sMonth];
+}
 
 
 
