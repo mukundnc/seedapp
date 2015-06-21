@@ -180,7 +180,14 @@ SalesTimeModel.prototype.getYAxisLabelsForModelKey = function(modelKey, uiTimeOb
 	var dR = dE - dS;
 	if(dR > 1){
 		var arr = [];
-		for(var i = dS+dR/4 ; i <= dE ; i+=dR/4){
+		var div = 1;
+		if(dR > 3)
+			div = 4
+		else if(dR > 2)
+			div = 3;
+		else
+			div = 2;
+		for(var i = dS+dR/div ; i <= dE ; i+=dR/div){
 			arr.push(i)
 		}
 		arr.forEach(function(d){
