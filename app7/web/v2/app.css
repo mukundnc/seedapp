@@ -162,7 +162,12 @@ body{
 	fill: #DDE748
 }
 
-
+.sales-header{
+	color : #E0E0E3;
+	font-size : 20px;
+	text-transform : uppercase;
+	fill:grey; 
+}
 
 
 

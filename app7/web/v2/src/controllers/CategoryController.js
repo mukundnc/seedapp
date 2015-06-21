@@ -49,7 +49,8 @@ CategoryController.prototype.renderTimeView = function(qid){
 		xOrg : 90,
 		yOrg : 0.3 * this.H,
 		w : this.W,
-		h : 0.35 * this.H
+		h : 0.35 * this.H,
+		resultsCount : this.qIdResults[qid].results[0].hits.total
 	}
 	var timeView = new SalesTimeView();
 	timeView.render(timeModel[0], options);

@@ -203,6 +203,7 @@ SalesTimeView.prototype.showTimeGroupView = function(){
 		}).bind(this));
 	}
 	this.addTimeGroupContentMarkers(g);
+	this.addCountHeader(g);
 	this.animateCategoryHeights(g, allHeights);
 }
 
@@ -240,4 +241,11 @@ SalesTimeView.prototype.addTimeGroupContentMarkers = function(g){
 		i++;
 	}).bind(this));
 
+}
+
+SalesTimeView.prototype.addCountHeader = function(g){
+	var xC = (this.model.axes.x.xStart + this.model.axes.x.xEnd)/2;
+	var yC = this.options.h - 55;
+
+	this.utils.addTextXForm(g, xC, -yC, 'TOTAL SALES - ' + this.options.resultsCount, 'sales-header');
 }
