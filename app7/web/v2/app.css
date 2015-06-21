@@ -83,10 +83,17 @@ body{
 	cursor : pointer;
 }
 
-.col-text, .row-text, .cell-text, .st-text, .st-bn-text{
+.col-text, .row-text, .cell-text, .st-text{
 	color:grey;
 	cursor:pointer;
 	font-size:11px;
+	fill:grey;
+}
+
+.st-bn-text{
+	color:grey;
+	cursor:pointer;
+	font-size:18px;
 	fill:grey;
 }
 
@@ -94,11 +101,18 @@ body{
 	fill:#4d90fe;
 }
 
-.col-text-select, .row-text-select, .st-text-select, .st-bn-text-select{
+.col-text-select, .row-text-select, .st-text-select{
 	fill : white;
 	color:grey;
 	cursor:pointer;
 	font-size:11px;
+}
+
+.st-bn-text-select{
+	fill : white;
+	color:grey;
+	cursor:pointer;
+	font-size:18px;
 }
 
 .chart-axis{

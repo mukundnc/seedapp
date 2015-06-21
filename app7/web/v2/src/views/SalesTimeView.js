@@ -45,7 +45,7 @@ SalesTimeView.prototype.getGroupById = function(id){
 SalesTimeView.prototype.addViewTypeChoices = function(){
 	var g = this.getGroupById(this.groups.choices);
 	var xS = this.options.w - 250;
-	var yS = this.options.h - 65;
+	var yS = this.options.h - 90;
 	var rH = 25;
 	var rW = 70;
 	var keys = ['key1', 'key2'];
@@ -137,9 +137,9 @@ SalesTimeView.prototype.showBackNextControls = function(){
 	if(timeGroups.length < 2) return;
 
 	var xS = this.options.w - 250;
-	var yS = this.options.h - 120;
-	var rH = 15;
-	var rW = 15;
+	var yS = this.options.h - 150;
+	var rH = 25;
+	var rW = 25;
 	var gR = null;
 	var labels = ['<', '>'];
 	var id = 'stBack';
