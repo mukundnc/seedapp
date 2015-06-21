@@ -188,8 +188,28 @@ SalesTimeView.prototype.showTimeGroupView = function(){
 
 	var modelKey = this.getViewKeyForCurrentSelection();
 	var timeGroup = this.model[modelKey].timeGroups[this.currTimeModelIndex];
-	
+	var allHeights = [];
+
+	for(var key in timeGroup){
+		var bars = timeGroup[key];
+		var i = 1;
+		bars.forEach((function(bar){
+			if(bar.h > 0){
+				this.utils.addRect(g, bar.x, bar.y, bar.w, 0, 'bar-' + i + ' bh');
+				allHeights.push(bar.h);
+			}
+			i++;
+		}).bind(this));
+	}
+
+	this.animateCategoryHeights(g, allHeights);
 }
 
+SalesTimeView.prototype.animateCategoryHeights = function(g, heights){
+	g.selectAll('.bh')
+	 .data(heights)
+	 .transition()
+	 .attr('height', function(h) { return h; })
+}
 
 
