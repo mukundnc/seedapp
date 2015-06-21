@@ -69,7 +69,7 @@ CategoryController.prototype.getDateDetails = function(qid){
 			dist : 'yearly'
 		}
 	}
-	var arr = []
+	var arr = [];
 	var filters = results.query.filters.and.concat(results.query.filters.or);
 	filters.forEach(function(f){
 		if(f.filter.isDate){
@@ -77,6 +77,13 @@ CategoryController.prototype.getDateDetails = function(qid){
 		}
 	});
 
+	if(arr.length < 2)
+		return {
+			startDate : '2000/01/01',
+			endDate : '2014/12/31',
+			dist : 'yearly'
+		}
+	
 	var details = {
 		startDate : arr[0],
 		endDate : arr[1],
