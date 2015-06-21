@@ -16,7 +16,7 @@ SalesTimeModel.prototype.getModel = function(uiTimeObjs, options){
 		this.initTimeGroups(timeModel, uiTimeObjs[i]);
 		timeModels.push(timeModel);
 	}
-	
+	console.log(timeModels);
 	return timeModels;
 }
 
@@ -178,19 +178,32 @@ SalesTimeModel.prototype.getYAxisLabelsForModelKey = function(modelKey, uiTimeOb
 						 .range([rS, rE]);
 	var labels = [];
 	var dR = dE - dS;
-	var arr = [];
-	for(var i = dS+dR/4 ; i <= dE ; i+=dR/4){
-		arr.push(i)
+	if(dR > 1){
+		var arr = [];
+		for(var i = dS+dR/4 ; i <= dE ; i+=dR/4){
+			arr.push(i)
+		}
+		arr.forEach(function(d){
+			labels.push({
+				label : Math.round(d),
+				xStart : 0,
+				yStart : yScale(d),
+				xEnd : frameWidth,
+				yEnd : yScale(d)
+			})
+		});
 	}
-	arr.forEach(function(d){
+	else{
+		yScale = function(d) { return frameHeight };
 		labels.push({
-			label : Math.round(d),
+			label : Math.round(dE),
 			xStart : 0,
-			yStart : yScale(d),
+			yStart : yScale(dE),
 			xEnd : frameWidth,
-			yEnd : yScale(d)
+			yEnd : yScale(dE)
 		})
-	});
+
+	}
 	return {
 		yScale : yScale,
 		labels : labels
@@ -200,7 +213,8 @@ SalesTimeModel.prototype.getYAxisLabelsForModelKey = function(modelKey, uiTimeOb
 SalesTimeModel.prototype.initTimeGroups = function(timeModel, uiTimeObj){
 	for(var key in uiTimeObj){
 		if(key === 'key1' || key === 'key2'){
-			timeModel[key].timeGroups = this.getTimeGroups(uiTimeObj[key].items, key, timeModel)
+			this.getTimeGroups(uiTimeObj[key].items, key, timeModel);
+			timeModel[key].type = uiTimeObj[key].key;
 		}
 	}
 
@@ -249,25 +263,26 @@ SalesTimeModel.prototype.getTimeGroupForTimeGroupItem = function(uiTimeItems, mo
 	timeModel.axes.x.labels.forEach((function(label){
 		timeGroup[label.label] = this.getTimeContentsInLabel(uiTimeItems, label, yScale);
 	}).bind(this));
+	return timeGroup;
 }
 
 SalesTimeModel.prototype.getTimeContentsInLabel = function(uiTimeItems, label, yScale){
 	var timeContents = [];
 	var xStart = label.xStart;
-	var yStart = label.yStart;
+	var yStart = 0;
 	var blockW = label.xEnd - label.xStart;
 	var barW = padding = blockW / (2 * uiTimeItems.length);
 
 	var tKey = this.getTimeGroupKey(uiTimeItems[0].items);
 	uiTimeItems.forEach((function(uiTimeItem){
 		var timeItems = uiTimeItem.items[tKey].items;
-		timeContents.push[{
+		timeContents.push({
 			label : uiTimeItem.key,
 			x : xStart,
 			y : yStart,
 			w : barW,
 			h : this.getMeasuredValue(timeItems, label.label, yScale)
-		}];
+		});
 		xStart += (barW + padding);
 
 	}).bind(this));
@@ -275,7 +290,7 @@ SalesTimeModel.prototype.getTimeContentsInLabel = function(uiTimeItems, label, y
 }
 
 SalesTimeModel.prototype.getMeasuredValue = function(timeItems, label, yScale){	
-	for(var i = 0 ; timeItems.length ; i++){
+	for(var i = 0 ; i < timeItems.length ; i++){
 		var item = timeItems[i];
 		var itemDate = new Date(item.key)
 		if(this.options.dateDist === 'yearly'){
