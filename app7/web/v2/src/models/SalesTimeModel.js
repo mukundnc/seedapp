@@ -163,9 +163,7 @@ SalesTimeModel.prototype.getYAxisLabelsForModelKey = function(modelKey, uiTimeOb
 		});
 	});
 
-	var dS = d3.min(allValues, function(v) {
-				return v;
-			 });
+	var dS = 0;
 	var dE = d3.max(allValues, function(v) {
 				return v;
 			 });
