@@ -1,5 +1,11 @@
 function SalesTimeView(){
 	this.utils = new SvgUtils();
+	this.groups = {
+		axes : 'st-axis',
+		times : 'st-time',
+		choices : 'st-choice',
+		backnext : 'st-backnext'
+	}
 }
 
 SalesTimeView.prototype.init = function(timeModel, options){
@@ -15,57 +21,38 @@ SalesTimeView.prototype.clear = function(){
 
 SalesTimeView.prototype.render = function(timeModel, options){
 	this.init(timeModel, options);
-	this.addTimeGroupLabels();
-	this.renderTimeGroupForCurrentSelection();
+	this.addViewTypeChoices();
+	this.addAxes();
+	this.showTimeView();
 }
 
-SalesTimeView.prototype.getTimeSvgGroup = function(){
-	var g = d3.select('.svg-container').select('.svg-view').select('.sales-time');
+SalesTimeView.prototype.getGroupByClassName = function(clsName){
+	var g = d3.select('.svg-container').select('.svg-view').select('.' + clsName);
 	if(g.empty()){
 		g = d3.select('.svg-container')
 	          .select('.svg-view')
 	          .append('g')
 		      .attr('transform', 'translate(' + this.options.xOrg + ',' + this.options.yOrg + ') scale(1, -1)')
-		      .attr('class', 'sales-time');
+		      .attr('class', clsName);
 	}
 	return g;
 }
 
-SalesTimeView.prototype.getTimeLabelsSvgGroup = function(){
-	var g = d3.select('.svg-container').select('.svg-view').select('.sales-time-labels');
-	if(g.empty()){
-		g = d3.select('.svg-container')
-	          .select('.svg-view')
-	          .append('g')
-		      .attr('transform', 'translate(' + this.options.xOrg + ',' + this.options.yOrg + ') scale(1, -1)')
-		      .attr('class', 'sales-time-labels');
-	}
-	return g;
+SalesTimeView.prototype.getGroupById = function(id){
+	return this.getGroupByClassName(id);
 }
 
-SalesTimeView.prototype.getBackNextLabelsSvgGroup = function(){
-	var g = d3.select('.svg-container').select('.svg-view').select('.back-next-labels');
-	if(g.empty()){
-		g = d3.select('.svg-container')
-	          .select('.svg-view')
-	          .append('g')
-		      .attr('transform', 'translate(' + this.options.xOrg + ',' + this.options.yOrg + ') scale(1, -1)')
-		      .attr('class', 'back-next-labels');
-	}
-	return g;
-}
-
-SalesTimeView.prototype.addTimeGroupLabels = function(){
-	var g = this.getTimeLabelsSvgGroup();
+SalesTimeView.prototype.addViewTypeChoices = function(){
+	var g = this.getGroupById(this.groups.choices);
 	var xS = this.options.w - 250;
 	var yS = this.options.h - 65;
 	var rH = 25;
 	var rW = 70;
-	var gR = null;
+	var keys = ['key1', 'key2'];
 	var arr = [];
-	Object.keys(this.model).forEach((function(mk){
+	keys.forEach((function(mk){
 		if(this.model[mk].timeGroups.length > 0){
-			gR = this.utils.addRectLabel(g, xS, yS, rW, rH, strToFirstUpper(this.model[mk].type), 'st-labels', 'st-rect', 'st-text', 'start');
+			var gR = this.utils.addRectLabel(g, xS, yS, rW, rH, strToFirstUpper(this.model[mk].type), 'st-choices', 'st-rect', 'st-text', 'start');
 			gR.select('rect').attr('id', this.model[mk].type);
 			yS -= rH;
 			arr.push(gR);
@@ -76,22 +63,22 @@ SalesTimeView.prototype.addTimeGroupLabels = function(){
 		arr[0].select('text').classed('st-text-select', true);
 	}
 	var self = this;
-	$('.st-labels').on('click', function(e){
-		self.onTimeLabelChange(this);
+	$('.st-choices').on('click', function(e){
+		self.onViewTypeChange(this);
 	});
-	
 }
 
-SalesTimeView.prototype.renderTimeGroupForCurrentSelection = function(){
-	var g = this.getTimeLabelsSvgGroup();
-	var key = this.getModelKeyForCurrentSelection();
-	this.currTimeModelIndex = 0;
-	var timeGroups = this.model[key].timeGroups;
-	this.addTimeGroupBackNext(timeGroups.length);
-	this.renderTimeGroup(timeGroups[this.currTimeModelIndex]);
+SalesTimeView.prototype.onViewTypeChange = function(selTimeLabel){
+	d3.selectAll('.st-select').classed('st-select', false).classed('st-rect', true);
+	d3.selectAll('.st-text-select').classed('st-text-select', false).classed('st-text', true);
+	d3.select(selTimeLabel).select('rect').attr('class', 'st-select');
+	d3.select(selTimeLabel).select('text').attr('class', 'st-text-select');
+	this.getGroupById(this.groups.axes).html('');
+	this.addAxes();
+	this.showTimeView();
 }
 
-SalesTimeView.prototype.getModelKeyForCurrentSelection = function(){
+SalesTimeView.prototype.getViewKeyForCurrentSelection = function(){
 	var selRect = d3.selectAll('.st-select');
 	var id = selRect.attr('id');
 	for( var k in this.model){
@@ -101,21 +88,53 @@ SalesTimeView.prototype.getModelKeyForCurrentSelection = function(){
 	}
 }
 
-SalesTimeView.prototype.onTimeLabelChange = function(selTimeLabel){
-	d3.selectAll('.st-select').classed('st-select', false).classed('st-rect', true);
-	d3.selectAll('.st-text-select').classed('st-text-select', false).classed('st-text', true);
-	d3.select(selTimeLabel).select('rect').attr('class', 'st-select');
-	d3.select(selTimeLabel).select('text').attr('class', 'st-text-select');
-	this.renderTimeGroupForCurrentSelection();
+SalesTimeView.prototype.addAxes = function(){
+	this.addXAxis();
+	this.addYAxis();
 }
 
-SalesTimeView.prototype.addTimeGroupBackNext = function(tgCount){
-	var g = this.getBackNextLabelsSvgGroup();	
+SalesTimeView.prototype.addXAxis = function(){
+	var g = this.getGroupById(this.groups.axes);
+	var xAxis = this.model.axes.x;
+	this.utils.addLine(g, xAxis.xStart, 0, xAxis.xEnd, 0, 'chart-axis');
+	xAxis.labels.forEach((function(l){
+		this.utils.addTextXForm(g, (l.xStart + l.xEnd)/2, 10, l.label, 'st-text', 'middle');
+		this.utils.addLine(g, l.xEnd, 0, l.xEnd, -6, 'chart-axis');
+	}).bind(this));
+}
+
+SalesTimeView.prototype.addYAxis = function(){
+	var g = this.getGroupById(this.groups.axes);
+	var yAxis = this.model.axes.y;
+	var key = this.getViewKeyForCurrentSelection();
+	var h = 0;
+	this.utils.addLine(g, yAxis.xStar, yAxis.yStart, yAxis.xEnd, yAxis.yEnd, 'chart-axis');
+	yAxis[key].labels.forEach((function(l){
+		this.utils.addTextXForm(g, l.xStart - 10, -l.yStart, l.label, 'st-text', 'end');
+		this.utils.addLine(g, l.xStart, l.yStart, l.xEnd, l.yEnd, 'chart-axis');
+		h = l.yEnd;
+	}).bind(this));
+	var y = -h/2
+	var x = -55;
+	var gT = this.utils.addTextXForm(g, x, y, 'SALES', 'col-text', 'middle');
+	gT.attr('transform', 'scale(1, -1) rotate(-90, ' + x + ',' + y + ')' );	
+}
+
+SalesTimeView.prototype.showTimeView = function(){
+	var g = this.getGroupById(this.groups.times);
+	g.html('');
+	this.showBackNextControls();
+	this.showTimeGroupView();
+}
+
+SalesTimeView.prototype.showBackNextControls = function(){
+	var g = this.getGroupById(this.groups.backnext);
 	g.html('');
 
-	if(tgCount < 2) return;
-	
-	var g = this.getBackNextLabelsSvgGroup();	
+	var key = this.getViewKeyForCurrentSelection();
+	var timeGroups = this.model[key].timeGroups;
+	if(timeGroups.length < 2) return;
+
 	var xS = this.options.w - 250;
 	var yS = this.options.h - 120;
 	var rH = 15;
@@ -144,7 +163,7 @@ SalesTimeView.prototype.onTimeGroupBackNext = function(selBackNext){
 	d3.select(selBackNext).select('rect').attr('class', 'st-bn-select');
 	d3.select(selBackNext).select('text').attr('class', 'st-bn-text-select');
 	var id = d3.select(selBackNext).attr('id');
-	var modelKey = this.getModelKeyForCurrentSelection();
+	var modelKey = this.getViewKeyForCurrentSelection();
 	var timeGroups = this.model[modelKey].timeGroups;
 	if(id === 'stBack'){
 		this.currTimeModelIndex--;
@@ -160,82 +179,17 @@ SalesTimeView.prototype.onTimeGroupBackNext = function(selBackNext){
 			return;
 		}
 	}
-	this.renderTimeGroup(timeGroups[this.currTimeModelIndex]);
+	this.showTimeGroupView();
 }
 
-SalesTimeView.prototype.renderTimeGroup = function(timeGroup){
-	var g = this.getTimeSvgGroup();
+SalesTimeView.prototype.showTimeGroupView = function(){
+	var g = this.getGroupById(this.groups.times);
 	g.html('');
-	var xEnd = 0;
-	var yEnd = 0;
-	var allHeights = [];
-	timeGroup.blocks.forEach((function(block){
-		var i = 1;
-		block.bars.forEach((function(bar){
-			this.renderBar(g, bar, 'bar-' + i + ' bh');
-			allHeights.push(bar.h);
-			if(bar.h > yEnd)
-				yEnd = bar.h;
-			i++;
-		}).bind(this));
-		this.addBlockLabel(g, block);
-		xEnd = block.xEnd;
-	}).bind(this));
-	this.utils.addLine(g, 0, 0, xEnd, 0, 'chart-axis');
-	this.addYAxisLabels(g, xEnd, yEnd, timeGroup);
-	this.addMarkers(g, xEnd, timeGroup);
-	this.animateCategoryHeights(g, allHeights);
-}
 
-SalesTimeView.prototype.animateCategoryHeights = function(g, heights){
-	g.selectAll('.bh')
-	 .data(heights)
-	 .transition()
-	 .attr('height', function(h) { return h; })
+	var modelKey = this.getViewKeyForCurrentSelection();
+	var timeGroup = this.model[modelKey].timeGroups[this.currTimeModelIndex];
+	
 }
 
 
-SalesTimeView.prototype.renderBar = function(g, bar, cssRect){
-	if(bar.h === 0) return;
 
-	this.utils.addRect(g, bar.x, bar.y, bar.w, 0, cssRect);
-}
-
-SalesTimeView.prototype.addBlockLabel = function(g, block){
-	this.utils.addLine(g, block.xEnd, 0, block.xEnd, -6, 'chart-axis');
-	var xC = (block.xStart + block.xEnd)/2;
-	var yC = 10;
-
-	this.utils.addTextXForm(g, xC, yC, block.label, 'col-text', 'middle');
-}
-
-SalesTimeView.prototype.addYAxisLabels = function(g, w, h, timeGroup){
-	this.utils.addLine(g, 0, h/4, w, h/4, 'chart-axis');
-	this.utils.addLine(g, 0, h/2, w, h/2, 'chart-axis');
-	this.utils.addLine(g, 0, 3*h/4, w, 3*h/4, 'chart-axis');
-	this.utils.addLine(g, 0, h, w, h, 'chart-axis');
-	this.utils.addLine(g, 0, 0, 0, h, 'chart-axis');
-
-	var max = timeGroup.yScale.domain()[1];
-	this.utils.addTextXForm(g, -20, -h/4, Math.round(max/4), 'col-text', 'end');
-	this.utils.addTextXForm(g, -20, -h/2, Math.round(max/2), 'col-text', 'end');
-	this.utils.addTextXForm(g, -20, -3*h/4, Math.round(3*max/4), 'col-text', 'end');
-	this.utils.addTextXForm(g, -20, -h, Math.round(max), 'col-text', 'end');
-
-	var y = -h/2
-	var x = -55;
-	var gT = this.utils.addTextXForm(g, x, y, 'SALES', 'col-text', 'middle');
-	gT.attr('transform', 'scale(1, -1) rotate(-90, ' + x + ',' + y + ')' );	
-}
-
-SalesTimeView.prototype.addMarkers = function(g, xEnd, timeGroup){
-	var x = xEnd/4;
-	var y = -40;
-	var i = 1;
-	timeGroup.contentLabels.forEach((function(c){
-		this.utils.addRect(g, x, y, 10, 10, 'bar-'+i);
-		this.utils.addTextXForm(g, x + 40, -y, c, 'col-text', 'middle');
-		x+=100;
-		i++;
-	}).bind(this));
-}
