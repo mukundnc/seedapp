@@ -142,9 +142,7 @@ SalesTableModel.prototype.getYscaleForRow = function(uiCellObj){
 	uiCellObj.forEach(function(c){
 		allVals.push(c.doc_count)
 	});
-	var dS = d3.min(allVals, function(v) {
-				return v;
-			 });
+	var dS = 0;
 	var dE = d3.max(allVals, function(v) {
 				return v;
 			 });

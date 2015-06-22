@@ -65,7 +65,7 @@ CategoryController.prototype.renderTableView = function(qid){
 		h : 0.55 * this.H
 	}
 	var tableView = new SalesTableView();
-	tableView.render(tableModel[0], options);
+	tableView.render(tableModel, options);
 }
 
 CategoryController.prototype.getDateDetails = function(qid){

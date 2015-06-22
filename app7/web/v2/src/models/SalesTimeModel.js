@@ -16,7 +16,6 @@ SalesTimeModel.prototype.getModel = function(uiTimeObjs, options){
 		this.initTimeGroups(timeModel, uiTimeObjs[i]);
 		timeModels.push(timeModel);
 	}
-	console.log(timeModels);
 	return timeModels;
 }
 
