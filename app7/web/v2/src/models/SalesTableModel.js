@@ -182,6 +182,7 @@ SalesTableModel.prototype.getColumn2l = function(uiColObj, xStart, yStart){
 		y : yStart,
 		h : this.colH,
 		w : this.colW,
+		yScale : yScale,
 		cells : this.getCellsForRow3l(uiColObj, yScale)
 	}
 }
@@ -191,6 +192,7 @@ SalesTableModel.prototype.getTableFor1Level1 = function(uiTableObj){
 	var cells = this.getCellsForRow1l(uiTableObj, yScale);	
 	return {
 		tableTitle : uiTableObj.key,
+		yScale : yScale,
 		cells : cells,
 		levels : 1
 	}	

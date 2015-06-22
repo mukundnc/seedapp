@@ -54,11 +54,12 @@ SalesTableView.prototype.renderTable3l = function(tblObj){
 }
 
 SalesTableView.prototype.renderTable2l = function(tblObj){
-	
+	this.addColumns(tblObj);
+	this.addCellsForCurrentSelection();
 }
 
 SalesTableView.prototype.renderTable1l = function(tblObj){
-	
+	this.showCellsForRow(tblObj);
 }
 
 SalesTableView.prototype.addColumns = function(tblObj){
@@ -93,6 +94,7 @@ SalesTableView.prototype.onColumnChange3l = function(selColElem){
 }
 
 SalesTableView.prototype.onColumnChange2l = function(selColElem){
+	this.addCellsForCurrentSelection();
 }
 
 SalesTableView.prototype.getRowGroup = function(){
@@ -153,6 +155,10 @@ SalesTableView.prototype.showSalesChartForCurrentSelection3l = function(){
 	var selRowName = d3.select('.row-text-select').text();
 	var selCol = _.where(tblObj.columns, {key : selColName})[0];
 	var selRow = _.where(selCol.rows, {key : selRowName})[0];
+	this.showCellsForRow(selRow);
+}
+
+SalesTableView.prototype.showCellsForRow = function(selRow){
 	var g = this.getTableChartGroup();
 	g.html('');
 	var n = selRow.cells.length;
@@ -172,6 +178,7 @@ SalesTableView.prototype.showSalesChartForCurrentSelection3l = function(){
 		xStart += W/n;
 		this.addCellLabel(g, xStart, c.y, c.key, W/n, 'cell-text');
 		i++;
+		if(i > 20) i = 1;
 	}).bind(this));
 	this.addYAxisLabels(g, xStartAxis, xMax, H, selRow.yScale);
 	this.animateCategoryHeights(g, allHeights);
@@ -202,17 +209,17 @@ SalesTableView.prototype.drawAxes = function(g, xStart, yStart, xMax, yMax){
 SalesTableView.prototype.addCellLabel = function(g, x, y, text, barWidth, cssText){
 	var tblObj = this.getTableObjForCurrentViewType();
 	var productTypes = ['categories', 'types', 'brands', 'models']
-	if(productTypes.indexOf(tblObj.tableTitle) !== -1){
-		var xT = x - barWidth/2;
-		var yT = -6;
-		this.utils.addTextXForm(g, xT, yT, text, cssText, 'middle');
-	}
-	else{
+	// if(productTypes.indexOf(tblObj.tableTitle) !== -1){
+	// 	var xT = x - barWidth/2;
+	// 	var yT = -6;
+	// 	this.utils.addTextXForm(g, xT, yT, text, cssText, 'middle');
+	// }
+	// else{
 		var xT = x - 10;
 		var yT = -10;
 		var t = this.utils.addText(g, xT, yT, text, cssText, 'end');
 		t.attr('transform', 'rotate(30, ' + xT + ',' + yT + ') scale(1, -1) ');
-	}
+	//}
 }
 
 SalesTableView.prototype.addYAxisLabels = function(g, xStart, w, h, yScale){
@@ -226,4 +233,11 @@ SalesTableView.prototype.addYAxisLabels = function(g, xStart, w, h, yScale){
 	var x = this.options.xOrg + 50;
 	var gT = this.utils.addTextXForm(g, x, y, 'SALES', 'col-text', 'middle');
 	gT.attr('transform', 'scale(1, -1) rotate(-90, ' + x + ',' + y + ')' );	
+}
+
+SalesTableView.prototype.addCellsForCurrentSelection = function(){
+	var tblObj = this.getTableObjForCurrentViewType();
+	var selCol = d3.selectAll('.col-text-select').text();
+	var selRow = _.where(tblObj.columns, {key : selCol})[0];
+	this.showCellsForRow(selRow);
 }
