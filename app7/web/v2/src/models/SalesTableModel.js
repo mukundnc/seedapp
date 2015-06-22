@@ -59,7 +59,7 @@ SalesTableModel.prototype.getLevelDepth = function(uiTableObj){
 SalesTableModel.prototype.getTableFor3Levels = function(uiTableObj){
 	var columns = [];
 	var cX = this.rowW + this.colOffset;
-	var cY = this.options.height - this.colH - 10;
+	var cY = this.options.height - this.colH ;
 	uiTableObj.items.forEach((function(item){		
 		columns.push(this.getColumn3l(item, cX, cY));
 		cX += this.colW;

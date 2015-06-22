@@ -60,7 +60,7 @@ CategoryController.prototype.renderTableView = function(qid){
 	var tableModel = this.tableModels[qid];
 	var options = {
 		xOrg : 90,
-		yOrg : 0.95 * this.H,
+		yOrg : 0.9 * this.H,
 		w : this.W,
 		h : 0.55 * this.H
 	}
