@@ -223,9 +223,9 @@ SalesTimeModel.prototype.initTimeGroups = function(timeModel, uiTimeObj){
 	}
 
 	if(timeModel.key2.type){
-		var timeTypes = ['yearly', 'monthly', 'daily'];
-		if(timeTypes.indexOf(timeModel.key1.type) !== -1){
-			var key1Copy = JSON.parse(JSON.stringiyfy(timeModel.key1));
+		var regionTypes = ['regions', 'states', 'cities'];
+		if(regionTypes.indexOf(timeModel.key1.type) !== -1){
+			var key1Copy = JSON.parse(JSON.stringify(timeModel.key1));
 			timeModel.key1 = timeModel.key2;
 			timeModel.key2 = key1Copy;
 		}
