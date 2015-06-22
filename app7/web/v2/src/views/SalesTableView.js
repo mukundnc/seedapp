@@ -223,7 +223,7 @@ SalesTableView.prototype.addYAxisLabels = function(g, xStart, w, h, yScale){
 	this.utils.addTextXForm(g, xc, -3*h/4, Math.round(3*max/4), 'st-text', 'end');
 	this.utils.addTextXForm(g, xc, -h, Math.round(max), 'st-text', 'end');
 	var y = -h/2
-	var x = 140;
+	var x = this.options.xOrg + 50;
 	var gT = this.utils.addTextXForm(g, x, y, 'SALES', 'col-text', 'middle');
 	gT.attr('transform', 'scale(1, -1) rotate(-90, ' + x + ',' + y + ')' );	
 }
