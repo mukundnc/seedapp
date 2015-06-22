@@ -241,3 +241,7 @@ SalesTableView.prototype.addCellsForCurrentSelection = function(){
 	var selRow = _.where(tblObj.columns, {key : selCol})[0];
 	this.showCellsForRow(selRow);
 }
+
+SalesTableView.prototype.temp = function(){
+	
+}
