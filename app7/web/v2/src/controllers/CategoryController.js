@@ -15,8 +15,8 @@ CategoryController.prototype.renderView = function(qid, results){
 	var uiObject = resParser.parse(this.qIdResults[qid]);
 
 	this.initModels(qid, uiObject);
-	this.renderTableView(qid);
 	this.renderTimeView(qid);
+	this.renderTableView(qid);
 }
 
 CategoryController.prototype.initModels = function(qid, uiObject){	
@@ -57,7 +57,15 @@ CategoryController.prototype.renderTimeView = function(qid){
 }
 
 CategoryController.prototype.renderTableView = function(qid){
-
+	var tableModel = this.tableModels[qid];
+	var options = {
+		xOrg : 90,
+		yOrg : 0.95 * this.H,
+		w : this.W,
+		h : 0.55 * this.H
+	}
+	var tableView = new SalesTableView();
+	tableView.render(tableModel[0], options);
 }
 
 CategoryController.prototype.getDateDetails = function(qid){
@@ -83,7 +91,7 @@ CategoryController.prototype.getDateDetails = function(qid){
 			endDate : '2014/12/31',
 			dist : 'yearly'
 		}
-	
+
 	var details = {
 		startDate : arr[0],
 		endDate : arr[1],
