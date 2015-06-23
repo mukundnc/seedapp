@@ -8,7 +8,7 @@ function SearchFrameView(model, options){
 	var productTypes = ['categories', 'types', 'brands', 'models'];
 	var regionTypes = ['regions', 'states', 'cities'];
 
-	model.forEach((function(frame, idx){
+	model.forEach((function(frame){
 		if(productTypes.indexOf(frame.type) !== -1){
 			this.tabs['product'] = {
 				view : new SearchTabView(frame, options),
