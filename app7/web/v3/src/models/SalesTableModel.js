@@ -83,6 +83,7 @@ SalesTableModel.prototype.getTableFor3Levels = function(uiTableObj){
 SalesTableModel.prototype.getColumn3l = function(uiColObj, xStart, yStart){
 	return {
 		key : uiColObj.key,
+		count : uiColObj.doc_count,
 		x : xStart,
 		y : yStart,
 		h : this.colH,
@@ -106,6 +107,7 @@ SalesTableModel.prototype.getRowsForColumn3l = function(uiColObj, xStart, yStart
 			w : this.rowW,
 			h : this.rowH,
 			key : b.key,
+			count : b.doc_count,
 			yScale : yScale,
 			cells : this.getCellsForRow3l(b, yScale )
 		});
@@ -186,6 +188,7 @@ SalesTableModel.prototype.getColumn2l = function(uiColObj, xStart, yStart){
 	var yScale = this.getYscaleForRow(uiColObj.items[0].items);
 	return {
 		key : uiColObj.key,
+		count : uiColObj.doc_count,
 		x : xStart,
 		y : yStart,
 		h : this.colH,

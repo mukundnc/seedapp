@@ -12,8 +12,8 @@ ModelFactory.prototype.getFrameModel = function(apiRes, options){
 	var timeModeler = new SalesTimeModel();
 	var timeModel = timeModeler.getModel(uiObject, options.timeline);
 
-	console.log(tableModel);
-	console.log(timeModel);
+	//console.log(tableModel);
+	//console.log(timeModel);
 	
 	var frames = [];
 	tableModel.forEach((function(tm){
@@ -43,5 +43,30 @@ ModelFactory.prototype.getTimeLine = function(time, type, options){
 }
 
 ModelFactory.prototype.getContainer = function(table, options){
+	var container = {
+		sectors : {
+			top : [],
+			others : [],
+			count : 0
+		}
+	};
 
+	var key = table.levels > 1 ? 'columns' : 'cells';
+	var allSectors = table[key];
+	for(var i = 0 ; i < allSectors.length ; i++){
+		if(i < 5){
+			container.sectors.top.push({
+				key : allSectors[i].key,
+				count : allSectors[i].count
+			});
+		}
+		else{
+			container.sectors.others.push({
+				key : allSectors[i].key,
+				count : allSectors[i].count
+			});
+		}
+		container.sectors.count += allSectors[i].count;
+	}
+	return container;
 }
