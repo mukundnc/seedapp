@@ -27,6 +27,14 @@ SalesTableModel.prototype.getModel = function(uiObjects, options){
 			}
 		}).bind(this));
 	}).bind(this));	
+	if(tables.length === 2){
+		var regionTypes = ['regions', 'states', 'cities'];
+		if(regionTypes.indexOf(tables[0].tableTitle) !== -1){
+			var tb = JSON.parse(JSON.stringify(tables[0]));
+			tables[0] = tables[1];
+			tables[1] = tb;
+		}
+	}
 	return tables;
 }
 
