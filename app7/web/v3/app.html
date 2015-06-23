@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8">
+	<title>Sales App</title>
+	<link rel="stylesheet" type="text/css" href="app.css">
+
+</head>
+<body>
+	<div class="header-container">
+		<div class="searchbar-container">
+				<img src="img/logo.svg">
+				<input id="tbSearch" type="text" value="sales"></input>
+				<div class="search-icon">
+					<img src="img/search-icon.svg"></img>
+				</div>				
+		</div>
+	</div>
+	<div class="body-container">
+		<div class="tree-container">
+			<div class="svg-tree-container">
+				<svg class="svg-tree"></svg>
+			</div>
+		</div>
+		<div class="view-container">			
+			<div class="graph-container">
+				<div class="svg-container">
+					<svg class="svg-view"></svg>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="footer-container"></div>
+</body>
+	<script src="libs/jquery-2.1.4.min.js"></script>
+	<script src="libs/d3.min.js"></script>
+	<script src="libs/underscore-min.js"></script>
+
+	<script src="src/utils/Utils.js"></script>
+	<script src="src/utils/ResponseParser.js"></script>
+
+	<script src="src/models/SalesTableModel.js"></script>
+	<script src="src/models/SalesTimeModel.js"></script>
+
+
+	<script src="src/views/SearchTreeView.js"></script>
+
+	<script src="src/controllers/SearchController.js"></script>
+	<script src="src/SalesAppController.js"></script>
+
+	<script src="app.js"></script>
+</html>

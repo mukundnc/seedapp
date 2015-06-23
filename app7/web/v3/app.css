@@ -1,0 +1,327 @@
+
+body{
+	margin-top:0px;
+	margin-left: 0px;
+}
+.body-container{
+	width : 100%;
+}
+.header-container{
+	position: relative;
+	background: #4d5359;
+}
+.searchbar-container{
+	position:relative;
+	height : 10%;
+	padding : 2px 0px 0px 0px;
+}
+
+#tbSearch{
+	position:relative;
+	left : 1%;
+	width : 50%;
+	height : 30px;
+	border-radius: 2px;
+	font-size: 15px;
+	top : -10px;
+}
+
+.search-icon{
+	position: relative;
+	float:left;
+	display:inline-block;
+	top:13px;
+	left:69%;
+	background-color: #4d5359;
+	border-radius:2px;
+	cursor: pointer;
+}
+
+.search-icon img{
+	height: 35px;
+	width : 35px;
+}
+
+.tree-container {
+	position : relative;
+	height : 94%;
+	width : 14%;
+	float : left;
+	background-color: #353535;
+	border-right-color: grey;
+	border-right-style: solid;
+	border-right-width: 1px;
+}
+
+.view-container{
+	position:relative;
+	height: 100%;
+	width : 85.9%;
+	float : left;
+}
+
+.graph-container{
+	position:relative;
+	height : 99%;
+}
+.svg-container{
+	position:relative;
+	height : 95%;
+	width : 100%;
+	background-color: #353535;
+
+}
+
+.s-cat, .cat-filter, .view-opt {
+	cursor: pointer
+}
+
+.col-rect, .row-rect, .cell-rect, .st-rect, .st-bn-rect{
+	stroke-width : 1px; 
+	stroke : grey; 
+	fill:#353535;
+	cursor : pointer;
+}
+
+.col-text, .row-text, .cell-text, .st-text{
+	color:grey;
+	cursor:pointer;
+	font-size:11px;
+	fill:grey;
+}
+
+.st-bn-text{
+	color:grey;
+	cursor:pointer;
+	font-size:18px;
+	fill:grey;
+}
+
+.col-select, .row-select, .st-select, .st-bn-select{
+	fill:#4d90fe;
+}
+
+.col-text-select, .row-text-select, .st-text-select{
+	fill : white;
+	color:grey;
+	cursor:pointer;
+	font-size:11px;
+}
+
+.st-bn-text-select{
+	fill : white;
+	color:grey;
+	cursor:pointer;
+	font-size:18px;
+}
+
+.chart-axis{
+	stroke-width : 1px; 
+	stroke : grey;
+}
+
+.snode-root-text{
+	color:grey;
+	cursor:pointer;
+	font-size:20px;
+	fill:grey;
+}
+
+.snode-text{
+	color:grey;
+	cursor:pointer;
+	font-size:15px;
+	fill:grey;
+}
+
+.snode-text-select{
+	color:white;
+	cursor:pointer;
+	font-size:17px;
+	fill:white;
+}
+
+.snode-marker-line{
+	stroke : grey;
+	stroke-width : 1px;
+}
+
+.bar-1{
+	stroke-width : 1px; 
+	stroke : white; 
+	fill: #7798BF
+}
+
+.bar-2{
+	stroke-width : 1px; 
+	stroke : white; 
+	fill: #90ee7e
+}
+
+.bar-3{
+	stroke-width : 1px; 
+	stroke : white; 
+	fill: #2b908f
+}
+
+.bar-4{
+	stroke-width : 1px; 
+	stroke : white; 
+	fill: #f45b5b
+}
+
+.bar-5{
+	stroke-width : 1px; 
+	stroke : white; 
+	fill: #DDE748
+}
+
+.sales-header{
+	color : #E0E0E3;
+	font-size : 20px;
+	text-transform : uppercase;
+	fill:grey; 
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.cell-rect-1{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #653040;
+}
+.cell-rect-2{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #ffccb8;
+}
+.cell-rect-3{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #e8440c;
+}
+.cell-rect-4{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #e8840c;
+}
+.cell-rect-5{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #a1c1cb;
+}
+.cell-rect-6{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #a1accb;
+}
+.cell-rect-7{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #37c3e0;
+}
+.cell-rect-8{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #147084;
+}
+.cell-rect-9{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #c5718b;
+}
+.cell-rect-10{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #653040;
+}
+.cell-rect-11{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #97e41b;
+}
+.cell-rect-12{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #5cbe7f;
+}
+.cell-rect-13{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #06b2a5;
+}
+.cell-rect-14{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #67204a;
+}
+.cell-rect-15{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #faebd7;
+}
+.cell-rect-16{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #f6546a;
+}
+.cell-rect-17{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #008000;
+}
+.cell-rect-18{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #8a2be2;
+}
+.cell-rect-19{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #c39797;
+}
+.cell-rect-20{
+	stroke-width : 1px; 
+	stroke : grey; 
+	cursor : pointer;
+	fill : #794044;
+}
