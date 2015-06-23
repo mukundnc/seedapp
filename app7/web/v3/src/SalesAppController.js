@@ -1,8 +1,10 @@
-functthis.init();
+function SalesAppController (){
+	this.init();
 	this.searchController = new SearchController(this);
 	this.searchTreeView = new SearchTreeView({controller : this});
 	this.queryIndex = 0;
 	this.queryIndices = {};
+	this.queryIdVsController = {};
 }
 
 
