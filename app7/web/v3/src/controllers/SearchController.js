@@ -10,7 +10,7 @@ SearchController.prototype.renderView = function(qid, apiRes){
 		this.qIdFrameModels[qid] = this.modelFactory.getFrameModel(apiRes, this.getModelOptions(apiRes));
 
 	var frameModel = this.qIdFrameModels[qid];
-	var searchFrameView = new SearchFrameView(frameModel, this.getViewOptions());
+	var searchFrameView = new SearchFrameView(frameModel, this.getViewOptions(apiRes));
 	searchFrameView.render()
 }
 
@@ -21,18 +21,35 @@ SearchController.prototype.getModelOptions = function(apiRes){
 			width : this.W - 50,
 			height : this.H * 0.25
 		},
-		timeline : {
-			width : this.W - 50,
-			height : this.H * 0.5,
+		timeline : {			
 			startDate : dd.startDate,
 			endDate : dd.endDate,
-			dateDist : dd.dist
+			dateDist : dd.dist,
+			width : this.W - 50,
+			height : this.H * 0.5,
 		}
 	};
 }
 
-SearchController.prototype.getViewOptions = function(){
-
+SearchController.prototype.getViewOptions = function(apiRes){
+	return {
+		controller : this,
+		resultCount : apiRes.results[0].hits.total,
+		container : {
+			controller : this,
+			xOrg : 0,
+			yOrg : this.H * 0.35,
+			w : this.W - 50,
+			h : this.H * 0.25
+		},
+		timeline : {
+			controller : this,
+			xOrg : 0,
+			yOrg : this.H * 0.95,
+			w : this.W - 50,
+			h : this.H * 0.5
+		}
+	}
 }
 
 SearchController.prototype.getDateDetails = function(results){
