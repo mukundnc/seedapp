@@ -1,7 +1,7 @@
-function SearchFrameView(){
+function SearchFrameView(model, options){
 
 }
 
-SearchFrameView.prototype.render = function(model, options){
+SearchFrameView.prototype.render = function(){
 	
 }

@@ -27,7 +27,6 @@ SearchController.prototype.getModelOptions = function(apiRes){
 			startDate : dd.startDate,
 			endDate : dd.endDate,
 			dateDist : dd.dist
-
 		}
 	};
 }
