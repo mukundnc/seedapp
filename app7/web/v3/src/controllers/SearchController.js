@@ -29,7 +29,7 @@ SearchController.prototype.getModelOptions = function(apiRes){
 			startDate : dd.startDate,
 			endDate : dd.endDate,
 			dateDist : dd.dist,
-			width : this.W - 50,
+			width : this.W + 100,
 			height : this.H * 0.37,
 		}
 	};
@@ -52,7 +52,7 @@ SearchController.prototype.getViewOptions = function(apiRes){
 			controller : this,
 			xOrg : 90,
 			yOrg : this.H * 0.9,
-			w : this.W - 50,
+			w : this.W + 100,
 			h : this.H * 0.45
 		}
 	}
