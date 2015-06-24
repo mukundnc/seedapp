@@ -28,6 +28,14 @@ SearchContainerView.prototype.render = function(){
 		});
 	}
 	this.drawPie("arc", data, this.options.w/2, -this.options.h/2, 150, 120, 30, 0.4);
+
+	var self = this;
+	$('.innerSlice, .topSlice, .outerSlice, .sp-pie-label').on('click', function(e){
+		self.options.controller.executeSearch({
+			source : 'container',
+			label : d3.select(this).attr('id')
+		});
+	});
 }
 
 SearchContainerView.prototype.drawPie = function(id, data, x, y, rx, ry, h, ir){
@@ -40,22 +48,26 @@ SearchContainerView.prototype.drawPie = function(id, data, x, y, rx, ry, h, ir){
 	slices.selectAll(".innerSlice").data(_data).enter().append("path").attr("class", "innerSlice")
 		.style("fill", function(d) { return d3.hsl(d.data.color).darker(0.7); })
 		.attr("d",function(d){ return self.pieInner(d, rx+0.5,ry+0.5, h, ir);})
+		.attr('id', function(d) { return d.data.label; })
 		.each(function(d){this._current=d;});
 	
 	slices.selectAll(".topSlice").data(_data).enter().append("path").attr("class", "topSlice")
 		.style("fill", function(d) { return d.data.color; })
 		.style("stroke", function(d) { return d.data.color; })
 		.attr("d",function(d){ return self.pieTop(d, rx, ry, ir);})
+		.attr('id', function(d) { return d.data.label; })
 		.each(function(d){this._current=d;});
 	
 	slices.selectAll(".outerSlice").data(_data).enter().append("path").attr("class", "outerSlice")
 		.style("fill", function(d) { return d3.hsl(d.data.color).darker(0.7); })
 		.attr("d",function(d){ return self.pieOuter(d, rx-.5,ry-.5, h);})
+		.attr('id', function(d) { return d.data.label; })
 		.each(function(d){this._current=d;});
 
 	slices.selectAll(".sp-pie-label").data(_data).enter().append("text").attr("class", "sp-pie-label")
 		.attr("x",function(d){ return 0.6*rx*Math.cos(0.5*(d.startAngle+d.endAngle));})
 		.attr("y",function(d){ return 0.6*ry*Math.sin(0.5*(d.startAngle+d.endAngle));})
+		.attr('id', function(d) { return d.data.label; })
 		.text(self.getLabel).each(function(d){this._current=d;});		
 }
 

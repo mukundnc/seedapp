@@ -72,7 +72,7 @@ body{
 
 }
 
-.s-cat, .cat-filter, .view-opt {
+.s-cat, .cat-filter, .view-opt, .outerSlice, .topSlice, .sp-pie-label, .bh {
 	cursor: pointer
 }
 

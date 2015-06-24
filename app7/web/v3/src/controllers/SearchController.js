@@ -96,3 +96,9 @@ SearchController.prototype.getDateDetails = function(results){
 
 	return details;
 }
+
+SearchController.prototype.executeSearch = function(queryParams){
+	//$('#tbSearch').val(query)
+	//this.appController.executeQuery();
+	console.log(queryParams);
+}

@@ -138,7 +138,8 @@ SearchTimeView.prototype.showTimeGroupView = function(){
 		var i = 1;
 		bars.forEach((function(bar){
 			if(bar.h > 0){
-				this.utils.addRect(g, bar.x, bar.y, bar.w, 0, 'bar-' + i + ' bh');
+				var gR = this.utils.addRect(g, bar.x, bar.y, bar.w, 0, 'bar-' + i + ' bh');
+				gR.attr({label : bar.label, tKey : bar.tKey});
 				allHeights.push(bar.h);
 			}
 			i++;
@@ -146,6 +147,14 @@ SearchTimeView.prototype.showTimeGroupView = function(){
 	}
 	this.addTimeGroupContentMarkers(g);
 	this.animateCategoryHeights(g, allHeights);
+	var self = this;
+	$('.bh').on('click', function(e){
+		self.options.controller.executeSearch({
+			source : 'timeline',
+			label : d3.select(this).attr('label'),
+			tKey : d3.select(this).attr('tKey')
+		})		
+	});
 }
 
 SearchTimeView.prototype.animateCategoryHeights = function(g, heights){

@@ -283,6 +283,7 @@ SalesTimeModel.prototype.getTimeContentsInLabel = function(uiTimeItems, label, y
 		var timeItems = uiTimeItem.items[tKey].items;
 		timeContents.push({
 			label : uiTimeItem.key,
+			tKey : label.label,
 			x : xStart,
 			y : yStart,
 			w : barW,
