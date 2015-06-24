@@ -148,32 +148,27 @@ body{
 
 .bar-1{
 	stroke-width : 1px; 
-	stroke : white; 
-	fill: #7798BF
+	fill: #2b908f
 }
 
 .bar-2{
 	stroke-width : 1px; 
-	stroke : white; 
-	fill: #90ee7e
+	fill: #990099
 }
 
 .bar-3{
 	stroke-width : 1px; 
-	stroke : white; 
-	fill: #2b908f
+	fill: #109618
 }
 
 .bar-4{
 	stroke-width : 1px; 
-	stroke : white; 
-	fill: #f45b5b
+	fill: #FF9900
 }
 
 .bar-5{
 	stroke-width : 1px; 
-	stroke : white; 
-	fill: #DDE748
+	fill: #DC3912
 }
 
 .sales-header{
