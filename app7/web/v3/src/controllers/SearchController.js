@@ -38,16 +38,16 @@ SearchController.prototype.getViewOptions = function(apiRes){
 		container : {
 			controller : this,
 			xOrg : 0,
-			yOrg : this.H * 0.35,
+			yOrg : this.H * 0.5,
 			w : this.W - 50,
-			h : this.H * 0.25
+			h : this.H * 0.45
 		},
 		timeline : {
 			controller : this,
 			xOrg : 0,
 			yOrg : this.H * 0.95,
 			w : this.W - 50,
-			h : this.H * 0.5
+			h : this.H * 0.45
 		}
 	}
 }
