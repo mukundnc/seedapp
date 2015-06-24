@@ -14,7 +14,7 @@ SearchController.prototype.renderView = function(qid, apiRes){
 
 	var results = this.qidResults[qid];
 	var frameModel = this.qIdFrameModels[qid];
-	var searchFrameView = new SearchFrameView(frameModel, this.getViewOptions(results));
+	var searchFrameView = new SearchFrameView(frameModel, this.getViewOptions(results, qid));
 	searchFrameView.render()
 }
 
@@ -35,13 +35,14 @@ SearchController.prototype.getModelOptions = function(apiRes){
 	};
 }
 
-SearchController.prototype.getViewOptions = function(apiRes){
+SearchController.prototype.getViewOptions = function(apiRes, qid){
 	return {
 		controller : this,
 		resultCount : apiRes.results[0].hits.total,
 		w : this.W,
 		h : this.H,
 		container : {
+			qid : qid,
 			controller : this,
 			xOrg : 0,
 			yOrg : this.H * 0.5,
@@ -49,6 +50,7 @@ SearchController.prototype.getViewOptions = function(apiRes){
 			h : this.H * 0.45
 		},
 		timeline : {
+			qid : qid,
 			controller : this,
 			xOrg : 90,
 			yOrg : this.H * 0.9,

@@ -32,6 +32,7 @@ SearchContainerView.prototype.render = function(){
 	var self = this;
 	$('.innerSlice, .topSlice, .outerSlice, .sp-pie-label').on('click', function(e){
 		self.options.controller.executeSearch({
+			qid : self.options.qid,
 			source : 'container',
 			label : d3.select(this).attr('id')
 		});

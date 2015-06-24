@@ -150,6 +150,7 @@ SearchTimeView.prototype.showTimeGroupView = function(){
 	var self = this;
 	$('.bh').on('click', function(e){
 		self.options.controller.executeSearch({
+			qid : self.options.qid,
 			source : 'timeline',
 			label : d3.select(this).attr('label'),
 			tKey : d3.select(this).attr('tKey')
