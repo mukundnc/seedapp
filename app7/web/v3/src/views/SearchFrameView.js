@@ -44,6 +44,7 @@ SearchFrameView.prototype.renderTabs = function(){
 	var xForm = this.utils.getCodtSystemXForm(xOrg, tabH);
 	var g = this.utils.getGroupByClassName('sf-frame-group');
 	g.attr('transform', xForm);
+	g.html('');
 	var keys = Object.keys(this.tabs);
 	var cssRect = 'sf-rect-select', cssText = 'sf-text-select', i = 0;
 	keys.forEach((function(key){
