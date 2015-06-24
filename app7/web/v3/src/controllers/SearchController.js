@@ -1,16 +1,20 @@
 function SearchController(appController){
 	this.appController = appController;
+	this.qidResults = {};
 	this.qIdFrameModels = {};
 	this.modelFactory = new ModelFactory();
 	this.H = $('.svg-container').height();
 	this.W = $('.svg-container').width();}
 
 SearchController.prototype.renderView = function(qid, apiRes){
-	if(!this.qIdFrameModels[qid] && apiRes)
+	if(!this.qIdFrameModels[qid] && apiRes){
+		this.qidResults[qid] = apiRes;
 		this.qIdFrameModels[qid] = this.modelFactory.getFrameModel(apiRes, this.getModelOptions(apiRes));
+	}
 
+	var results = this.qidResults[qid];
 	var frameModel = this.qIdFrameModels[qid];
-	var searchFrameView = new SearchFrameView(frameModel, this.getViewOptions(apiRes));
+	var searchFrameView = new SearchFrameView(frameModel, this.getViewOptions(results));
 	searchFrameView.render()
 }
 
