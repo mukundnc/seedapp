@@ -51,7 +51,7 @@ SearchFrameView.prototype.renderTabs = function(){
 			cssRect = 'sf-rect';
 			cssText = 'sf-text';	
 		}
-		var gL = this.utils.addRectLabel(g, xOrg, 0, tabW, tabH, strToFirstUpper(key), 'sf-tab', cssRect, cssText, 'middle');
+		var gL = this.utils.addRectLabel(g, xOrg, 0, tabW, tabH, this.tabs[key].model.label, 'sf-tab', cssRect, cssText, 'middle');
 		gL.attr('id', key);
 		gL.select('text')
 		  .attr({

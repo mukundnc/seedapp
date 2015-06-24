@@ -21,7 +21,6 @@ ModelFactory.prototype.getFrameModel = function(apiRes, options){
 			timeline : this.getTimeLine(timeModel, tm.tableTitle, options)
 		})
 	}).bind(this));
-	console.log(frames);
 	return frames;
 }
 
