@@ -44,7 +44,8 @@ SearchFrameView.prototype.renderTabs = function(){
 	var xForm = this.utils.getCodtSystemXForm(xOrg, tabH);
 	var g = this.utils.getGroupByClassName('sf-frame-group');
 	g.attr('transform', xForm);
-	g.html('');
+	d3.selectAll('.svg-view').html('');
+	this.utils.addTextXForm(g, this.options.w/2, 0, 'TOTAL SALES - ' + this.options.resultCount, 'sales-header');
 	var keys = Object.keys(this.tabs);
 	var cssRect = 'sf-rect-select', cssText = 'sf-text-select', i = 0;
 	keys.forEach((function(key){
@@ -62,7 +63,7 @@ SearchFrameView.prototype.renderTabs = function(){
 		xOrg += tabW;
 		i++;
 	}).bind(this));
-	this.utils.addTextXForm(g, this.options.w/2, 0, 'TOTAL SALES - ' + this.options.resultCount, 'sales-header');
+	
 	var self = this;
 	$('.sf-tab').on('click', function(e){
 		self.onTabChange(this);
