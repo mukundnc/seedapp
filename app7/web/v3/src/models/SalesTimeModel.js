@@ -241,7 +241,8 @@ SalesTimeModel.prototype.getTimeGroups = function(uiTimeItems, modelKey, timeMod
 
 SalesTimeModel.prototype.getTimeItemGroups = function(uiTimeItems){
 	if(uiTimeItems.length < 6) return [uiTimeItems];
-
+	uiTimeItems.reverse();
+	
 	var bContinue = true;
 	var groups = [];
 	while(bContinue){
