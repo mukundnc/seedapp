@@ -27,7 +27,6 @@ SearchContainerView.prototype.render = function(){
 			color : colors.pop()
 		});
 	}
-	
 	this.drawPie("arc", data, this.options.w/2, -this.options.h/2, 150, 120, 30, 0.4);
 }
 
@@ -107,4 +106,4 @@ SearchContainerView.prototype.getLabel = function (d){
 	return (d.endAngle-d.startAngle > 0.2 ? 
 			Math.round(1000*(d.endAngle-d.startAngle)/(Math.PI*2))/10+'%' : '');
 }	
-	
+

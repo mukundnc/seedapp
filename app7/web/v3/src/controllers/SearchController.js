@@ -39,6 +39,8 @@ SearchController.prototype.getViewOptions = function(apiRes){
 	return {
 		controller : this,
 		resultCount : apiRes.results[0].hits.total,
+		w : this.W,
+		h : this.H,
 		container : {
 			controller : this,
 			xOrg : 0,
