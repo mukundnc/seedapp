@@ -122,3 +122,18 @@ SvgUtils.prototype.addRect = function(g, x, y, w, h, cssRect){
 	         });
 	return r
 }
+
+SvgUtils.prototype.getCodtSystemXForm = function(xOrg, yOrg){
+	return 'translate(' + xOrg +' ,'  + yOrg + ') scale(1, -1)';
+}
+
+SvgUtils.prototype.getGroupByClassName = function(clsName){
+	var g = d3.select('.svg-container').select('.svg-view').select('.' + clsName);
+	if(g.empty()){
+		g = d3.select('.svg-container')
+	          .select('.svg-view')
+	          .append('g')
+		      .attr('class', clsName);
+	}
+	return g;
+}
