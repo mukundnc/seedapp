@@ -30,7 +30,7 @@ SearchController.prototype.getModelOptions = function(apiRes){
 			endDate : dd.endDate,
 			dateDist : dd.dist,
 			width : this.W - 50,
-			height : this.H * 0.5,
+			height : this.H * 0.37,
 		}
 	};
 }
@@ -48,8 +48,8 @@ SearchController.prototype.getViewOptions = function(apiRes){
 		},
 		timeline : {
 			controller : this,
-			xOrg : 0,
-			yOrg : this.H * 0.95,
+			xOrg : 90,
+			yOrg : this.H * 0.9,
 			w : this.W - 50,
 			h : this.H * 0.45
 		}

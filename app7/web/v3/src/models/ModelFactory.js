@@ -29,8 +29,19 @@ ModelFactory.prototype.getTimeLine = function(time, type, options){
 	for(var i = 0 ; i < keys.length ; i++){
 		var k = keys[i];
 		if( time[0][k].type === type){
+			var yAxis = {
+				labels : time[0].axes.y[k].labels,
+				yScale : time[0].axes.y[k].yScale,
+				xStart : time[0].axes.y.xStart,
+				yStart : time[0].axes.y.yStart,
+				xEnd : time[0].axes.y.xEnd,
+				yEnd : time[0].axes.y.yEnd,
+			}
 			return {
-				axes : time[0].axes,
+				axes :{
+					x :  time[0].axes.x,
+					y :  yAxis
+				},
 				timeGroups : time[0][k].timeGroups,
 				type : type
 			}
