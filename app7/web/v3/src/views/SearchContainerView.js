@@ -31,12 +31,15 @@ SearchContainerView.prototype.render = function(){
 
 	var self = this;
 	$('.innerSlice, .topSlice, .outerSlice, .sp-pie-label').on('click', function(e){
-		self.options.controller.executeSearch({
-			qid : self.options.qid,
-			source : 'container',
-			label : d3.select(this).attr('id'),
-			type : self.model.type
-		});
+		var l = d3.select(this).attr('id');
+		if(l !== 'Others'){
+			self.options.controller.executeSearch({
+				qid : self.options.qid,
+				source : 'container',
+				label : l,
+				type : self.model.type
+			});
+		}
 	});
 }
 
