@@ -111,8 +111,8 @@ SearchController.prototype.getQueryString = function(queryParams){
 	var orgQuery = apiRes.query.query;
 	var qSource = apiRes.results[0].qSource;
 	var qTarget = apiRes.results[0].qTarget;
-	var regionTypes = ['regions', 'states', 'cities'];
-	var productTypes = ['categories', 'types', 'brands', 'models'];
+	var regionTypes = ['regions', 'states', 'cities', 'region', 'state', 'city'];
+	var productTypes = ['categories', 'types', 'brands', 'models', 'category', 'type', 'brand', 'model'];
 
 	function isProductType(p){
 		return productTypes.indexOf(p) !== -1;
@@ -124,8 +124,13 @@ SearchController.prototype.getQueryString = function(queryParams){
 	var q = '';
 	if(!qTarget){
 		if(isProductType(queryParams.type)){
-			//Single word drill down product search
-			q = queryParams.label;
+			if(isProductType(qSource.key)){
+				//Single word drill down product search
+				q = queryParams.label;
+			}
+			else{
+				q = queryParams.label + ' in ' + qSource.value; 
+			}
 		}
 		else{
 			//Org query now in region
