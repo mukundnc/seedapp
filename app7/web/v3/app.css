@@ -217,10 +217,25 @@ body{
 	fill:#353535;
 }
 
+#othersTooltip{
+	position : absolute;
+	top : 100px;
+	left : 700px;
+	height : 160px;
+	width : 200px;
+	background-color : rgba(74, 71, 67, 0.75);
+	border-radius: 10px;
+	border-color: rgba(176, 160, 160, 0.74);
+	border-width: 1px;
+	border-style: solid;	
+}
 
-
-
-
+.others-item{
+	display : inline-block;
+	color : #E0E0E3;
+	margin-left : 10px;	
+	fill:rgb(202, 202, 202); 
+}
 
 
 

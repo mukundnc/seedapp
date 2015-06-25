@@ -2,6 +2,10 @@ function SearchContainerView(model, options){
 	this.model = model;
 	this.options = options;
 	this.utils = new SvgUtils();
+	$('.svg-view').on('click', function(e){
+		if($(e.originalEvent.srcElement).attr('id') !== 'Others')
+				$('#othersTooltip').remove();
+	});
 }
 
 SearchContainerView.prototype.render = function(){
@@ -40,6 +44,8 @@ SearchContainerView.prototype.render = function(){
 				type : self.model.type
 			});
 		}
+		else
+			self.showToolTip();
 	});
 }
 
@@ -120,7 +126,24 @@ SearchContainerView.prototype.pieInner = function (d, rx, ry, h, ir ){
 SearchContainerView.prototype.getLabel = function (d){
 	return d.data.label;
 
-	return (d.endAngle-d.startAngle > 0.2 ? 
-			Math.round(1000*(d.endAngle-d.startAngle)/(Math.PI*2))/10+'%' : '');
 }	
 
+SearchContainerView.prototype.showToolTip = function(){
+	var $tt = $('<div id="othersTooltip">');
+	this.model.sectors.others.forEach((function(o){
+		var $a = $('<a href="#" class="others-item">');
+		$a.html(o.key);
+		$a.appendTo($tt);
+	}).bind(this));
+	$tt.appendTo($('body'));
+	var self = this;
+	$('.others-item').on('click', function(e){
+		$('#othersTooltip').remove();
+		self.options.controller.executeSearch({
+			qid : self.options.qid,
+			source : 'container',
+			label : $(this).html(),
+			type : self.model.type
+		});
+	});
+}

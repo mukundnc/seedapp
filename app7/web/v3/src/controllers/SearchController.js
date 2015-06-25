@@ -125,10 +125,11 @@ SearchController.prototype.getQueryString = function(queryParams){
 	if(!qTarget){
 		if(isProductType(queryParams.type)){
 			if(isProductType(qSource.key)){
-				//Single word drill down product search
+				//Single word product drill down  search
 				q = queryParams.label;
 			}
 			else{
+				//product drilldown in region
 				q = queryParams.label + ' in ' + qSource.value; 
 			}
 		}
