@@ -4,7 +4,8 @@ function SearchController(appController){
 	this.qIdFrameModels = {};
 	this.modelFactory = new ModelFactory();
 	this.H = $('.svg-container').height();
-	this.W = $('.svg-container').width();}
+	this.W = $('.svg-container').width();
+}
 
 SearchController.prototype.renderView = function(qid, apiRes){
 	if(!this.qIdFrameModels[qid] && apiRes){

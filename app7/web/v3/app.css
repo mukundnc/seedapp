@@ -211,7 +211,11 @@ body{
 }
 
 
-
+.res-tb-head{
+	stroke-width : 1px; 
+	stroke : grey; 
+	fill:#353535;
+}
 
 
 

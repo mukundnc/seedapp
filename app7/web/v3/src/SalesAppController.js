@@ -1,6 +1,7 @@
 function SalesAppController (){
 	this.init();
 	this.searchController = new SearchController(this);
+	this.noAggController = new NoAggSearchController(this);
 	this.searchTreeView = new SearchTreeView({controller : this});
 	this.queryIndex = 0;
 	this.queryIndices = {};
@@ -53,8 +54,8 @@ SalesAppController.prototype.onQueryResponse = function(qid, result){
 		return
 	}
 	
-	this.queryIdVsController[qid] = this.searchController;
-	this.searchController.renderView(qid, result);
+	this.queryIdVsController[qid] = this.getControllerForSearch(result);
+	this.queryIdVsController[qid].renderView(qid, result);
 	var treeText = this.getTreeText(result);
 	this.searchTreeView.add({id : qid, name : treeText});
 }
@@ -79,4 +80,11 @@ SalesAppController.prototype.getTreeText = function(apiRes){
 		return strToFirstUpper(apiRes.results[0].qSource.value);
 	}
 	return 'No Results';
+}
+
+SalesAppController.prototype.getControllerForSearch = function(apiRes){
+	if(apiRes.results[0].aggregations)
+		return this.searchController;
+
+	return this.noAggController;
 }

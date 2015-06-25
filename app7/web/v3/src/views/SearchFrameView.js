@@ -22,6 +22,7 @@ function SearchFrameView(model, options){
 			}
 		}
 	}).bind(this));
+	d3.selectAll('.svg-view').html('')
 }
 
 SearchFrameView.prototype.render = function(){
