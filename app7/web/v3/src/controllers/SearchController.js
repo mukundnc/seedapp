@@ -134,8 +134,14 @@ SearchController.prototype.getQueryString = function(queryParams){
 			}
 		}
 		else{
-			//Org query now in region
-			q = qSource.value  + ' in ' + queryParams.label;
+			if(isRegionType(qSource.type)){
+				//Single word region drill down  search
+				q = queryParams.label;
+			}
+			else{
+				//Org query now in region
+				q = qSource.value  + ' in ' + queryParams.label;
+			}
 		}
 	}
 	else{
