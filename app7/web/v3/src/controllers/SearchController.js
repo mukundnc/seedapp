@@ -134,7 +134,7 @@ SearchController.prototype.getQueryString = function(queryParams){
 			}
 		}
 		else{
-			if(isRegionType(qSource.type)){
+			if(isRegionType(qSource.key)){
 				//Single word region drill down  search
 				q = queryParams.label;
 			}
