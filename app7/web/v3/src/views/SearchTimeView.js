@@ -149,12 +149,16 @@ SearchTimeView.prototype.showTimeGroupView = function(){
 	this.animateCategoryHeights(g, allHeights);
 	var self = this;
 	$('.bh').on('click', function(e){
-		self.options.controller.executeSearch({
-			qid : self.options.qid,
-			source : 'timeline',
-			label : d3.select(this).attr('label'),
-			tKey : d3.select(this).attr('tKey')
-		})		
+		var t = d3.select(this).attr('tKey');
+		if(t.length > 2){
+			self.options.controller.executeSearch({
+				qid : self.options.qid,
+				source : 'timeline',
+				label : d3.select(this).attr('label'),
+				tKey : t,
+				type : self.model.type
+			})	
+		}	
 	});
 }
 

@@ -34,7 +34,8 @@ SearchContainerView.prototype.render = function(){
 		self.options.controller.executeSearch({
 			qid : self.options.qid,
 			source : 'container',
-			label : d3.select(this).attr('id')
+			label : d3.select(this).attr('id'),
+			type : self.model.type
 		});
 	});
 }

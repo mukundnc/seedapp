@@ -56,7 +56,8 @@ ModelFactory.prototype.getContainer = function(table, options){
 			others : [],
 			totalCount : 0,
 			othersCount : 0
-		}
+		},
+		type : table.tableTitle
 	};
 
 	var key = table.levels > 1 ? 'columns' : 'cells';
