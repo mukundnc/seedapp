@@ -2,7 +2,7 @@ function SearchContainerView(model, options){
 	this.model = model;
 	this.options = options;
 	this.utils = new SvgUtils();
-	$('.svg-view').on('click', function(e){
+	$(document).on('click', function(e){
 		if($(e.originalEvent.srcElement).attr('id') !== 'Others')
 				$('#othersTooltip').remove();
 	});
