@@ -2,6 +2,7 @@ function SalesAppController (){
 	this.init();
 	this.searchController = new SearchController(this);
 	this.noAggController = new NoAggSearchController(this);
+	this.compareController = new CompareController(this);
 	this.searchTreeView = new SearchTreeView({controller : this});
 	this.queryIndex = 0;
 	this.queryIndices = {};
@@ -83,6 +84,9 @@ SalesAppController.prototype.getTreeText = function(apiRes){
 }
 
 SalesAppController.prototype.getControllerForSearch = function(apiRes){
+	if(apiRes.results.length > 1)
+		return this.compareController;
+	
 	if(apiRes.results[0].aggregations)
 		return this.searchController;
 
