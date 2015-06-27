@@ -1,5 +1,19 @@
 function ModelFactory(){
-
+	this.compareQueryContext = {
+		multi_container : 1,
+		multi_container_in_multi_container : 2,
+		multi_container_in_container : 3,
+		multi_container_in_leaf : 4,
+		multi_container_in_multi_leaf : 5,
+		container_in_multi_container : 6,
+		container_in_multi_leaf : 7,	
+		leaf_in_multi_container : 8,
+		leaf_in_multi_leaf : 9,
+		multi_leaf : 10,
+		multi_leaf_in_multi_container : 11,
+		multi_leaf_in_container : 12,
+		multi_leaf_in_multi_leaf : 13	
+	}
 }
 
 ModelFactory.prototype.getFrameModel = function(apiRes, options){
@@ -82,96 +96,139 @@ ModelFactory.prototype.getContainer = function(table, options){
 }
 
 ModelFactory.prototype.getCompareFrameModel = function(apiRes, options){	
-	var meta = this.getCompareModelMeta(apiRes, options);
-	var compareFrame = this.getCompareModelTmpl();
-	var regionTypes = ['regions', 'states', 'cities', 'region', 'state', 'city'];
-	var productTypes = ['categories', 'types', 'brands', 'models', 'category', 'type', 'brand', 'model'];
-
-	function isProductType(p){
-		return productTypes.indexOf(p) !== -1;
-	}
-
-	function isRegionType(t){
-		return regionTypes.indexOf(t) !== -1;
-	}
-
-	for(var i = 0 ; i < meta.frames.length; i += meta.tabCount){
-		compareFrame.label = meta.frames[i].label;
-		compareFrame.type = meta.frames[i].type;		
-		if(isProductType(compareFrame.type)){
-			compareFrame.container.sectors.top.push({
-				key : meta.qSources.pop().value,
-				count : meta.frames[i].container.sectors.totalCount	
-			});
+	var compareQueryContext = this.getCompareQueryContext(apiRes, options);
+	var frames = this.getFrameModel(apiRes, options);
+	var popFrequency = this.getPopFequency(compareQueryContext)
+	frames.reverse();
+	var qSourceVsFrames = {};
+	var refSources = compareQueryContext.qSources.length >= compareQueryContext.qTargets.length ? 
+														   compareQueryContext.qSources : compareQueryContext.qTargets;
+	refSources.forEach(function(refSource){
+		qSourceVsFrames[refSource.value] = [];
+		for(var i = 0 ; i < popFrequency ; i++){
+			qSourceVsFrames[refSource.value].push(frames.pop());
 		}
-		else{
-			var fs = meta.frames[i].container.sectors.top.concat(meta.frames[i].container.sectors.others);
-			compareFrame.container.sectors.top = compareFrame.container.sectors.top.concat(fs);
-		}
-	}
-	compareFrame.container.sectors.top = _.sortBy(compareFrame.container.sectors.top, function(d){ return d.count; }).reverse();
-	if(compareFrame.container.sectors.top.length > 5){
-		compareFrame.container.sectors.others = compareFrame.container.sectors.top.splice(5, compareFrame.container.sectors.top.length - 5);
-	}
-	compareFrame.container.sectors.others.forEach(function(o){
-		compareFrame.container.sectors.othersCount += o.count;
 	});
-	compareFrame.container.sectors.totalCount = compareFrame.container.sectors.othersCount;
-	compareFrame.container.sectors.top.forEach(function(t){
-		compareFrame.container.sectors.totalCount += t.count;
-	});
-	console.log(compareFrame);
-	return compareFrame;
+
+	console.log(qSourceVsFrames);
 }
 
-ModelFactory.prototype.getCompareModelMeta = function(apiRes, options){
-	var resultsCount = apiRes.results.length;
-	var aRes = { results : [apiRes.results[0]] };
-	var framesFirst = this.getFrameModel(aRes, options);
-	var tabCount = framesFirst.length;
-	aRes.results = apiRes.results.slice(1);
-	var framesRest = this.getFrameModel(aRes, options);
-	var frames = framesFirst.concat(framesRest);
-	console.log(frames);
+ModelFactory.prototype.getCompareQueryContext = function(apiRes, options){
 	var qSources = [];
 	var qTargets = [];
-	apiRes.results.forEach(function(r){
-		if(r.qSource)
-			qSources.push(r.qSource);
-		if(r.qTarget)
-			qTargets.push(r.qTarget);
-	});
-	qSources.reverse();
-	qTargets.reverse();
-	return {
-		resultsCount : resultsCount,
-		tabCount : tabCount,
-		frames : frames,
-		qSources : qSources,
-		qTargets : qTargets
-	}
-}
+	var context = 0;
+	var isqSourceContainer = false;
+	var isqTargetContainer = false;
 
-ModelFactory.prototype.getCompareModelTmpl = function(){
-	return {
-		type : '',
-		label : '',
-		container : {
-			sectors : {
-				top : [],
-				others : [],
-				totalCount : 0,
-				othersCount : 0,
-				type : ''
+	apiRes.results.forEach(function(r){
+		if(r.qSource) {
+			if(_.where(qSources, {value : r.qSource.value}).length === 0)
+				qSources.push(r.qSource);
+		}
+		if(r.qTarget) {
+			if(_.where(qTargets, {value : r.qTarget.value}).length === 0)
+				qTargets.push(r.qTarget);
+		}
+	});
+	function isContainerType(t){
+		var leaves = ['cities', 'city', 'models', 'model'];
+		return _.contains(leaves, t) === false;
+	}
+	if(qTargets.length === 0){
+		context = isContainerType(qSources[0].key) ? this.compareQueryContext.multi_container : this.compareQueryContext.multi_leaf;
+	}
+	else{
+		isqSourceContainer = isContainerType(qSources[0].key);
+		isqTargetContainer = isContainerType(qTargets[0].key);
+		if(qSources.length > 1){
+			if(qTargets.length > 1){
+				if(isqSourceContainer && isqTargetContainer)
+					context = this.compareQueryContext.multi_container_in_multi_container;
+				else if(isqSourceContainer && !isqTargetContainer)
+					context = this.compareQueryContext.multi_container_in_multi_leaf;
+				else if(!isqSourceContainer && isqTargetContainer)
+					context = this.compareQueryContext.multi_leaf_in_multi_container;
+				else if(!isqSourceContainer && !isqTargetContainer)
+					context = this.compareQueryContext.multi_leaf_in_multi_leaf;
 			}
-		},
-		timeline : {
-			axes : {},
-			timeGroups : [],
-			type : ''
+			else{
+				if(isqSourceContainer && isqTargetContainer)
+					context = this.compareQueryContext.multi_container_in_container;
+				if(isqSourceContainer && !isqTargetContainer)
+					context = this.compareQueryContext.multi_container_in_leaf;
+				if(!isqSourceContainer && !isqTargetContainer)
+					context = this.compareQueryContext.multi_leaf_in_leaf;
+				if(!isqSourceContainer && isqTargetContainer)
+					context = this.compareQueryContext.multi_leaf_in_container;
+			}
+		}
+		else{
+			if(qTargets.length > 1){
+				if(isqSourceContainer && isqTargetContainer)
+					context = this.compareQueryContext.container_in_multi_container;
+				else if(isqSourceContainer && !isqTargetContainer)
+					context = this.compareQueryContext.container_in_multi_leaf;
+				else if(!isqSourceContainer && isqTargetContainer)
+					context = this.compareQueryContext.leaf_in_multi_container;
+				else if(!isqSourceContainer && !isqTargetContainer)
+					context = this.compareQueryContext.leaf_in_multi_leaf;
+			}
 		}
 	}
+	return {
+		qSources : qSources,
+		qTargets : qTargets,
+		context : context,
+		isqSourceContainer : isqSourceContainer,
+		isqTargetContainer : isqTargetContainer
+	}
 }
 
+ModelFactory.prototype.getPopFequency = function(compareQueryContext){
+	var qSCount = compareQueryContext.qSources.length;
+	var qTCount = compareQueryContext.qTargets.length;
+	var frequency = 0;
 
-
+	switch(compareQueryContext.context){
+		case this.compareQueryContext.multi_container :
+			frequency = 2;
+			break;
+		case this.compareQueryContext.multi_container_in_multi_container :
+			frequency = 2 * qTCount;
+			break;
+		case this.compareQueryContext.multi_container_in_container :
+			frequency = 2;
+			break;
+		case this.compareQueryContext.multi_container_in_leaf :
+			frequency = 1;
+			break;
+		case this.compareQueryContext.multi_container_in_multi_leaf :
+			frequency = qTCount;
+			break;
+		case this.compareQueryContext.container_in_multi_container :
+			frequency = 2;
+			break;
+		case this.compareQueryContext.container_in_multi_leaf :
+			frequency = 1;
+			break;
+		case this.compareQueryContext.leaf_in_multi_container :
+			frequency = 1;
+			break;
+		case this.compareQueryContext.leaf_in_multi_leaf :
+			frequency = 0;
+			break;
+		case this.compareQueryContext.multi_leaf :
+			frequency = 1;
+			break;
+		case this.compareQueryContext.multi_leaf_in_multi_container :
+			frequency = 2;
+			break;
+		case this.compareQueryContext.multi_leaf_in_container :
+			frequency = 1;
+			break;
+		case this.compareQueryContext.multi_leaf_in_multi_leaf :
+			frequency = 0;
+			break;	
+	}
+	return frequency;
+}

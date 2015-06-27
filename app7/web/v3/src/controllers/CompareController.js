@@ -65,7 +65,7 @@ CompareController.prototype.getDateDetails = function(query){
 		}
 	}
 	var arr = [];
-	var filters = query.filters.and.concat(results.query.filters.or);
+	var filters = query.filters.and.concat(query.filters.or);
 	filters.forEach(function(f){
 		if(f.filter.isDate){
 			arr.push(f.filter.value);
