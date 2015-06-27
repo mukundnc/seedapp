@@ -281,13 +281,15 @@ SalesTimeModel.prototype.getTimeContentsInLabel = function(uiTimeItems, label, y
 	var tKey = this.getTimeGroupKey(uiTimeItems[0].items);
 	uiTimeItems.forEach((function(uiTimeItem){
 		var timeItems = uiTimeItem.items[tKey].items;
+		var measuredValue = this.getMeasuredValue(timeItems, label.label, yScale);
 		timeContents.push({
 			label : uiTimeItem.key,
 			tKey : label.label,
 			x : xStart,
 			y : yStart,
 			w : barW,
-			h : this.getMeasuredValue(timeItems, label.label, yScale)
+			h : measuredValue.value,
+			count : measuredValue.count
 		});
 		xStart += (barW + padding);
 
@@ -301,15 +303,15 @@ SalesTimeModel.prototype.getMeasuredValue = function(timeItems, label, yScale){
 		var itemDate = new Date(item.key)
 		if(this.options.dateDist === 'yearly'){
 			if(itemDate.getFullYear().toString() === label)
-				return yScale(item.doc_count); 
+				return {count : item.doc_count, value : yScale(item.doc_count)}; 
 		}
 		else if(this.options.dateDist === 'monthly'){
 			if(itemDate.getMonth() === this.getMonthFromLabel(label))
-				return yScale(item.doc_count); 
+				return {count : item.doc_count, value : yScale(item.doc_count)}; 
 		}
 		else if(this.options.dateDist === 'daily'){
 			if(itemDate.getDate() === parseInt(label))
-				return yScale(item.doc_count); 
+				return {count : item.doc_count, value : yScale(item.doc_count)}; 
 		}
 	}
 	return 0;

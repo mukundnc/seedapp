@@ -156,8 +156,6 @@ ModelFactory.prototype.getQueryItemsFramesAndContext = function(apiRes, options)
 			queryVsFrames[refSource.value].push(frames.pop());
 		}
 	});
-
-	console.log(queryVsFrames);
 	return {
 		frames : queryVsFrames,
 		compareQueryContext : compareQueryContext
@@ -291,10 +289,48 @@ ModelFactory.prototype.getPopFequency = function(compareQueryContext){
 
 
 
-
+ModelFactory.prototype.getDefaultCompareModelTmpl = function(){
+	return {
+		product : {
+			type : null,
+			label: null,
+			sectors : [],
+			timelines : []
+		},
+		region : {
+			type : null,
+			label: null,
+			sectors : [],
+			timelines : []
+		}
+	}
+}
 
 
 ModelFactory.prototype.getMultiContainerModel = function (frames, compareQueryContext){
+	var model = this.getDefaultCompareModelTmpl();
+	Object.keys(frames).forEach((function(key){
+		var objs = frames[key];
+		objs.forEach((function(o){
+			if(this.isProductType(o.type)){
+				model.product.type = o.type;
+				model.product.label = o.label;
+				model.product.sectors.push({
+					count : o.container.sectors.totalCount,
+					label : strToFirstUpper(key),
+					type : o.type
+				});
+				this.aggregateTimeGroupsInTimeLine(o.timeline);
+				model.product.timelines.push({
+					label : strToFirstUpper(key),
+					timeline : o.timeline
+				})
+			}
+		}).bind(this));
+	}).bind(this));
+	console.log(frames);
+	console.log(model);
+	return model;	
 }
 
 ModelFactory.prototype.getMultiContainerInMultiContainerModel = function (frames, compareQueryContext){
@@ -333,4 +369,25 @@ ModelFactory.prototype.getMultiLeafInContainerModel = function (frames, compareQ
 ModelFactory.prototype.getMultiLeafInMultiLeafModel = function (frames, compareQueryContext){
 }
 
+ModelFactory.prototype.isProductType = function(p){
+	var productTypes = ['category', 'categories', 'type', 'types', 'brand', 'brands', 'model', 'models'];
+	return _.contains(productTypes, p);
+}
 
+ModelFactory.prototype.isRegionType = function(r){
+	var regionTypes = ['regions', 'region', 'states', 'state', 'cities', 'city'];
+	return _.contains(regionTypes, r);
+}
+
+ModelFactory.prototype.aggregateTimeGroupsInTimeLine = function(timeline){
+	var tgs = timeline.timeGroups;
+	tgs.forEach(function(tg){
+		Object.keys(tg).forEach(function(key){
+			tg[key].totalCount = 0;
+			tg[key].forEach(function(v){
+				if(v.count)
+					tg[key].totalCount += v.count;
+			})
+		});
+	});
+}
