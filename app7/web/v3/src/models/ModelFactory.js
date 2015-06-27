@@ -95,22 +95,73 @@ ModelFactory.prototype.getContainer = function(table, options){
 	return container;
 }
 
-ModelFactory.prototype.getCompareFrameModel = function(apiRes, options){	
+ModelFactory.prototype.getCompareFrameModel = function(apiRes, options){
+	var qfc = this.getQueryItemsFramesAndContext(apiRes, options);
+	var compareModel = {};
+	switch(qfc.compareQueryContext.context){
+		case this.compareQueryContext.multi_container :
+			compareModel = this.getMultiContainerModel(qfc.frames, qfc.compareQueryContext);
+			break;
+		case this.compareQueryContext.multi_container_in_multi_container :
+			compareModel = this.getMultiContainerInMultiContainerModel(qfc.frames, qfc.compareQueryContext);
+			break;
+		case this.compareQueryContext.multi_container_in_container :
+			compareModel = this.getMultiContainerInContainerModel(qfc.frames, qfc.compareQueryContext);
+			break;
+		case this.compareQueryContext.multi_container_in_leaf :
+			compareModel = this.getMultiContainerInLeafModel(qfc.frames, qfc.compareQueryContext);
+			break;
+		case this.compareQueryContext.multi_container_in_multi_leaf :
+			compareModel = this.getMultiContainerInMultiLeafModel(qfc.frames, qfc.compareQueryContext);
+			break;
+		case this.compareQueryContext.container_in_multi_container :
+			compareModel = this.getContainerInMultiContainer(qfc.frames, qfc.compareQueryContext);
+			break;
+		case this.compareQueryContext.container_in_multi_leaf :
+			compareModel = this.getContainerInMultiLeafModel(qfc.frames, qfc.compareQueryContext);
+			break;
+		case this.compareQueryContext.leaf_in_multi_container :
+			compareModel = this.getLeafInMultiContainerModel(qfc.frames, qfc.compareQueryContext);
+			break;
+		case this.compareQueryContext.leaf_in_multi_leaf :
+			compareModel = this.getLeafInMultiLeafModel(qfc.frames, qfc.compareQueryContext);
+			break;
+		case this.compareQueryContext.multi_leaf :
+			compareModel = this.getMultiLeafModel(qfc.frames, qfc.compareQueryContext);
+			break;
+		case this.compareQueryContext.multi_leaf_in_multi_container :
+			compareModel = this.getMultiLeafInMultiContainerModel(qfc.frames, qfc.compareQueryContext);
+			break;
+		case this.compareQueryContext.multi_leaf_in_container :
+			compareModel = this.getMultiLeafInContainerModel(qfc.frames, qfc.compareQueryContext);
+			break;
+		case this.compareQueryContext.multi_leaf_in_multi_leaf :
+			compareModel = this.getMultiLeafInMultiLeafModel(qfc.frames, qfc.compareQueryContext);
+			break;	
+	}
+	return compareModel;
+}
+
+ModelFactory.prototype.getQueryItemsFramesAndContext = function(apiRes, options){	
 	var compareQueryContext = this.getCompareQueryContext(apiRes, options);
 	var frames = this.getFrameModel(apiRes, options);
 	var popFrequency = this.getPopFequency(compareQueryContext)
 	frames.reverse();
-	var qSourceVsFrames = {};
+	var queryVsFrames = {};
 	var refSources = compareQueryContext.qSources.length >= compareQueryContext.qTargets.length ? 
 														   compareQueryContext.qSources : compareQueryContext.qTargets;
 	refSources.forEach(function(refSource){
-		qSourceVsFrames[refSource.value] = [];
+		queryVsFrames[refSource.value] = [];
 		for(var i = 0 ; i < popFrequency ; i++){
-			qSourceVsFrames[refSource.value].push(frames.pop());
+			queryVsFrames[refSource.value].push(frames.pop());
 		}
 	});
 
-	console.log(qSourceVsFrames);
+	console.log(queryVsFrames);
+	return {
+		frames : queryVsFrames,
+		compareQueryContext : compareQueryContext
+	}
 }
 
 ModelFactory.prototype.getCompareQueryContext = function(apiRes, options){
@@ -232,3 +283,54 @@ ModelFactory.prototype.getPopFequency = function(compareQueryContext){
 	}
 	return frequency;
 }
+
+
+
+
+
+
+
+
+
+
+
+ModelFactory.prototype.getMultiContainerModel = function (frames, compareQueryContext){
+}
+
+ModelFactory.prototype.getMultiContainerInMultiContainerModel = function (frames, compareQueryContext){
+}
+
+ModelFactory.prototype.getMultiContainerInContainerModel = function (frames, compareQueryContext){
+}
+
+ModelFactory.prototype.getMultiContainerInLeafModel = function (frames, compareQueryContext){
+}
+
+ModelFactory.prototype.getMultiContainerInMultiLeafModel = function (frames, compareQueryContext){
+}
+
+ModelFactory.prototype.getContainerInMultiContainer = function (frames, compareQueryContext){
+}
+
+ModelFactory.prototype.getContainerInMultiLeafModel = function (frames, compareQueryContext){
+}
+
+ModelFactory.prototype.getLeafInMultiContainerModel = function (frames, compareQueryContext){
+}
+
+ModelFactory.prototype.getLeafInMultiLeafModel = function (frames, compareQueryContext){
+}
+
+ModelFactory.prototype.getMultiLeafModel = function (frames, compareQueryContext){
+}
+
+ModelFactory.prototype.getMultiLeafInMultiContainerModel = function (frames, compareQueryContext){
+}
+
+ModelFactory.prototype.getMultiLeafInContainerModel = function (frames, compareQueryContext){
+}
+
+ModelFactory.prototype.getMultiLeafInMultiLeafModel = function (frames, compareQueryContext){
+}
+
+
