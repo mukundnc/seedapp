@@ -441,9 +441,68 @@ ModelFactory.prototype.aggregateTimeGroupsInTimeLine = function(timeline){
 	timeline.timeGroups = [newTimeGroup];
 }
 ModelFactory.prototype.getRegionForCompareFrames = function(frames, compareQueryContext){
+	var compareFrames = {
+		type : null,
+		label : null,
+		sectors : [],
+		timelines : []
+	}
+
+	var hasOthers = false;
+	var noQTargets = !compareQueryContext.qTarget;
 	Object.keys(frames).forEach((function(k){
-		this.getRegionForCompareFrame(frames[k], compareQueryContext);
+		var region = this.getRegionForCompareFrame(frames[k], compareQueryContext);
+		compareFrames.type = region.type;
+		compareFrames.label = region.label;
+		compareFrames.timelines = compareFrames.timelines.concat(region.timelines);
+		compareFrames.sectors.push(region.sectors);
+		if(!hasOthers && region.sectors.othersCount > 0)
+			hasOthers = true;
 	}).bind(this));
+	
+	var allSectors = {};
+	var i = 0;
+	compareFrames.sectors.forEach(function(s){
+		if(i === 0){
+			allSectors = {
+				top : s.top,
+				others : s.others,
+				totalCount : s.totalCount,
+				othersCount : s.othersCount
+			}
+		}
+		else{
+			if(hasOthers){
+				allSectors.top = allSectors.top.concat(s.top),
+				allSectors.others = allSectors.others.concat(s.others),
+				allSectors.totalCount += s.totalCount,
+				allSectors.othersCount += s.othersCount
+			}
+			else{
+				s.top.forEach(function(st){
+					var existingTopItem = _.where(allSectors.top, {label : st.label})[0];
+					existingTopItem.count += st.count;
+				});
+			}
+		}
+		i++;
+	});
+	if(hasOthers){
+		var topPlusOthers = allSectors.top.concat(allSectors.others);
+		if(topPlusOthers.length > 5){
+			topPlusOthers = _.sortBy(topPlusOthers, function(to){ return to.count; }).reverse();
+			allSectors.others = topPlusOthers.splice(5, topPlusOthers.length - 5);
+			compareFrames.sectors = topPlusOthers;
+			compareFrames.sectors.push({
+				label : 'Others',
+				count : allSectors.othersCount
+			});
+		}
+	}
+	else{
+		compareFrames.sectors = allSectors.top;
+	}
+	return compareFrames;
 }
 
 ModelFactory.prototype.getRegionForCompareFrame = function(frame, compareQueryContext){
@@ -461,8 +520,28 @@ ModelFactory.prototype.getRegionForCompareFrame = function(frame, compareQueryCo
 	var sectors = {};
 	frame.forEach((function(f){
 		if(this.isRegionType(f.type)){
+			region.type = f.type;
+			region.label = f.label;
 			if(compareQueryContext.qTargets.length > 0){
-
+				f.container.sectors.top.forEach(function(item){
+					if(!sectors[item.key])
+						sectors[item.key] =  { totalCount : item.count };
+					else
+						sectors[item.key].totalCount += item.count;
+				});
+				f.container.sectors.others.forEach(function(item){
+					if(!sectors[item.key])
+						sectors[item.key] =  { totalCount : item.count };
+					else
+						sectors[item.key].totalCount += item.count;
+				});
+				var qd = f.timeline.queryDetails;
+				var tLabel = qd.qSource.value.toUpperCase() + '-' + qd.qTarget.value.toUpperCase();
+				this.aggregateTimeGroupsInTimeLine(f.timeline);
+				region.timelines.push({
+					label : tLabel,
+					timeline : f.timeline
+				});
 			}
 			else{
 				var tmRegions = [];
@@ -490,6 +569,18 @@ ModelFactory.prototype.getRegionForCompareFrame = function(frame, compareQueryCo
 			count : sectors[sk].totalCount
 		});
 	});
+	var topLen = region.sectors.top.length;
+	if(topLen > 5){
+		region.sectors.top = _.sortBy(region.sectors.top, function(s) { return s.count}).reverse();
+		region.sectors.others = region.sectors.top.splice(5, topLen - 5);
+	}
+	region.sectors.others.forEach(function(o){
+		region.sectors.othersCount += o.count;
+		region.sectors.totalCount += o.count;
+	});
+	region.sectors.top.forEach(function(t){
+		region.sectors.totalCount += t.count;
+	});
 	return region;
 }
 
@@ -516,11 +607,12 @@ ModelFactory.prototype.getTimelinesForRegions = function(tmRegions, frame){
 	if(qd.qTarget)
 		end = qd.qTarget.value.toUpperCase();
 
+	var timelines = [];
 	for(var key in regionTimelines){
 		regionTimelines[key].label = end ? start + end : start + key.toUpperCase();
+		timelines.push(regionTimelines[key]);
 	}
-
-	return regionTimelines;
+	return timelines;
 }
 
 
