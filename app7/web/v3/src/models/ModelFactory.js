@@ -452,16 +452,13 @@ ModelFactory.prototype.getRegionForCompareFrames = function(frames, compareQuery
 		timelines : []
 	}
 
-	var hasOthers = false;
-	var noQTargets = !compareQueryContext.qTarget;
 	Object.keys(frames).forEach((function(k){
 		var region = this.getRegionForCompareFrame(frames[k], compareQueryContext);
 		compareFrames.type = region.type;
 		compareFrames.label = region.label;
 		compareFrames.timelines = compareFrames.timelines.concat(region.timelines);
 		compareFrames.sectors.push(region.sectors);
-		if(!hasOthers && region.sectors.othersCount > 0)
-			hasOthers = true;
+
 	}).bind(this));
 	
 	var allSectors = {};
@@ -476,35 +473,36 @@ ModelFactory.prototype.getRegionForCompareFrames = function(frames, compareQuery
 			}
 		}
 		else{
-			if(hasOthers){
-				allSectors.top = allSectors.top.concat(s.top),
-				allSectors.others = allSectors.others.concat(s.others),
-				allSectors.totalCount += s.totalCount,
-				allSectors.othersCount += s.othersCount
-			}
-			else{
-				s.top.forEach(function(st){
-					var existingTopItem = _.where(allSectors.top, {label : st.label})[0];
-					existingTopItem.count += st.count;
-				});
-			}
+			allSectors.top = allSectors.top.concat(s.top),
+			allSectors.others = allSectors.others.concat(s.others),
+			allSectors.totalCount += s.totalCount,
+			allSectors.othersCount += s.othersCount
 		}
 		i++;
 	});
-	if(hasOthers){
-		var topPlusOthers = allSectors.top.concat(allSectors.others);
-		if(topPlusOthers.length > 5){
-			topPlusOthers = _.sortBy(topPlusOthers, function(to){ return to.count; }).reverse();
-			allSectors.others = topPlusOthers.splice(5, topPlusOthers.length - 5);
-			compareFrames.sectors = topPlusOthers;
-			compareFrames.sectors.push({
-				label : 'Others',
-				count : allSectors.othersCount
-			});
-		}
+	var topPlusOthers = allSectors.top.concat(allSectors.others);
+	var unique = {};
+	topPlusOthers.forEach(function(to){
+		if(!unique[to.label])
+			unique[to.label] = { label : to.label, count : to.count};
+		else
+			unique[to.label].count += to.count;
+	});
+	topPlusOthers = [];
+	for(var k in unique)
+		topPlusOthers.push(unique[k]);
+
+	if(topPlusOthers.length > 5){
+		topPlusOthers = _.sortBy(topPlusOthers, function(to){ return to.count; }).reverse();
+		allSectors.others = topPlusOthers.splice(5, topPlusOthers.length - 5);
+		compareFrames.sectors = topPlusOthers;
+		compareFrames.sectors.push({
+			label : 'Others',
+			count : allSectors.othersCount
+		});
 	}
 	else{
-		compareFrames.sectors = allSectors.top;
+		compareFrames.sectors = topPlusOthers;
 	}
 	return compareFrames;
 }
