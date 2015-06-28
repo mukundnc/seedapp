@@ -383,21 +383,51 @@ ModelFactory.prototype.getMultiContainerInMultiContainerModel = function (frames
 }
 
 ModelFactory.prototype.getMultiContainerInContainerModel = function (frames, compareQueryContext){
+	return this.getMultiContainerInMultiContainerModel(frames, compareQueryContext);
 }
 
 ModelFactory.prototype.getMultiContainerInLeafModel = function (frames, compareQueryContext){
+	return this.getMultiContainerInMultiContainerModel(frames, compareQueryContext);
 }
 
 ModelFactory.prototype.getMultiContainerInMultiLeafModel = function (frames, compareQueryContext){
+	return this.getMultiContainerInMultiContainerModel(frames, compareQueryContext);
 }
 
 ModelFactory.prototype.getContainerInMultiContainer = function (frames, compareQueryContext){
+	var model = this.getMultiContainerInMultiContainerModel(frames, compareQueryContext);
+	model.product.timelines.forEach(function(tl){
+		tl.label = tl.timeline.queryDetails.qSource.value.toUpperCase() + '-' + tl.timeline.queryDetails.qTarget.value.toUpperCase();
+	});
+	console.log(model);
+	return model;
 }
 
 ModelFactory.prototype.getContainerInMultiLeafModel = function (frames, compareQueryContext){
+	return this.getContainerInMultiContainer(frames, compareQueryContext);
 }
 
 ModelFactory.prototype.getLeafInMultiContainerModel = function (frames, compareQueryContext){
+	var model = this.getDefaultCompareModelTmpl();
+	Object.keys(frames).forEach((function(key){
+		var objs = frames[key];
+		objs.forEach((function(o){
+			model.product.type = o.type;
+				model.product.label = o.label;
+				model.product.sectors.push({
+					count : o.container.sectors.totalCount,
+					label : key.toUpperCase(),
+					type : o.type
+				});
+				this.aggregateTimeGroupsInTimeLine(o.timeline);
+				var tLabel = o.timeline.queryDetails.qSource.value.toUpperCase() + '-' + o.timeline.queryDetails.qTarget.value.toUpperCase(); 									
+				model.product.timelines.push({
+					label : tLabel,
+					timeline : o.timeline
+				});
+		}).bind(this));
+	}).bind(this));
+	return model;
 }
 
 ModelFactory.prototype.getLeafInMultiLeafModel = function (frames, compareQueryContext){
@@ -425,7 +455,7 @@ ModelFactory.prototype.isRegionType = function(r){
 	return _.contains(regionTypes, r);
 }
 
-ModelFactory.prototype.aggregateTimeGroupsInTimeLine = function(timeline){
+ModelFactory.prototype.aggregateTimeGroupsInTimeLine_old = function(timeline){
 	var tgs = timeline.timeGroups;
 	tgs.forEach(function(tg){
 		Object.keys(tg).forEach(function(key){
@@ -436,4 +466,24 @@ ModelFactory.prototype.aggregateTimeGroupsInTimeLine = function(timeline){
 			})
 		});
 	});
+}
+
+ModelFactory.prototype.aggregateTimeGroupsInTimeLine = function(timeline){
+	var tgs = timeline.timeGroups;
+	var newTimeGroup = {};
+	tgs.forEach(function(tg){
+		Object.keys(tg).forEach(function(key){
+			tg[key].forEach(function(v){
+				if(!newTimeGroup[key]){
+					newTimeGroup[key] = {
+						totalCount : v.count
+					}
+				}
+				else{
+					newTimeGroup[key].totalCount += v.count;
+				}
+			})			
+		});
+	});
+	timeline.timeGroups = [newTimeGroup];
 }
