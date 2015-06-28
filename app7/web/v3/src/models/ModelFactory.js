@@ -365,6 +365,7 @@ ModelFactory.prototype.getLeafInMultiContainerModel = function (frames, compareQ
 				});
 		}).bind(this));
 	}).bind(this));
+	model.region = this.getRegionForCompareFrames(frames, compareQueryContext);
 	return model;
 }
 
@@ -426,19 +427,22 @@ ModelFactory.prototype.aggregateTimeGroupsInTimeLine = function(timeline){
 	var newTimeGroup = {};
 	tgs.forEach(function(tg){
 		Object.keys(tg).forEach(function(key){
-			tg[key].forEach(function(v){
-				if(!newTimeGroup[key]){
-					newTimeGroup[key] = {
-						totalCount : v.count
+			if(tg[key].length){
+				tg[key].forEach(function(v){
+					if(!newTimeGroup[key]){
+						newTimeGroup[key] = {
+							totalCount : v.count
+						}
 					}
-				}
-				else{
-					newTimeGroup[key].totalCount += v.count;
-				}
-			})			
+					else{
+						newTimeGroup[key].totalCount += v.count;
+					}
+				})
+			}			
 		});
 	});
-	timeline.timeGroups = [newTimeGroup];
+	if(Object.keys(newTimeGroup).length > 0)
+		timeline.timeGroups = [newTimeGroup];
 }
 ModelFactory.prototype.getRegionForCompareFrames = function(frames, compareQueryContext){
 	var compareFrames = {
@@ -589,16 +593,18 @@ ModelFactory.prototype.getTimelinesForRegions = function(tmRegions, frame){
 	var tgs = frame.timeline.timeGroups;
 	tgs.forEach(function(tg){
 		Object.keys(tg).forEach(function(k){
-			tg[k].forEach(function(e){
-				if(!regionTimelines[e.label])
-					regionTimelines[e.label] = {};
-				regionTimelines[e.label][k] = {
-					count : e.count,
-					label : e.label,
-					tKey : e.tKey
-				};
-				
-			});
+			if(tg[k].length){
+				tg[k].forEach(function(e){
+					if(!regionTimelines[e.label])
+						regionTimelines[e.label] = {};
+					regionTimelines[e.label][k] = {
+						count : e.count,
+						label : e.label,
+						tKey : e.tKey
+					};
+					
+				});
+			}
 		});
 	});
 	var qd = frame.timeline.queryDetails;
@@ -608,9 +614,22 @@ ModelFactory.prototype.getTimelinesForRegions = function(tmRegions, frame){
 		end = qd.qTarget.value.toUpperCase();
 
 	var timelines = [];
-	for(var key in regionTimelines){
-		regionTimelines[key].label = end ? start + end : start + key.toUpperCase();
-		timelines.push(regionTimelines[key]);
+	if(Object.keys(regionTimelines).length > 0){
+		for(var key in regionTimelines){
+			regionTimelines[key].label = end ? start + end : start + key.toUpperCase();
+			timelines.push({
+				label : end ? start + end : start + key.toUpperCase(),
+				timeline :{
+					axes : frame.timeline.axes,
+					queryDetails : frame.timeline.queryDetails,
+					timegroups : [regionTimelines[key]]
+				}				
+			});
+		}
+	}
+	else{
+		tgs.label = qd.qSource.value.toUpperCase();
+		timelines = frame.timeline;
 	}
 	return timelines;
 }
