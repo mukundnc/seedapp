@@ -420,7 +420,10 @@ ModelFactory.prototype.getLeafInMultiContainerModel = function (frames, compareQ
 					type : o.type
 				});
 				this.aggregateTimeGroupsInTimeLine(o.timeline);
-				var tLabel = o.timeline.queryDetails.qSource.value.toUpperCase() + '-' + o.timeline.queryDetails.qTarget.value.toUpperCase(); 									
+				var qDetails = o.timeline.queryDetails;
+				var tLabel = qDetails.qTarget ? 
+							 qDetails.qSource.value.toUpperCase() + '-' + qDetails.qTarget.value.toUpperCase():
+							 qDetails.qSource.value.toUpperCase();									
 				model.product.timelines.push({
 					label : tLabel,
 					timeline : o.timeline
@@ -431,15 +434,30 @@ ModelFactory.prototype.getLeafInMultiContainerModel = function (frames, compareQ
 }
 
 ModelFactory.prototype.getLeafInMultiLeafModel = function (frames, compareQueryContext){
+	return this.getLeafInMultiContainerModel(frames, compareQueryContext);
 }
 
 ModelFactory.prototype.getMultiLeafModel = function (frames, compareQueryContext){
+	return this.getLeafInMultiContainerModel(frames, compareQueryContext);
 }
 
 ModelFactory.prototype.getMultiLeafInMultiContainerModel = function (frames, compareQueryContext){
+	var model = this.getLeafInMultiContainerModel(frames, compareQueryContext);
+	var sectors = {};
+	model.product.sectors.forEach(function(sector){
+		if(!sectors[sector.label])
+			sectors[sector.label] = sector;
+		else
+			sectors[sector.label].count += sector.count;
+	});
+	model.product.sectors = [];
+	for(var key in sectors)
+		model.product.sectors.push(sectors[key]);
+	return model;
 }
 
 ModelFactory.prototype.getMultiLeafInContainerModel = function (frames, compareQueryContext){
+	return this.getMultiLeafInMultiContainerModel(frames, compareQueryContext);
 }
 
 ModelFactory.prototype.getMultiLeafInMultiLeafModel = function (frames, compareQueryContext){
