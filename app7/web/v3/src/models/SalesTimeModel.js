@@ -12,6 +12,7 @@ SalesTimeModel.prototype.getModel = function(uiTimeObjs, options){
 	var timeModels = [];
 	for(var i = 0 ; i < uiTimeObjs.length; i++){
 		var timeModel = this.getModeltemplate();
+		timeModel.queryDetails = uiTimeObjs[i].queryDetails;
 		this.initAxes(timeModel, uiTimeObjs[i]);
 		this.initTimeGroups(timeModel, uiTimeObjs[i]);
 		timeModels.push(timeModel);
@@ -32,7 +33,8 @@ SalesTimeModel.prototype.getModeltemplate = function(){
 		axes : {
 			x : {},
 			y : {}
-		}
+		},
+		queryDetails : null
 	}
 }
 
@@ -336,5 +338,45 @@ SalesTimeModel.prototype.getMonthFromLabel = function(monthLabel){
 	return map[sMonth];
 }
 
+SalesTimeModel.prototype.getCompareTimeModel = function(uiTimeObjs, options){
+	var timeModels = this.getModel(uiTimeObjs, options);
+	var keys = ['key1', 'key2'];
+	var compareModels = [];
+	timeModels.forEach((function(timeModel){
+		keys.forEach((function(key){
+			var tm = timeModel[key];
+			var compareModel = this.getCompareTimeModelTmpl();
+			compareModel.type = tm.type;
+			compareModel.timeGroups = tm.timeGroups;
+			compareModel.axes.x = timeModel.axes.x;
+			compareModel.axes.y.xStart = timeModel.axes.y.xStart;
+			compareModel.axes.y.yStart = timeModel.axes.y.yStart;
+			compareModel.axes.y.xEnd = timeModel.axes.y.xEnd;
+			compareModel.axes.y.yEnd = timeModel.axes.y.yEnd;
+			compareModel.queryDetails = timeModel.queryDetails;
+			compareModel.axes.y.labels = timeModel.axes.y[key].labels;
+			compareModel.axes.y.yScale = timeModel.axes.y[key].yScale;
+			compareModels.push(compareModel);
+		}).bind(this));		
+	}).bind(this));
+	
+	return compareModels;
+}
 
-
+SalesTimeModel.prototype.getCompareTimeModelTmpl = function(){
+	return {
+		type : null,
+		timeGroups : [],
+		axes : {
+			x : {},
+			y : {
+				xStart : 0,
+				yStart : 0,
+				xEnd : 0,
+				yEnd : 0,
+				labels : [],
+				yScale : null
+			}
+		}
+	};
+}

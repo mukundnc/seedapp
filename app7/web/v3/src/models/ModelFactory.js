@@ -71,7 +71,8 @@ ModelFactory.prototype.getContainer = function(table, options){
 			totalCount : 0,
 			othersCount : 0
 		},
-		type : table.tableTitle
+		type : table.tableTitle,
+		queryDetails : table.queryDetails
 	};
 
 	var key = table.levels > 1 ? 'columns' : 'cells';
@@ -144,22 +145,57 @@ ModelFactory.prototype.getCompareFrameModel = function(apiRes, options){
 
 ModelFactory.prototype.getQueryItemsFramesAndContext = function(apiRes, options){	
 	var compareQueryContext = this.getCompareQueryContext(apiRes, options);
-	var frames = this.getFrameModel(apiRes, options);
+	var frames = this.getCompareModels(apiRes, options);
 	var popFrequency = this.getPopFequency(compareQueryContext)
-	frames.reverse();
 	var queryVsFrames = {};
-	var refSources = compareQueryContext.qSources.length >= compareQueryContext.qTargets.length ? 
-														   compareQueryContext.qSources : compareQueryContext.qTargets;
+	var refSources = compareQueryContext.qSources;
+	var active = 'qSources';
+	if(compareQueryContext.qTargets.length > compareQueryContext.qSources.length){
+		refSources = compareQueryContext.qTargets;
+		active = 'qTargets';
+	}
+
 	refSources.forEach(function(refSource){
 		queryVsFrames[refSource.value] = [];
-		for(var i = 0 ; i < popFrequency ; i++){
-			queryVsFrames[refSource.value].push(frames.pop());
+		for(var i = 0 ; i < frames.length ; i++){
+			var qDetails = frames[i].container.queryDetails;
+			if(active === 'qSources'){
+				if(qDetails.qSource.value === refSource.value)
+					queryVsFrames[refSource.value].push(frames[i]);
+			}
+			else{
+				if(qDetails.qTarget.value === refSource.value)
+					queryVsFrames[refSource.value].push(frames[i]);
+			}
 		}
 	});
 	return {
 		frames : queryVsFrames,
 		compareQueryContext : compareQueryContext
 	}
+}
+
+ModelFactory.prototype.getCompareModels = function(apiRes, options){
+	var resParser = new ResponseParser();
+	var uiObject = resParser.parse(apiRes);
+
+	var tableModeler = new SalesTableModel();
+	var tableModel = tableModeler.getModel(uiObject, options.container);
+
+	var timeModeler = new SalesTimeModel();
+	var timeModel = timeModeler.getCompareTimeModel(uiObject, options.timeline);
+	timeModel.reverse();
+
+	var frames = [];
+	tableModel.forEach((function(tm){
+		frames.push({
+			type : tm.tableTitle,
+			label : strToFirstUpper(tm.tableTitle, options),
+			container : this.getContainer(tm, options),
+			timeline : timeModel.pop()
+		})
+	}).bind(this));
+	return frames;
 }
 
 ModelFactory.prototype.getCompareQueryContext = function(apiRes, options){
@@ -282,13 +318,6 @@ ModelFactory.prototype.getPopFequency = function(compareQueryContext){
 	return frequency;
 }
 
-
-
-
-
-
-
-
 ModelFactory.prototype.getDefaultCompareModelTmpl = function(){
 	return {
 		product : {
@@ -317,23 +346,40 @@ ModelFactory.prototype.getMultiContainerModel = function (frames, compareQueryCo
 				model.product.label = o.label;
 				model.product.sectors.push({
 					count : o.container.sectors.totalCount,
-					label : strToFirstUpper(key),
+					label : key.toUpperCase(),
 					type : o.type
 				});
 				this.aggregateTimeGroupsInTimeLine(o.timeline);
+				var tLabel = o.timeline.queryDetails.qTarget? 
+									key.toUpperCase() + '-' + o.timeline.queryDetails.qTarget.value.toUpperCase() : 
+									key.toUpperCase();
 				model.product.timelines.push({
-					label : strToFirstUpper(key),
+					label : tLabel,
 					timeline : o.timeline
 				})
 			}
 		}).bind(this));
 	}).bind(this));
-	console.log(frames);
-	console.log(model);
-	return model;	
+	// console.log(frames);
+	// console.log(model);
+	return model;
 }
 
 ModelFactory.prototype.getMultiContainerInMultiContainerModel = function (frames, compareQueryContext){
+var model = this.getMultiContainerModel(frames, compareQueryContext);
+	var sectors = {};
+	model.product.sectors.forEach(function(sector){
+		if(!sectors[sector.label])
+			sectors[sector.label] = sector;
+		else
+			sectors[sector.label].count += sector.count;
+	});
+	model.product.sectors = [];
+	for(var key in sectors)
+		model.product.sectors.push(sectors[key]);
+	
+	console.log(model);
+	return model;
 }
 
 ModelFactory.prototype.getMultiContainerInContainerModel = function (frames, compareQueryContext){

@@ -23,6 +23,7 @@ SalesTableModel.prototype.getModel = function(uiObjects, options){
 		Object.keys(uiObject).forEach((function(tableKey){
 			if(tableKey === 'key1' || tableKey === 'key2'){
 				var table = this.getTable(uiObject[tableKey]);
+				table.queryDetails = uiObject.queryDetails;
 				tables.push(table);
 			}
 		}).bind(this));
