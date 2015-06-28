@@ -298,6 +298,7 @@ ModelFactory.prototype.getMultiContainerModel = function (frames, compareQueryCo
 			}
 		}).bind(this));
 	}).bind(this));
+	model.region = this.getRegionForCompareFrames(frames, compareQueryContext);
 	return model;
 }
 
@@ -439,3 +440,91 @@ ModelFactory.prototype.aggregateTimeGroupsInTimeLine = function(timeline){
 	});
 	timeline.timeGroups = [newTimeGroup];
 }
+ModelFactory.prototype.getRegionForCompareFrames = function(frames, compareQueryContext){
+	Object.keys(frames).forEach((function(k){
+		this.getRegionForCompareFrame(frames[k], compareQueryContext);
+	}).bind(this));
+}
+
+ModelFactory.prototype.getRegionForCompareFrame = function(frame, compareQueryContext){
+	var region = {
+		type : null,
+		label: null,
+		sectors : { 
+			top : [],
+			others : [],
+			totalCount : 0,
+			othersCount : 0
+		},
+		timelines : []
+	};
+	var sectors = {};
+	frame.forEach((function(f){
+		if(this.isRegionType(f.type)){
+			if(compareQueryContext.qTargets.length > 0){
+
+			}
+			else{
+				var tmRegions = [];
+				f.container.sectors.top.forEach(function(item){
+					tmRegions.push(item.key);
+					if(!sectors[item.key])
+						sectors[item.key] =  { totalCount : item.count };
+					else
+						sectors[item.key].totalCount += item.count;
+				});
+				f.container.sectors.others.forEach(function(item){
+					if(!sectors[item.key])
+						sectors[item.key] =  { totalCount : item.count };
+					else
+						sectors[item.key].totalCount += item.count;
+				});
+				region.timelines = this.getTimelinesForRegions(tmRegions, f);
+			}
+			
+		}
+	}).bind(this));	
+	Object.keys(sectors).forEach(function(sk){
+		region.sectors.top.push({
+			label : sk,
+			count : sectors[sk].totalCount
+		});
+	});
+	return region;
+}
+
+ModelFactory.prototype.getTimelinesForRegions = function(tmRegions, frame){
+	var regionTimelines = {};
+	var tgs = frame.timeline.timeGroups;
+	tgs.forEach(function(tg){
+		Object.keys(tg).forEach(function(k){
+			tg[k].forEach(function(e){
+				if(!regionTimelines[e.label])
+					regionTimelines[e.label] = {};
+				regionTimelines[e.label][k] = {
+					count : e.count,
+					label : e.label,
+					tKey : e.tKey
+				};
+				
+			});
+		});
+	});
+	var qd = frame.timeline.queryDetails;
+	var start = qd.qSource.value.toUpperCase() + '-';
+	var end = null;
+	if(qd.qTarget)
+		end = qd.qTarget.value.toUpperCase();
+
+	for(var key in regionTimelines){
+		regionTimelines[key].label = end ? start + end : start + key.toUpperCase();
+	}
+
+	return regionTimelines;
+}
+
+
+
+
+
+
