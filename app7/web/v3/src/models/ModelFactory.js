@@ -147,27 +147,13 @@ ModelFactory.prototype.getCompareFrameModel = function(apiRes, options){
 ModelFactory.prototype.getQueryItemsFramesAndContext = function(apiRes, options){	
 	var compareQueryContext = this.getCompareQueryContext(apiRes, options);
 	var frames = this.getCompareModels(apiRes, options);
-	var popFrequency = this.getPopFequency(compareQueryContext)
 	var queryVsFrames = {};
-	var refSources = compareQueryContext.qSources;
-	var active = 'qSources';
-	if(compareQueryContext.qTargets.length > compareQueryContext.qSources.length){
-		refSources = compareQueryContext.qTargets;
-		active = 'qTargets';
-	}
-
-	refSources.forEach(function(refSource){
-		queryVsFrames[refSource.value] = [];
+	compareQueryContext.qSources.forEach(function(qSource){
+		queryVsFrames[qSource.value] = [];
 		for(var i = 0 ; i < frames.length ; i++){
 			var qDetails = frames[i].container.queryDetails;
-			if(active === 'qSources'){
-				if(qDetails.qSource.value === refSource.value)
-					queryVsFrames[refSource.value].push(frames[i]);
-			}
-			else{
-				if(qDetails.qTarget.value === refSource.value)
-					queryVsFrames[refSource.value].push(frames[i]);
-			}
+			if(qDetails.qSource.value === qSource.value)
+				queryVsFrames[qSource.value].push(frames[i]);
 		}
 	});
 	return {
@@ -268,55 +254,6 @@ ModelFactory.prototype.getCompareQueryContext = function(apiRes, options){
 		isqSourceContainer : isqSourceContainer,
 		isqTargetContainer : isqTargetContainer
 	}
-}
-
-ModelFactory.prototype.getPopFequency = function(compareQueryContext){
-	var qSCount = compareQueryContext.qSources.length;
-	var qTCount = compareQueryContext.qTargets.length;
-	var frequency = 0;
-
-	switch(compareQueryContext.context){
-		case this.compareQueryContext.multi_container :
-			frequency = 2;
-			break;
-		case this.compareQueryContext.multi_container_in_multi_container :
-			frequency = 2 * qTCount;
-			break;
-		case this.compareQueryContext.multi_container_in_container :
-			frequency = 2;
-			break;
-		case this.compareQueryContext.multi_container_in_leaf :
-			frequency = 1;
-			break;
-		case this.compareQueryContext.multi_container_in_multi_leaf :
-			frequency = qTCount;
-			break;
-		case this.compareQueryContext.container_in_multi_container :
-			frequency = 2;
-			break;
-		case this.compareQueryContext.container_in_multi_leaf :
-			frequency = 1;
-			break;
-		case this.compareQueryContext.leaf_in_multi_container :
-			frequency = 1;
-			break;
-		case this.compareQueryContext.leaf_in_multi_leaf :
-			frequency = 0;
-			break;
-		case this.compareQueryContext.multi_leaf :
-			frequency = 1;
-			break;
-		case this.compareQueryContext.multi_leaf_in_multi_container :
-			frequency = 2;
-			break;
-		case this.compareQueryContext.multi_leaf_in_container :
-			frequency = 1;
-			break;
-		case this.compareQueryContext.multi_leaf_in_multi_leaf :
-			frequency = 0;
-			break;	
-	}
-	return frequency;
 }
 
 ModelFactory.prototype.getDefaultCompareModelTmpl = function(){
