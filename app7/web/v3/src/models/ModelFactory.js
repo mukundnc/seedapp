@@ -366,7 +366,7 @@ ModelFactory.prototype.getMultiContainerModel = function (frames, compareQueryCo
 }
 
 ModelFactory.prototype.getMultiContainerInMultiContainerModel = function (frames, compareQueryContext){
-var model = this.getMultiContainerModel(frames, compareQueryContext);
+	var model = this.getMultiContainerModel(frames, compareQueryContext);
 	var sectors = {};
 	model.product.sectors.forEach(function(sector){
 		if(!sectors[sector.label])
