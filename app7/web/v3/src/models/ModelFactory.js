@@ -140,6 +140,7 @@ ModelFactory.prototype.getCompareFrameModel = function(apiRes, options){
 			compareModel = this.getMultiLeafInMultiLeafModel(qfc.frames, qfc.compareQueryContext);
 			break;	
 	}
+	console.log(compareModel);
 	return compareModel;
 }
 
@@ -360,8 +361,6 @@ ModelFactory.prototype.getMultiContainerModel = function (frames, compareQueryCo
 			}
 		}).bind(this));
 	}).bind(this));
-	// console.log(frames);
-	// console.log(model);
 	return model;
 }
 
@@ -378,7 +377,6 @@ ModelFactory.prototype.getMultiContainerInMultiContainerModel = function (frames
 	for(var key in sectors)
 		model.product.sectors.push(sectors[key]);
 	
-	console.log(model);
 	return model;
 }
 
@@ -399,7 +397,6 @@ ModelFactory.prototype.getContainerInMultiContainer = function (frames, compareQ
 	model.product.timelines.forEach(function(tl){
 		tl.label = tl.timeline.queryDetails.qSource.value.toUpperCase() + '-' + tl.timeline.queryDetails.qTarget.value.toUpperCase();
 	});
-	console.log(model);
 	return model;
 }
 
