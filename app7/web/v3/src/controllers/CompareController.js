@@ -66,7 +66,7 @@ CompareController.prototype.getViewOptions = function(qid){
 			xOrg : 90,
 			yOrg : this.H * 0.9,
 			w : this.W + 50,
-			h : this.H * 0.45
+			h : this.H * 0.38
 		}
 	}
 }

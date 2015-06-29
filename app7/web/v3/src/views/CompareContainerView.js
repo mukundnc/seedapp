@@ -5,7 +5,6 @@ function CompareContainerView(model, options){
 }
 
 CompareContainerView.prototype.render = function(){
-	console.log(this.model);
 	var xForm = this.utils.getCodtSystemXForm(this.options.xOrg, this.options.yOrg);
 	var g = this.utils.getGroupByClassName('sp-group');
 	g.attr('transform', xForm.replace('-1', '1')).attr('id', 'arc');
