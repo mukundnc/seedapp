@@ -1,7 +1,7 @@
 function SearchTabView(model, options){	
 	if(options.isCompareView){
-		this.containerView = new CompareContainerView(model.container, options.container);
-		this.timeView = new CompareTimeView(model.timeline, options.timeline);
+		this.containerView = new CompareContainerView(model.sectors, options.container);
+		this.timeView = new CompareTimeView(model.timelines, options.timeline);
 	}
 	else{
 		this.containerView = new SearchContainerView(model.container, options.container);

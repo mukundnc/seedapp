@@ -23,10 +23,7 @@ CompareController.prototype.initModels = function(qid, apiRes){
 		var model = this.modelFactory.getCompareFrameModel(results, this.getModelOptions(results.query));
 		var frameModels = [];
 		Object.keys(model).forEach(function(key){
-			var modelCopy = JSON.parse(JSON.stringify(model));
-			modelCopy.type = model[key].type;
-			modelCopy.label = model[key].label;
-			frameModels.push(modelCopy);
+			frameModels.push(model[key]);
 		});
 		this.qidModels[qid] = frameModels;
 	}
