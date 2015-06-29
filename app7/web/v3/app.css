@@ -236,6 +236,16 @@ body{
 	fill:rgb(202, 202, 202); 
 }
 
+.def-chart-line{
+	stroke:white; 
+	stroke-width:1px; 
+	fill:none;
+}
+
+
+
+
+
 
 
 

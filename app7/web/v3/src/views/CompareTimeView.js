@@ -7,12 +7,14 @@ function CompareTimeView(model, options){
 		times : 'st-time',
 		backnext : 'st-backnext'
 	}
+	this.xAxisEnd = this.options.w;
 }
 
 CompareTimeView.prototype.render = function(){
 	console.log(this.model);
 	this.initYScale();
 	this.addAxes();
+	this.addTimeLines();
 }
 
 CompareTimeView.prototype.initYScale = function(){
@@ -36,13 +38,13 @@ CompareTimeView.prototype.initYScale = function(){
 					   	  .domain([dS, dE])
 						  .range([rS, rE]);
 	var xAxis = this.model[0].timeline.axes.x;
-	var xAxisEnd = xAxis.labels[xAxis.labels.length - 1].xEnd;
+	this.xAxisEnd = xAxis.labels[xAxis.labels.length - 1].xEnd;
 	this.yLabels = [];					  
 	for(var i = h/4 ; i <= h ; i += h/4){
 		this.yLabels.push({
 			xS : 0,
 			yS : i,
-			xE : xAxisEnd,
+			xE : this.xAxisEnd,
 			yE : i,
 			label : Math.round((dE/h) * i)
 		});
@@ -81,3 +83,41 @@ CompareTimeView.prototype.addYAxis = function(g){
 	gT.attr('transform', 'scale(1, -1) rotate(-90, ' + x + ',' + y + ')' );	
 }
 
+CompareTimeView.prototype.getXLabelEndPoints = function(xlabel){
+	var xLabel = _.where(this.model[0].timeline.axes.x.labels, {label : xlabel})[0];
+	return {
+		xS : xLabel.xStart,
+		xE : xLabel.xEnd
+	};
+}
+
+CompareTimeView.prototype.addTimeLines = function(){
+	var g = this.utils.getGroupByClassName(this.groups.times);
+	var xForm = this.utils.getCodtSystemXForm(this.options.xOrg, this.options.yOrg);
+	g.attr('transform', xForm); 
+	g.html('');	
+	var self = this;
+	this.model.forEach(function(m){
+		m.timeline.timeGroups.forEach(function(tg){
+			self.addTimeLine(g, tg, m.label);
+		});
+	});	
+}
+
+CompareTimeView.prototype.addTimeLine = function(g, timeGroup, tlLabel){
+	var i = 0;
+	var path = new Path();
+	Object.keys(timeGroup).forEach((function(xLabel){
+		var count = timeGroup[xLabel].count || timeGroup[xLabel].totalCount;
+		var xL = this.getXLabelEndPoints(xLabel);
+		var x = (xL.xS + xL.xE)/2;
+		var y = this.yScale(count);
+		i === 0 ? path.moveTo(x, y) : path.lineTo(x, y);
+		i++
+	}).bind(this));
+	var p = g.append('path')
+			 .attr({
+			 	d : path.toString(),
+			 	class : 'def-chart-line'
+			 });
+}
