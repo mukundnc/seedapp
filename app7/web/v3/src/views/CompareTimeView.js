@@ -97,14 +97,19 @@ CompareTimeView.prototype.addTimeLines = function(){
 	g.attr('transform', xForm); 
 	g.html('');	
 	var self = this;
+	var colors = this.utils.getDefaultColors();
+	var mapLabelVsColor = {};
 	this.model.forEach(function(m){
 		m.timeline.timeGroups.forEach(function(tg){
-			self.addTimeLine(g, tg, m.label);
+			var c = colors.pop();
+			mapLabelVsColor[m.label] = c;
+			self.addTimeLine(g, tg, m.label, c);
 		});
 	});	
+	this.addLabelMarkers(g, mapLabelVsColor);
 }
 
-CompareTimeView.prototype.addTimeLine = function(g, timeGroup, tlLabel){
+CompareTimeView.prototype.addTimeLine = function(g, timeGroup, tlLabel, tlColor){
 	var i = 0;
 	var path = new Path();
 	Object.keys(timeGroup).forEach((function(xLabel){
@@ -118,6 +123,42 @@ CompareTimeView.prototype.addTimeLine = function(g, timeGroup, tlLabel){
 	var p = g.append('path')
 			 .attr({
 			 	d : path.toString().replace('Z',''),
-			 	class : 'def-chart-line'
+			 	class : 'def-chart-line',
+			 	stroke : tlColor
 			 });
+}
+
+CompareTimeView.prototype.addLabelMarkers = function(g, mapLabelVsColor){
+	var xS = this.xAxisEnd + 20;
+	var yS = this.options.h - 10;
+
+	for(var label in mapLabelVsColor){
+		var color = mapLabelVsColor[label];
+		var d = 10;
+		var x1 = xS;
+		var x2 = x1 + d;
+
+		var l1 = this.utils.addLine(g, x1, yS, x2, yS, 'chart-label-line');
+		l1.attr('stroke', color);
+
+		x1 = x2;
+		x2 = x1+d;
+
+		var r = this.utils.addRect(g, x1, yS-d/2, d, d, '');
+		r.attr('fill', color);
+		
+		x1 = x2;
+		x2 = x1+d;
+
+		var l2 = this.utils.addLine(g, x1, yS, x2, yS, 'chart-label-line');
+		l2.attr('stroke', color);
+
+		x1 = x2;
+		x2 = x1+d;
+
+		var gT = this.utils.addTextXForm(g, x2, -yS + 4, label, 'chart-label', 'start');
+		gT.select('text').attr('fill', color);
+
+		yS -= 20;
+	}
 }

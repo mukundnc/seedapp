@@ -218,5 +218,7 @@ SvgUtils.prototype.getLabel = function (d){
 }	
 
 SvgUtils.prototype.getDefaultColors = function(){
-	return ["#3366CC", "#DC3912", "#FF9900", "#109618", "#990099", "#2b908f"];
+	var d3Colors = d3.scale.category10().range();
+	var myColors =  ["#3366CC", "#DC3912", "#FF9900", "#109618", "#990099", "#2b908f"];
+	return d3Colors.concat(myColors);
 }
