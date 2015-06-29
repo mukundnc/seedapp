@@ -626,8 +626,10 @@ ModelFactory.prototype.getTimelinesForRegions = function(tmRegions, frame){
 		}
 	}
 	else{
-		tgs.label = qd.qSource.value.toUpperCase();
-		timelines = frame.timeline;
+		timelines = [{
+			label : qd.qSource.value.toUpperCase(),
+			timeline : frame.timeline
+		}];
 	}
 	return timelines;
 }
