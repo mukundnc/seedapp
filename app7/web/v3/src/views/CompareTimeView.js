@@ -117,7 +117,7 @@ CompareTimeView.prototype.addTimeLine = function(g, timeGroup, tlLabel){
 	}).bind(this));
 	var p = g.append('path')
 			 .attr({
-			 	d : path.toString(),
+			 	d : path.toString().replace('Z',''),
 			 	class : 'def-chart-line'
 			 });
 }
