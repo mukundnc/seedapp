@@ -11,7 +11,7 @@ CompareController.prototype.renderView = function(qid, apiRes){
 		this.qidResults[qid] = apiRes;
 
 	var results = this.qidResults[qid];
-	var models = this.modelFactory.getCompareFrameModel(apiRes, this.getModelOptions(results.query));
+	var models = this.modelFactory.getCompareFrameModel(results, this.getModelOptions(results.query));
 }
 
 CompareController.prototype.getModelOptions = function(query){
