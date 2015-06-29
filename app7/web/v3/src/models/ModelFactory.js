@@ -140,7 +140,7 @@ ModelFactory.prototype.getCompareFrameModel = function(apiRes, options){
 			compareModel = this.getMultiLeafInMultiLeafModel(qfc.frames, qfc.compareQueryContext);
 			break;	
 	}
-	console.log(compareModel);
+	//console.log(compareModel);
 	return compareModel;
 }
 

@@ -4,5 +4,5 @@ function CompareContainerView(model, options){
 }
 
 CompareContainerView.prototype.render = function(){
-	console.log('compare container view');
+	console.log(this.model);
 }

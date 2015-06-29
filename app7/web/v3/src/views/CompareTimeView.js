@@ -4,6 +4,6 @@ function CompareTimeView(model, options){
 }
 
 CompareTimeView.prototype.render = function(){
-	console.log('compare timer view');
+	
 }
 
