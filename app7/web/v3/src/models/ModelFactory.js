@@ -614,7 +614,7 @@ ModelFactory.prototype.getTimelinesForRegions = function(tmRegions, frame){
 	var timelines = [];
 	if(Object.keys(regionTimelines).length > 0){
 		for(var key in regionTimelines){
-			regionTimelines[key].label = end ? start + end : start + key.toUpperCase();
+			//regionTimelines[key].label = end ? start + end : start + key.toUpperCase();
 			timelines.push({
 				label : end ? start + end : start + key.toUpperCase(),
 				timeline :{
