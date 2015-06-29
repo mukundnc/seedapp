@@ -11,7 +11,6 @@ function CompareTimeView(model, options){
 }
 
 CompareTimeView.prototype.render = function(){
-	console.log(this.model);
 	this.initYScale();
 	this.addAxes();
 	this.addTimeLines();
