@@ -1,17 +1,33 @@
 function CompareController(appController){
 	this.appController = appController;
 	this.qidResults = {};
+	this.qidModels = {};
 	this.modelFactory = new ModelFactory();
 	this.H = $('.svg-container').height();
 	this.W = $('.svg-container').width();
 }
 
 CompareController.prototype.renderView = function(qid, apiRes){
+	this.initModels(qid, apiRes);
+
+	var searchFrameView = new SearchFrameView(this.qidModels[qid], this.getViewOptions(qid));
+	searchFrameView.render()
+}
+
+CompareController.prototype.initModels = function(qid, apiRes){
 	if(!this.qidResults[qid] && apiRes)
 		this.qidResults[qid] = apiRes;
-
-	var results = this.qidResults[qid];
-	var models = this.modelFactory.getCompareFrameModel(results, this.getModelOptions(results.query));
+	
+	if(!this.qidModels[qid]){
+		var results = this.qidResults[qid];
+		var model = this.modelFactory.getCompareFrameModel(results, this.getModelOptions(results.query));
+		var frameModels = [];
+		Object.keys(model).forEach(function(key){
+			model.type = model[key].type;
+			frameModels.push(model);
+		});
+		this.qidModels[qid] = frameModels;
+	}
 }
 
 CompareController.prototype.getModelOptions = function(query){
@@ -31,12 +47,12 @@ CompareController.prototype.getModelOptions = function(query){
 	};
 }
 
-CompareController.prototype.getViewOptions = function(resultCount, qid){
+CompareController.prototype.getViewOptions = function(qid){
 	return {
 		controller : this,
-		resultCount : resultCount,
 		w : this.W,
 		h : this.H,
+		isCompareView : true,
 		container : {
 			qid : qid,
 			controller : this,
