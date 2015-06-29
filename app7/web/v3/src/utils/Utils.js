@@ -216,3 +216,7 @@ SvgUtils.prototype.getLabel = function (d){
 	return d.data.label;
 
 }	
+
+SvgUtils.prototype.getDefaultColors = function(){
+	return ["#3366CC", "#DC3912", "#FF9900", "#109618", "#990099", "#2b908f"];
+}

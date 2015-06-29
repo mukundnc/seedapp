@@ -14,7 +14,7 @@ SearchContainerView.prototype.render = function(){
 	g.attr('transform', xForm.replace('-1', '1')).attr('id', 'arc');
 	g.html('');
 
-	var colors=["#3366CC", "#DC3912", "#FF9900", "#109618", "#990099", "#2b908f"];
+	var colors=this.utils.getDefaultColors();
 	var data = [];
 
 	this.model.sectors.top.forEach(function(t){
