@@ -53,6 +53,7 @@ CompareTimeView.prototype.addAxes = function(g){
 	var g = this.utils.getGroupByClassName(this.groups.axes);
 	var xForm = this.utils.getCodtSystemXForm(this.options.xOrg, this.options.yOrg);
 	g.attr('transform', xForm); 
+	g.html('');
 	this.addXAxis(g);
 	this.addYAxis(g);
 }

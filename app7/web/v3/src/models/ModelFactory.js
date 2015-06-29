@@ -620,7 +620,7 @@ ModelFactory.prototype.getTimelinesForRegions = function(tmRegions, frame){
 				timeline :{
 					axes : frame.timeline.axes,
 					queryDetails : frame.timeline.queryDetails,
-					timegroups : [regionTimelines[key]]
+					timeGroups : [regionTimelines[key]]
 				}				
 			});
 		}
