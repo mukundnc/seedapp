@@ -84,8 +84,13 @@ SalesAppController.prototype.getTreeText = function(apiRes){
 }
 
 SalesAppController.prototype.getControllerForSearch = function(apiRes){
-	if(apiRes.results.length > 1)
+	if(apiRes.results.length > 1){
+		for (var i = 0 ; i < apiRes.results.length; i++){
+			if(!apiRes.results[i].aggregations)
+				return this.noAggController;
+		}
 		return this.compareController;
+	}
 	
 	if(apiRes.results[0].aggregations)
 		return this.searchController;
