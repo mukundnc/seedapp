@@ -24,6 +24,9 @@ NoAggSearchController.prototype.renderView = function(qid, apiRes){
 		});
 		
 	});
+	data.records = _.sortBy(data.records, function(r){
+		return r._source.product.model;
+	});
 
 	var g = this.utils.getGroupByClassName('res-table-group');
 	g.attr('transform', this.utils.getCodtSystemXForm(0, 500));
