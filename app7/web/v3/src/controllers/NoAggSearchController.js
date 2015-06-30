@@ -12,9 +12,22 @@ NoAggSearchController.prototype.renderView = function(qid, apiRes){
 
 	d3.selectAll('.svg-view').html('');
 
+	var data = {
+		total : 0,
+		records : []
+	};
+
+	results.results.forEach(function(r){
+		data.total += r.hits.total,
+		r.hits.hits.forEach(function(h){
+			data.records.push(h);
+		});
+		
+	});
+
 	var g = this.utils.getGroupByClassName('res-table-group');
 	g.attr('transform', this.utils.getCodtSystemXForm(0, 500));
-	this.utils.addTextXForm(g, $('.svg-container').width()/2.5, -450, 'TOTAL SALES - ' + results.results[0].hits.total, 'sales-header');
+	this.utils.addTextXForm(g, $('.svg-container').width()/2.5, -450, 'TOTAL SALES - ' + data.total, 'sales-header');
 	var xStart = 70;
 	var yStart = 400;
 	var w = 120;
@@ -30,7 +43,7 @@ NoAggSearchController.prototype.renderView = function(qid, apiRes){
 
 	var res = results.results[0].hits.hits;
 
-	res.forEach((function(r){
+	data.records.forEach((function(r){
 		var p = r._source.product;
 		var rg = r._source.region;
 		headers = [p.model, p.brand, p.type, rg.city, rg.state, rg.region, r._source.timestamp, '1'];
