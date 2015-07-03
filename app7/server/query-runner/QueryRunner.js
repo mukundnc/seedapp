@@ -7,6 +7,7 @@ var config = require('./../../config/config');
 var logger = require('./../utils/Logger');
 var QueryAggregator = require('./QueryAggregator');
 var CompareQueryAggregator = require('./CompareQueryAggregator');
+var _ = require('underscore');
 
 function QueryRunner(){
 	this.init();
@@ -76,9 +77,20 @@ QueryRunner.prototype.runCompare = function(allSrcTargetFilters, antlrQueryObjec
 			cbOnDone({success : false, results : 'error in ES query execute'});
 		}
 		else{
-
-			res.qSource = esQuery.body.query.filtered.query.bool.should.terms;
-			res.qTarget = esQuery.body.query.filtered.filter ? esQuery.body.query.filtered.filter.or : null;
+			var sources = [];
+			var targets = []
+			res.qSource = [];
+			res.qTarget = [];
+			allSrcTargetFilters.forEach(function(stf){
+				if(stf.source && !_.contains(sources, stf.source.value)){
+					res.qSource.push(stf.source);
+					sources.push(stf.source.value);
+				}
+				if(stf.target && !_.contains(targets, stf.target.value)){
+					res.qTarget.push(stf.target);
+					targets.push(stf.target.value);
+				}
+			});
 			cbOnDone({success : true, results : res});
 		}
 	});	
