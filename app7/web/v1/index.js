@@ -27,8 +27,8 @@ AntlrApp.prototype.executeQuery = function(e){
 	var query = $('.searchInput').val();
 	query = encodeURIComponent(query);
 	var url = '/api/search?q=' + query;
-
-	$.getJSON(url, this.onDataReceived.bind(this));
+	var esQueryBldr = new ESQueryBuilder();
+	esQueryBldr.executeQuery(url, this.onDataReceived.bind(this));
 }
 
 AntlrApp.prototype.handleKeyPressEvent = function(e){
