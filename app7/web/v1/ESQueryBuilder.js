@@ -11,7 +11,7 @@ ESQueryBuilder.prototype.getBasicQuery = function(){
 		body: {
 			query: {
 				match: {
-					category: 'Automobile'
+					category: 'Electronics'
 				}
 			},
 			//fields : ['city'],
@@ -73,8 +73,67 @@ ESQueryBuilder.prototype.getAndFilteredQuery = function(){
 	}
 }
 
+ESQueryBuilder.prototype.getOrFilteredQuery = function(){
+	return {
+		index: 'companysales',
+		type: 'sales',
+		body: {
+			query: {
+				filtered: {
+					query :{
+						match_all: {
+						}
+					},
+					filter : {
+						or : [
+							{term : {'type' : 'Car'}},
+							{term : {'type': 'Bike'}}
+						],
+						and : [
+							{term : {'state' : 'UP'}}
+						]
+					}
+
+				}		
+			},
+			size:100,
+			_source : true
+		}
+	}
+}
+
+ESQueryBuilder.prototype.getBoolFilteredQuery = function(){
+	return {
+		index: 'companysales',
+		type: 'sales',
+		body: {
+			query: {
+				filtered: {
+					query :{
+						bool : {
+							should : {
+								terms : {
+									type : ['Bike', 'Car']
+								}
+							}
+						}
+					},
+					filter : {
+						or : [
+							{term : {'state' : 'UP'}},
+							{term : {'state' : 'MP'}}
+						]
+					}
+
+				}		
+			},
+			size:25,
+			_source : true
+		}
+	}
+}
 ESQueryBuilder.prototype.executeQuery = function(url, cbOnDone){
-	var esQuery = this.getBasicQuery();
+	var esQuery = this.getBoolFilteredQuery();
 	this.client.search(esQuery).then(this.onQueryResponse.bind(this, cbOnDone), this.onQueryError.bind(this));	
 }
 
