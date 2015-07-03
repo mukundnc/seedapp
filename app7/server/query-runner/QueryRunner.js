@@ -140,9 +140,16 @@ QueryRunner.prototype.getSourceTargetAndFilterBreakDown = function(queryAndFilte
 
 QueryRunner.prototype.applyAggregatorsToESQuery = function(esQuery, antlrQueryObject){
 	var keys = Object.keys(antlrQueryObject.query);
-	var vals = antlrQueryObject.query[keys[0]];
+	var isCompare = false;
+	for(var i = 0 ; i < keys.length ; i++){
+		var vals = antlrQueryObject.query[keys[i]];
+		if(vals.length > 1){
+			isCompare = true;
+			break;
+		}
+	}	
 	var agg = null;
-	agg = vals.length > 1 ? new CompareQueryAggregator() : new QueryAggregator();
+	agg = isCompare ? new CompareQueryAggregator() : new QueryAggregator();
 	esQuery.body.aggs = agg.getAggregates(antlrQueryObject).aggs;	
 }
 
