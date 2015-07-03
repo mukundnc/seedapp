@@ -6,7 +6,7 @@ var dtm = require('./../utils/DateTime');
 var config = require('./../../config/config');
 var logger = require('./../utils/Logger');
 var QueryAggregator = require('./QueryAggregator');
-
+var CompareQueryAggregator = require('./CompareQueryAggregator');
 
 function QueryRunner(){
 	this.init();
@@ -139,7 +139,10 @@ QueryRunner.prototype.getSourceTargetAndFilterBreakDown = function(queryAndFilte
 
 
 QueryRunner.prototype.applyAggregatorsToESQuery = function(esQuery, antlrQueryObject){
-	var agg = new QueryAggregator();
+	var keys = Object.keys(antlrQueryObject.query);
+	var vals = antlrQueryObject.query[keys[0]];
+	var agg = null;
+	agg = vals.length > 1 ? new CompareQueryAggregator() : new QueryAggregator();
 	esQuery.body.aggs = agg.getAggregates(antlrQueryObject).aggs;	
 }
 
