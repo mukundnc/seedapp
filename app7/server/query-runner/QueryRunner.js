@@ -42,7 +42,7 @@ QueryRunner.prototype.run = function(antlrQueryObject, cbOnDone){
 		return;
 	}
 
-	if(allSrcTargets.length > 0){
+	if(allSrcTargets.length > 1){
 		this.runCompare(allSrcTargets, antlrQueryObject, onComplete)
 	}
 	else
