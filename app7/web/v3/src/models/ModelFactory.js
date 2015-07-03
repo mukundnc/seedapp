@@ -106,6 +106,7 @@ ModelFactory.prototype.getCompareFrameModel = function(apiRes, options){
 	var model = this.getDefaultCompareModelTmpl();
 	fms.forEach((function(fm){		
 		if(this.isProductType(fm.container.type)){
+			var tLabels = [];
 			model.product.type = fm.type;
 			model.product.label = fm.label;
 			fm.container.sectors.top.forEach(function(s){
@@ -114,9 +115,12 @@ ModelFactory.prototype.getCompareFrameModel = function(apiRes, options){
 					label : s.key,
 					type : fm.container.type
 				});
+				tLabels.push(s.key);
 			});
+			model.product.timelines = this.getTimeLinesForCompare(fm.timeline, tLabels);
 		}
 		else if(this.isRegionType(fm.container.type)){
+			var tLabels = [];
 			model.region.type = fm.type;
 			model.region.label = fm.label;
 			fm.container.sectors.top.forEach(function(s){
@@ -125,7 +129,9 @@ ModelFactory.prototype.getCompareFrameModel = function(apiRes, options){
 					label : s.key,
 					type : fm.container.type
 				});
+				tLabels.push(s.key);
 			});
+			model.region.timelines = this.getTimeLinesForCompare(fm.timeline, tLabels);
 		}
 	}).bind(this));	
 	console.log(fms);	
@@ -142,4 +148,36 @@ ModelFactory.prototype.isRegionType = function(r){
 	return _.contains(regionTypes, r);
 }
 
-
+ModelFactory.prototype.getTimeLinesForCompare = function(timeline, tLabels){
+	var tlArr = [];
+	tLabels.forEach(function(tl){
+		tlArr.push(JSON.parse(JSON.stringify(timeline)));
+	});
+	var copyTLables = tLabels.slice(0);
+	copyTLables.reverse();
+	
+	tlArr.forEach(function(tl){
+		var tgs = tl.timeGroups;
+		var timeLabel = copyTLables.pop();
+		tgs.forEach(function(tg){
+			Object.keys(tg).forEach(function(k){
+				var arrTime = tg[k];
+				var toKeep = _.where(arrTime, {label : timeLabel})[0];
+				tg[k] = toKeep;
+			});
+		});
+	});
+	copyTLables = tLabels.slice(0);
+	copyTLables.reverse();
+	var timelines = [];
+	tlArr.forEach(function(tl){
+		timelines.push({
+			label : copyTLables.pop(),
+			timeline : {
+				axes : tl.axes,
+				timeGroups : tl.timeGroups
+			}			
+		});
+	});
+	return timelines;
+}
