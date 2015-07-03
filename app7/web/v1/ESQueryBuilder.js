@@ -117,12 +117,6 @@ ESQueryBuilder.prototype.getBoolFilteredQuery = function(){
 								}
 							}
 						}
-					},
-					filter : {
-						or : [
-							{term : {'state' : 'UP'}},
-							{term : {'state' : 'MP'}}
-						]
 					}
 
 				}		
@@ -133,8 +127,11 @@ ESQueryBuilder.prototype.getBoolFilteredQuery = function(){
 	}
 }
 ESQueryBuilder.prototype.executeQuery = function(url, cbOnDone){
-	var esQuery = this.getBoolFilteredQuery();
-	this.client.search(esQuery).then(this.onQueryResponse.bind(this, cbOnDone), this.onQueryError.bind(this));	
+	$.getJSON(url, cbOnDone);
+	return;
+
+	// var esQuery = this.getBoolFilteredQuery();
+	// this.client.search(esQuery).then(this.onQueryResponse.bind(this, cbOnDone), this.onQueryError.bind(this));	
 }
 
 ESQueryBuilder.prototype.onQueryResponse = function(cbOnDone, data){

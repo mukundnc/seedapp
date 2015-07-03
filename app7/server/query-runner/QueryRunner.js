@@ -35,20 +35,18 @@ QueryRunner.prototype.getRoot = function(cbOnDone){
 QueryRunner.prototype.run = function(antlrQueryObject, cbOnDone){
 	var allSrcTargets = this.getSourceTargetAndFilterBreakDown(antlrQueryObject);
 	var resp = {success: true, results : []};
-	var execCnt = 0;
 
 	function onComplete(data){
-		execCnt++;
 		resp.results.push(data.results);
-		if(execCnt >= allSrcTargets.length){
-			cbOnDone(resp);
-			return;
-		}
+		cbOnDone(resp);
+		return;
 	}
 
-	allSrcTargets.forEach((function(st){
-		this.runSingle(st, antlrQueryObject, onComplete);
-	}).bind(this));
+	if(allSrcTargets.length > 0){
+		this.runCompare(allSrcTargets, antlrQueryObject, onComplete)
+	}
+	else
+		this.runSingle(allSrcTargets[0], antlrQueryObject, onComplete);
 }
 
 QueryRunner.prototype.runSingle = function(srcTargetFilter, antlrQueryObject, cbOnDone){
@@ -67,6 +65,25 @@ QueryRunner.prototype.runSingle = function(srcTargetFilter, antlrQueryObject, cb
 		}
 	});	
 }
+
+QueryRunner.prototype.runCompare = function(allSrcTargetFilters, antlrQueryObject, cbOnDone){
+	var qHlpr = new ESQueryHelper();
+	var esQuery = qHlpr.getESQueryToCompare(allSrcTargetFilters);
+	this.applyAggregatorsToESQuery(esQuery, antlrQueryObject);
+	this.client.search(esQuery, function(err, res){
+		if(err){
+			logger.log(err);
+			cbOnDone({success : false, results : 'error in ES query execute'});
+		}
+		else{
+
+			res.qSource = esQuery.body.query.filtered.query.bool.should.terms;
+			res.qTarget = esQuery.body.query.filtered.filter ? esQuery.body.query.filtered.filter.or : null;
+			cbOnDone({success : true, results : res});
+		}
+	});	
+}
+
 
 QueryRunner.prototype.getSourceTargetAndFilterBreakDown = function(queryAndFilters){
 	var arr = [];

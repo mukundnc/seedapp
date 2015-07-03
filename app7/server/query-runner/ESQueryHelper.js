@@ -3,7 +3,7 @@ var qb = require('./ESQueryBuilder');
 var dtm = require('./../utils/DateTime');
 var config = require('./../../config/config');
 var logger = require('./../utils/Logger');
-
+var _ = require('underscore');
 
 function ESQueryHelper(){
 	this.queryType = {
@@ -175,5 +175,22 @@ ESQueryHelper.prototype.getMultiAndOr = function(source, target, filters){
 	return esQuery.toESQuery();
 }
 
+ESQueryHelper.prototype.getESQueryToCompare = function(allSrcTargetFilters){
+	var esQuery = new qb.CompareQueryWithTermsAndFilters();
+	var sources = [];
+	var targets = [];
+
+	allSrcTargetFilters.forEach(function(stf){
+		if(stf.source && !_.contains(sources, stf.source.value)){
+			esQuery.addTerm(stf.source.key, stf.source.value);
+			sources.push(stf.source.value);
+		}
+		if(stf.target && !_.contains(targets, stf.target.value)){
+			esQuery.addFilter(stf.target.key, stf.target.value);
+			targets.push(stf.target.value);
+		}
+	});
+	return esQuery.toESQuery();
+}
 
 module.exports = ESQueryHelper;
