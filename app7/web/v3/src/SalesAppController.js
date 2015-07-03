@@ -74,10 +74,7 @@ SalesAppController.prototype.getQueryById = function(qid){
 }
 
 SalesAppController.prototype.getTreeText = function(apiRes){
-	if(apiRes.success){
-		if(apiRes.results.aggregations && apiRes.results.hits.hits.length > 0 && !apiRes.query)
-			return 'Home';
-		
+	if(apiRes.success){		
 		if(Array.isArray(apiRes.results[0].qSource) || Array.isArray(apiRes.results[0].qTarget)){
 			arr = [];
 			var srcTarg = apiRes.results[0].qSource.concat(apiRes.results[0].qTarget);
