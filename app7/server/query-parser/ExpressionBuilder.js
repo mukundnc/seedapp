@@ -140,10 +140,12 @@ ExpressionBuilder.prototype.getFiltersForDateRelation = function(atomicOrComposi
 	var filters = [];
 	if(op === 'from' || op === 'to'){
 		filters.push({
-			name : terms[0].getText(),
-			operator : op,
-			value : filterValue,
-			isDate : true
+			filter : {
+				name : terms[0].getText(),
+				operator : op,
+				value : filterValue,
+				isDate : true
+			}
 		});
 	}
 	else{
