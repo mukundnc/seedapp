@@ -190,6 +190,7 @@ modelSpec
 	: STR 
 	| STRNUM
 	| STR '-' NUM
+	| year_spec
 	;
 
 citySpec : STR;
@@ -220,8 +221,15 @@ expression
 	;
 		
 dateSpec 
-	:	YYYY_MM_DD
+	: NUM (year_spec | month_spec | day_spec)
+	| NUM
+	| YYYY_MM_DD
 	;
+
+year_spec : 'years' | 'year';
+month_spec :  'months' | 'month';
+day_spec : 'days' | 'day';
+
 
 parseDate 
 	: STR RELATION_OPERATOR dateSpec
