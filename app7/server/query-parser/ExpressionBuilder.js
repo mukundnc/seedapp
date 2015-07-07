@@ -138,29 +138,35 @@ ExpressionBuilder.prototype.getFiltersForDateRelation = function(atomicOrComposi
 	var op = operators[0].getText();
 	var filterValue = terms[1].getText();
 	var filters = [];
-	if(op === 'from' || op === 'to'){
-		filters.push({
-			filter : {
-				name : terms[0].getText(),
-				operator : op,
-				value : filterValue,
-				isDate : true
-			}
-		});
-	}
-	else{
-		if(op === 'is' || op === '=')
-			filters = this.getFiltersForYearDateRelation(atomicOrCompositeExpressionRelation)
-		else if(filterValue.indexOf('years') !== -1 || filterValue.indexOf('year') !== -1)
-			filters = this.getFiltersForInLastYearsDateRelation(atomicOrCompositeExpressionRelation);
-		else if(filterValue.indexOf('months') !== -1 || filterValue.indexOf('month') !== -1)
-			filters = this.getFiltersForInLastMonthsDateRelation(atomicOrCompositeExpressionRelation);
-		else if(filterValue.indexOf('days') !== -1 || filterValue.indexOf('day') !== -1)
-			filters = this.getFiltersForInLastDaysDateRelation(atomicOrCompositeExpressionRelation);
-	}
+	if(op === 'from' || op === 'to')
+		filters = this.getFiltersForFromToDateRelation(atomicOrCompositeExpressionRelation)
+	else if(op === 'is' || op === '=')
+		filters = this.getFiltersForYearDateRelation(atomicOrCompositeExpressionRelation)
+	else if(filterValue.indexOf('years') !== -1 || filterValue.indexOf('year') !== -1)
+		filters = this.getFiltersForInLastYearsDateRelation(atomicOrCompositeExpressionRelation);
+	else if(filterValue.indexOf('months') !== -1 || filterValue.indexOf('month') !== -1)
+		filters = this.getFiltersForInLastMonthsDateRelation(atomicOrCompositeExpressionRelation);
+	else if(filterValue.indexOf('days') !== -1 || filterValue.indexOf('day') !== -1)
+		filters = this.getFiltersForInLastDaysDateRelation(atomicOrCompositeExpressionRelation);
+	
 	return filters;
 }
-
+ExpressionBuilder.prototype.getFiltersForFromToDateRelation = function(atomicOrCompositeExpressionRelation){
+	var terms = atomicOrCompositeExpressionRelation.term();
+	var operators = atomicOrCompositeExpressionRelation.RELATION_OPERATOR();
+	var op = operators[0].getText();
+	var filterValue = terms[1].getText();
+	var filters = [];
+	filters.push({
+		filter : {
+			name : terms[0].getText(),
+			operator : op,
+			value : filterValue,
+			isDate : true
+		}
+	});
+	return filters;
+}
 ExpressionBuilder.prototype.getFiltersForYearDateRelation = function(atomicOrCompositeExpressionRelation){
 	var terms = atomicOrCompositeExpressionRelation.term();
 	var operators = atomicOrCompositeExpressionRelation.RELATION_OPERATOR();
