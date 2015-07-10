@@ -24,11 +24,11 @@ execute <- function (jsonObj) {
 			outVals[i+1] = -1;
 	 	if(values[i+1] > max)
 		 	outVals[i+1] = 1;
-		print(keys[i+1]);
-		print(values[i+1]);
-		print(min);
-		print(max);		
-		print('-----------------')
+		# print(keys[i+1]);
+		# print(values[i+1]);
+		# print(min);
+		# print(max);		
+		# print('-----------------')
 	}
     results <- outVals;
     names(results) <- keys
