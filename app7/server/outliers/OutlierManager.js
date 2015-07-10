@@ -49,6 +49,9 @@ OutlierManager.prototype.onSearchQueryResponse = function(searchResults, query, 
 		cbOnDone({success : false, message : 'Operation not supported'});
 		return;
 	}
+
+	var allDrillDownSearches = this.getAllDrilldownSearches(parsedResponse, query, line);
+	console.log(allDrillDownSearches);
 	cbOnDone(parsedResponse);
 }
 
@@ -81,13 +84,66 @@ OutlierManager.prototype.getAllDrilldownSearches = function(parsedResponse, quer
 	drillDownItems.forEach(function(ddItem){
 		drillDownSubjects.push(ddItem.key);
 	});
-	var qSource = parsedResponse[0].queryDetails.qSource.value;
+	var qSource = parsedResponse[0].queryDetails.qSource;
+	var qTarget = parsedResponse[0].queryDetails.qTarget;
 
 	var drillDownQueries = [];
-	drillDownSubjects.forEach(function(ddSub){
-		drillDownQueries.push(query.replace(qSource, ddSub));
-	});
+	drillDownSubjects.forEach((function(ddSub){
+		var qParams = {
+			type : line === 'product' ? 'categories' : 'regions',
+			label : ddSub
+		}
+		var ddQuery = this.getQueryString(qParams, qSource, qTarget);
+		drillDownQueries.push(ddQuery);
+	}).bind(this));
 	return drillDownQueries;
+}
+
+OutlierManager.prototype.getQueryString = function(queryParams, qSource, qTarget){
+	var regionTypes = ['regions', 'states', 'cities', 'region', 'state', 'city'];
+	var productTypes = ['categories', 'types', 'brands', 'models', 'category', 'type', 'brand', 'model'];
+
+	function isProductType(p){
+		return productTypes.indexOf(p) !== -1;
+	}
+
+	function isRegionType(t){
+		return regionTypes.indexOf(t) !== -1;
+	}
+	var q = '';
+	if(!qTarget){
+		if(isProductType(queryParams.type)){
+			if(isProductType(qSource.key)){
+				//Single word product drill down  search
+				q = queryParams.label;
+			}
+			else{
+				//product drilldown in region
+				q = queryParams.label + ' in ' + qSource.value; 
+			}
+		}
+		else{
+			if(isRegionType(qSource.key)){
+				//Single word region drill down  search
+				q = queryParams.label;
+			}
+			else{
+				//Org query now in region
+				q = qSource.value  + ' in ' + queryParams.label;
+			}
+		}
+	}
+	else{
+		if(isProductType(queryParams.type)){
+			//Drilldown product in region search
+			q = queryParams.label + ' in ' + qTarget.value;
+		}
+		else{
+			//Org query now in region drilldown
+			q = qSource.value  + ' in ' + queryParams.label;
+		}
+	}
+	return q;
 }
 
 module.exports = OutlierManager;
