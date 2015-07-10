@@ -31,6 +31,9 @@ var config = {
 	},
 	saleStrategy : {
 		strategyFileName : './web/v1/sales.txt'
+	},
+	rConfig : {
+		forecastFilePath : './server/outliers/Forecast.R'
 	}
 };
 
