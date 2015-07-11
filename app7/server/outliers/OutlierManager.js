@@ -24,10 +24,10 @@ OutlierManager.prototype.handleOutlierRequest = function(reqHttp, resHttp){
 	
 }
 
-OutlierManager.prototype.executeOutliersForTopMode = function(reqHttp, line, cbOnDone){
-	var outlierTop = new OutlierTop();
+OutlierManager.prototype.executeOutliersForTopMode = function(reqHttp, line, cbOnDone){	
 	var onSearchQueryResponse = {
 		json : function(res){
+			var outlierTop = new OutlierTop();
 			outlierTop.getOutliersForTop(res, line, cbOnDone);
 		}
 	}
@@ -35,16 +35,22 @@ OutlierManager.prototype.executeOutliersForTopMode = function(reqHttp, line, cbO
 }
 
 OutlierManager.prototype.executeOutliersForDrilldownMode = function(reqHttp, query, line, cbOnDone){
-	var self = this;
+	var self = this;	
+
+	function onDrilldownSearchExecutionComplete(allExecutedSearches){
+		var outlierDrillDown = new OutlierDrillDown();
+		outlierDrillDown.getOutliersForDrillDown(allExecutedSearches, line, cbOnDone);
+	}
+
 	var onSearchQueryResponse = {
 		json : function(res){
-			self.onSearchQueryResponse(res, query, line, cbOnDone);
+			self.buildAndExecuteDrilldownSearches(res, query, line, onDrilldownSearchExecutionComplete);
 		}
 	}
 	this.apiController.handleSearchRequest(reqHttp, onSearchQueryResponse);
 }
 
-OutlierManager.prototype.onSearchQueryResponse = function(searchResults, query, line, cbOnDone){
+OutlierManager.prototype.buildAndExecuteDrilldownSearches = function(searchResults, query, line, cbOnDone){
 	var respParser = new ResponseParser();
 	var parsedResponse = respParser.parse(searchResults);
 	
@@ -199,8 +205,7 @@ OutlierManager.prototype.executeAllDrilldownSearches = function(allSearchDetails
 	allSearchDetails = allSearchDetails.reverse();
 	var oneSearch = allSearchDetails.pop();
 	var executedSearches = [];
-	var outlierDrillDown = new OutlierDrillDown();
-
+	
 	function onParseResponse(resParseQuery){
 		self.apiController.executeQuery(resParseQuery.data, onExecuteQueryResponse);
 	}
@@ -215,11 +220,10 @@ OutlierManager.prototype.executeAllDrilldownSearches = function(allSearchDetails
 				queryParser.parse(oneSearch.query, onParseResponse);
 			}
 			else{
-				outlierDrillDown.getOutliersForDrillDown(executedSearches, line, cbOnDone);
+				cbOnDone(executedSearches);
 			}
 		}
-	}
-	
+	}	
 	var queryParser = new QueryParser();
 	queryParser.parse(oneSearch.query, onParseResponse);
 }
