@@ -21,7 +21,8 @@ OutlierManager.prototype.handleOutlierRequest = function(reqHttp, resHttp){
 		this.executeOutliersForTopMode(reqHttp, line, cbOnDone);
 	else if(mode === 'drilldown')
 		this.executeOutliersForDrilldownMode(reqHttp, query, line, cbOnDone);
-	
+	else
+		cbOnDone({success:false, message : 'Operation not supported'});	
 }
 
 OutlierManager.prototype.executeOutliersForTopMode = function(reqHttp, line, cbOnDone){	
