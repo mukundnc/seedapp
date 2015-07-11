@@ -2,6 +2,7 @@
 var OutlierTop = require('./OutlierTop');
 var ResponseParser = require('./../utils/ResponseParser');
 var logger = require('./../utils/Logger');
+var QueryParser = require('./../query-parser/QueryParser');
 
 function OutlierManager(apiController){
 	this.apiController = apiController;
@@ -53,7 +54,18 @@ OutlierManager.prototype.onSearchQueryResponse = function(searchResults, query, 
 
 	var allDrillDownSearches = this.getAllDrilldownSearches(parsedResponse, query, line);
 	logger.log(allDrillDownSearches);
-	cbOnDone(parsedResponse);
+
+	var allSearchDetails = [];
+	var i = 1;
+	allDrillDownSearches.forEach(function(searchQuery){
+		allSearchDetails.push({
+			id : i,
+			query : searchQuery.toLowerCase(),
+			response : null
+		});
+		i++;
+	});
+	this.executeAllDrilldownSearches(allSearchDetails, line, cbOnDone);
 }
 
 OutlierManager.prototype.isDrilldownSupported = function(parsedResponse, line){
@@ -180,5 +192,35 @@ OutlierManager.prototype.isRegionType = function(rType){
 	var regions = ['regions', 'states'];
 	return regions.indexOf(rType) !== -1;
 }
+
+OutlierManager.prototype.executeAllDrilldownSearches = function(allSearchDetails, line, cbOnDone){
+	var self = this;
+	allSearchDetails = allSearchDetails.reverse();
+	var oneSearch = allSearchDetails.pop();
+	var executedSearches = [];
+
+	function onParseResponse(resParseQuery){
+		self.apiController.executeQuery(resParseQuery.data, onExecuteQueryResponse);
+	}
+
+	var onExecuteQueryResponse = {
+		json : function(resExecuteQuery){
+			oneSearch.response = resExecuteQuery;
+			executedSearches.push(JSON.parse(JSON.stringify(oneSearch)));
+			oneSearch = allSearchDetails.pop();			
+			if(oneSearch){
+				var queryParser = new QueryParser();
+				queryParser.parse(oneSearch.query, onParseResponse);
+			}
+			else{
+				cbOnDone(executedSearches);
+			}
+		}
+	}
+	
+	var queryParser = new QueryParser();
+	queryParser.parse(oneSearch.query, onParseResponse);
+}
+
 
 module.exports = OutlierManager;
