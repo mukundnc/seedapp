@@ -1,4 +1,5 @@
 var rio = require("rio");
+var _ = require('underscore');
 var config = require('./../../config/config').rConfig;
 var logger = require('./../utils/Logger');
 var ResponseParser = require('./../utils/ResponseParser');
@@ -22,8 +23,10 @@ OutlierDrillDown.prototype.getOutliersForDrillDown = function(drillDownSearchRes
 
 	}).bind(this));
 	
+	var self = this;
 	function onDone(){
-		cbOnDone(drillDownSearchResults);
+		var timeFormatedOutliers = self.getTimeFormattedOutliers(resIdVsOutlierItems);
+		cbOnDone(timeFormatedOutliers);
 	}
 	this.markOutliersInItems(resIdVsOutlierItems, onDone);
 }
@@ -101,8 +104,14 @@ OutlierDrillDown.prototype.markOutlierInOneItem = function(outlierItem, cbOnDone
 			keys.forEach(function(timeKey){
 				timeKeyVsItem[timeKey].outlier = timeKeyVsOutlierFlag[timeKey];
 			});
+			objChild.items.forEach(function(objChildTimeItem){
+				var olItems1 = _.where(objChildTimeItem.items, {outlier : 1});
+				var olItems2 = _.where(objChildTimeItem.items, {outlier : -1});
+				objChildTimeItem.items = olItems1.concat(olItems2);
+			});
 			onDone(keys.length);
 		});	
+		
 	});
 }
 
@@ -142,5 +151,23 @@ OutlierDrillDown.prototype.getOutlierFlagsForTimeItems = function(timeKeyVsCount
 	});
 }
 
+OutlierDrillDown.prototype.getTimeFormattedOutliers = function(resIdVsOutlierItems){
+	var timeFormattedResults = {};
+	for(var key in resIdVsOutlierItems){
+		var topArr = resIdVsOutlierItems[key];
+		topArr.forEach(function(firstLChild){
+			firstLChild.items.forEach(function(secondLChild){
+				secondLChild.items.forEach(function(thirdLChild){
+					var year = new Date(thirdLChild.key).getFullYear();
+					if(!timeFormattedResults[year])
+						timeFormattedResults[year] = [];
+					thirdLChild.label = firstLChild.key;
+					timeFormattedResults[year].push(thirdLChild);
+				});
+			});
+		});
+	}
+	return timeFormattedResults;
+}
 
 module.exports = OutlierDrillDown
