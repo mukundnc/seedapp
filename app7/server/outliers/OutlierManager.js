@@ -40,6 +40,7 @@ OutlierManager.prototype.executeOutliersForDrilldownMode = function(reqHttp, que
 
 	function onDrilldownSearchExecutionComplete(allExecutedSearches){
 		var outlierDrillDown = new OutlierDrillDown();
+		//var t = [allExecutedSearches[0]];
 		outlierDrillDown.getOutliersForDrillDown(allExecutedSearches, line, cbOnDone);
 	}
 
