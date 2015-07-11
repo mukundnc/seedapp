@@ -57,7 +57,7 @@ OutlierManager.prototype.onSearchQueryResponse = function(searchResults, query, 
 
 OutlierManager.prototype.isDrilldownSupported = function(parsedResponse, line){
 	var products = ['categories', 'types', 'brands'];
-	var regions = ['regions'];
+	var regions = ['regions', 'states'];
 	var supported = {
 		isProduct : false,
 		isRegion : false
@@ -78,8 +78,7 @@ OutlierManager.prototype.isDrilldownSupported = function(parsedResponse, line){
 }
 
 OutlierManager.prototype.getAllDrilldownSearches = function(parsedResponse, query, line){
-	var key = line === 'product' ? 'key1' : 'key2';
-	var drillDownItems = parsedResponse[0][key].items;
+	var drillDownItems = this.getDrilldownItemsForLine(parsedResponse, line);
 	var drillDownSubjects = [];
 	drillDownItems.forEach(function(ddItem){
 		drillDownSubjects.push(ddItem.key);
@@ -94,9 +93,31 @@ OutlierManager.prototype.getAllDrilldownSearches = function(parsedResponse, quer
 			label : ddSub
 		}
 		var ddQuery = this.getQueryString(qParams, qSource, qTarget);
+		ddQuery += this.getFilterString(query);
 		drillDownQueries.push(ddQuery);
 	}).bind(this));
 	return drillDownQueries;
+}
+
+OutlierManager.prototype.getDrilldownItemsForLine = function(parsedResponse, line){
+	var items = {
+		product : [],
+		region : []
+	};
+	var products = ['categories', 'types', 'brands'];
+	var regions = ['regions', 'states'];
+
+	var keys = ['key1', 'key2'];
+	keys.forEach(function(key){
+		var src = parsedResponse[0][key];
+		if(src){
+			if(products.indexOf(src.key) !== -1)
+				items.product = src.items;
+			if(regions.indexOf(src.key) !== -1)
+				items.region = src.items;
+		}
+	});
+	return line === 'product' ? items.product : items.region;
 }
 
 OutlierManager.prototype.getQueryString = function(queryParams, qSource, qTarget){
@@ -144,6 +165,14 @@ OutlierManager.prototype.getQueryString = function(queryParams, qSource, qTarget
 		}
 	}
 	return q;
+}
+
+OutlierManager.prototype.getFilterString = function(query){
+	var idxWhere = query.indexOf('where');
+	if(idxWhere !== -1){
+		return '  ' + query.substr(idxWhere, query.length);
+	}
+	return '';
 }
 
 module.exports = OutlierManager;
