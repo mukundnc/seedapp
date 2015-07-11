@@ -1,5 +1,6 @@
 
 var OutlierTop = require('./OutlierTop');
+var OutlierDrillDown = require('./OutlierDrillDown');
 var ResponseParser = require('./../utils/ResponseParser');
 var logger = require('./../utils/Logger');
 var QueryParser = require('./../query-parser/QueryParser');
@@ -198,6 +199,7 @@ OutlierManager.prototype.executeAllDrilldownSearches = function(allSearchDetails
 	allSearchDetails = allSearchDetails.reverse();
 	var oneSearch = allSearchDetails.pop();
 	var executedSearches = [];
+	var outlierDrillDown = new OutlierDrillDown();
 
 	function onParseResponse(resParseQuery){
 		self.apiController.executeQuery(resParseQuery.data, onExecuteQueryResponse);
@@ -213,7 +215,7 @@ OutlierManager.prototype.executeAllDrilldownSearches = function(allSearchDetails
 				queryParser.parse(oneSearch.query, onParseResponse);
 			}
 			else{
-				cbOnDone(executedSearches);
+				outlierDrillDown.getOutliersForDrillDown(executedSearches, line, cbOnDone);
 			}
 		}
 	}
