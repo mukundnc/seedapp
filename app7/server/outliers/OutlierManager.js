@@ -1,6 +1,7 @@
 
 var OutlierTop = require('./OutlierTop');
 var ResponseParser = require('./../utils/ResponseParser');
+var logger = require('./../utils/Logger');
 
 function OutlierManager(apiController){
 	this.apiController = apiController;
@@ -51,29 +52,27 @@ OutlierManager.prototype.onSearchQueryResponse = function(searchResults, query, 
 	}
 
 	var allDrillDownSearches = this.getAllDrilldownSearches(parsedResponse, query, line);
-	console.log(allDrillDownSearches);
+	logger.log(allDrillDownSearches);
 	cbOnDone(parsedResponse);
 }
 
 OutlierManager.prototype.isDrilldownSupported = function(parsedResponse, line){
-	var products = ['categories', 'types', 'brands'];
-	var regions = ['regions', 'states'];
 	var supported = {
 		isProduct : false,
 		isRegion : false
 	};
 	var keys = ['key1', 'key2'];
-	keys.forEach(function(key){
+	keys.forEach((function(key){
 		var src = parsedResponse[0][key];
 		if(src){
-			if(products.indexOf(src.key) !== -1){
+			if(this.isProductType(src.key)){
 				supported.isProduct = true;
 			}
-			if(regions.indexOf(src.key) !== -1){
+			if(this.isRegionType(src.key)){
 				supported.isRegion = true;
 			}
 		}
-	});
+	}).bind(this));
 	return line === 'product' ? supported.isProduct : supported.isRegion;
 }
 
@@ -104,19 +103,16 @@ OutlierManager.prototype.getDrilldownItemsForLine = function(parsedResponse, lin
 		product : [],
 		region : []
 	};
-	var products = ['categories', 'types', 'brands'];
-	var regions = ['regions', 'states'];
-
 	var keys = ['key1', 'key2'];
-	keys.forEach(function(key){
+	keys.forEach((function(key){
 		var src = parsedResponse[0][key];
 		if(src){
-			if(products.indexOf(src.key) !== -1)
+			if(this.isProductType(src.key))
 				items.product = src.items;
-			if(regions.indexOf(src.key) !== -1)
+			if(this.isRegionType(src.key))
 				items.region = src.items;
 		}
-	});
+	}).bind(this));
 	return line === 'product' ? items.product : items.region;
 }
 
@@ -173,6 +169,16 @@ OutlierManager.prototype.getFilterString = function(query){
 		return '  ' + query.substr(idxWhere, query.length);
 	}
 	return '';
+}
+
+OutlierManager.prototype.isProductType = function(pType){
+	var products = ['categories', 'types', 'brands'];
+	return products.indexOf(pType) !== -1;
+}
+
+OutlierManager.prototype.isRegionType = function(rType){
+	var regions = ['regions', 'states'];
+	return regions.indexOf(rType) !== -1;
 }
 
 module.exports = OutlierManager;
