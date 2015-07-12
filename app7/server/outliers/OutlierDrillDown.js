@@ -84,8 +84,6 @@ OutlierDrillDown.prototype.markOutlierInOneItem = function(outlierItem, cbOnDone
 	var nTotalItems = outlierItem.length;
 	var iCnt = 0;
 	function onDone(success){
-		//if(!success) cbOnDone();
-
 		iCnt++;
 		if(iCnt >= nTotalItems){
 			cbOnDone();
@@ -132,6 +130,7 @@ OutlierDrillDown.prototype.getOutlierFlagsForTimeItems = function(timeKeyVsCount
 }
 
 OutlierDrillDown.prototype.getTimeFormattedOutliers = function(resIdVsOutlierItems){
+	var self = this;
 	var outlierTop = new OutlierTop();
 	var timeFormattedResults = {};
 	for(var key in resIdVsOutlierItems){
@@ -139,7 +138,7 @@ OutlierDrillDown.prototype.getTimeFormattedOutliers = function(resIdVsOutlierIte
 		topArr.forEach(function(firstLChild){
 			firstLChild.items.forEach(function(secondLChild){
 				secondLChild.items.forEach(function(thirdLChild){
-					var year = outlierTop.getStrKeyForTimeKey(thirdLChild.key);
+					var year = outlierTop.getStrKeyForTimeKey(thirdLChild.key, self.timeDistribution);
 					if(!timeFormattedResults[year])
 						timeFormattedResults[year] = [];
 					thirdLChild.label = firstLChild.key;
