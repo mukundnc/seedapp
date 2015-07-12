@@ -33,6 +33,11 @@ OutlierHelper.prototype.isRegionType = function(rType){
 	return regions.indexOf(rType) !== -1;
 }
 
+OutlierHelper.prototype.isTimeType = function(tType){
+	var times = ['yearly', 'monthly', 'daily'];
+	return times.indexOf(tType) !== -1;
+}
+
 OutlierHelper.prototype.getOutlierFlagsForTimeItems = function(timeKeyVsCount, timeDistribution, cbOnDone){
 	var self = this;
 	var outlierFlags = {};
@@ -47,7 +52,7 @@ OutlierHelper.prototype.getOutlierFlagsForTimeItems = function(timeKeyVsCount, t
 	};
 	
 	keys.forEach(function(timeKey){
-		var strKey = self.getStrKeyForTimeKey(timeKey);
+		var strKey = self.getStrKeyForTimeKey(timeKey, timeDistribution);
 		strKeyVsTimeKey[strKey] = timeKey;
 		outlierFlags[timeKey] = 0;
 		args.data.push({

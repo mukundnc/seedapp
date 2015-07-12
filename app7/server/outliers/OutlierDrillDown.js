@@ -64,11 +64,13 @@ OutlierDrillDown.prototype.markOutlierInOneItem = function(outlierItem, cbOnDone
 		var timeKeyVsItem = {};
 		var timeKeyVsCount = {};
 		objChild.items.forEach(function(objChildTimeItem){
-			self.timeDistribution = objChildTimeItem.key;
-			objChildTimeItem.items.forEach(function(tItem){
-				timeKeyVsItem[tItem.key] = tItem;
-				timeKeyVsCount[tItem.key] = tItem.doc_count;
-			});			
+			if(self.helper.isTimeType(objChildTimeItem.key)){
+				self.timeDistribution = objChildTimeItem.key;
+				objChildTimeItem.items.forEach(function(tItem){
+					timeKeyVsItem[tItem.key] = tItem;
+					timeKeyVsCount[tItem.key] = tItem.doc_count;
+				});	
+			}		
 		});
 		self.getOutlierFlagsForTimeItems(timeKeyVsCount, function(timeKeyVsOutlierFlag){
 			var keys = Object.keys(timeKeyVsOutlierFlag)
