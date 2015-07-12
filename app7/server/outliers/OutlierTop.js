@@ -39,8 +39,9 @@ OutlierTop.prototype.markOutliersInObject = function(obj, cbOnDone){
 		if(objChild.items.length > 1){
 			var timeKeyVsItem = {};
 			var timeKeyVsCount = {};
-			self.timeDistribution = objChild.items[1].key;
-			objChild.items[1].items.forEach(function(objChildTimeItem){
+			var timeItem = self.getTimeItemFromArray(objChild.items);
+			self.timeDistribution = timeItem.key;
+			timeItem.items.forEach(function(objChildTimeItem){
 				timeKeyVsItem[objChildTimeItem.key] = objChildTimeItem;
 				timeKeyVsCount[objChildTimeItem.key] = objChildTimeItem.doc_count;
 			});
@@ -59,5 +60,13 @@ OutlierTop.prototype.markOutliersInObject = function(obj, cbOnDone){
 	});
 }
 
+OutlierTop.prototype.getTimeItemFromArray = function(arr){
+	for(var i = 0 ; i < arr.length ; i++){
+		if(this.helper.isTimeType(arr[i].key)){
+			return arr[i];
+		}
+	}
+	return null;
+}
 
 module.exports = OutlierTop;
