@@ -3,9 +3,10 @@ var _ = require('underscore');
 var config = require('./../../config/config').rConfig;
 var logger = require('./../utils/Logger');
 var ResponseParser = require('./../utils/ResponseParser');
+var OutlierTop = require('./OutlierTop');
 
 function OutlierDrillDown(){
-
+	this.timeDistribution = 'yearly';
 }
 
 OutlierDrillDown.prototype.getOutliersForDrillDown = function(drillDownSearchResults, line, cbOnDone){	
@@ -83,7 +84,7 @@ OutlierDrillDown.prototype.markOutlierInOneItem = function(outlierItem, cbOnDone
 	var nTotalItems = outlierItem.length;
 	var iCnt = 0;
 	function onDone(success){
-		if(!success) cbOnDone();
+		//if(!success) cbOnDone();
 
 		iCnt++;
 		if(iCnt >= nTotalItems){
@@ -94,6 +95,7 @@ OutlierDrillDown.prototype.markOutlierInOneItem = function(outlierItem, cbOnDone
 		var timeKeyVsItem = {};
 		var timeKeyVsCount = {};
 		objChild.items.forEach(function(objChildTimeItem){
+			self.timeDistribution = objChildTimeItem.key;
 			objChildTimeItem.items.forEach(function(tItem){
 				timeKeyVsItem[tItem.key] = tItem;
 				timeKeyVsCount[tItem.key] = tItem.doc_count;
@@ -116,49 +118,28 @@ OutlierDrillDown.prototype.markOutlierInOneItem = function(outlierItem, cbOnDone
 }
 
 OutlierDrillDown.prototype.getOutlierFlagsForTimeItems = function(timeKeyVsCount, cbOnDone){
-	var outlierFlags = {};
-	var yearVsTimeKey = {};
-	var args = {
-		data : [],
-		forecastPeriod : 1
-	};
-	Object.keys(timeKeyVsCount).forEach(function(timeKey){
-		var year = new Date(parseInt(timeKey)).getFullYear().toString();
-		yearVsTimeKey[year] = timeKey;
-		outlierFlags[timeKey] = 0;
-		args.data.push({
-			key : year,
-			value : parseInt(timeKeyVsCount[timeKey])
-		})
-	});
 	function onDone(err, res){
 		if(err){
-			logger.log(err);
 			cbOnDone({});
 			return;
 		}
-		var jRes = JSON.parse(res);
-		Object.keys(jRes).forEach(function(yearKey){
-			outlierFlags[yearVsTimeKey[yearKey]] = jRes[yearKey];
-		})
-		cbOnDone(outlierFlags);
+		else{
+			cbOnDone(res);
+		}
 	}
-
-	rio.sourceAndEval(config.forecastFilePath, {
-	    entryPoint: "execute",
-	    data: args,
-	    callback: onDone
-	});
+	var outlierTop = new OutlierTop();
+	outlierTop.getOutlierFlagsForTimeItems(timeKeyVsCount, this.timeDistribution, onDone);
 }
 
 OutlierDrillDown.prototype.getTimeFormattedOutliers = function(resIdVsOutlierItems){
+	var outlierTop = new OutlierTop();
 	var timeFormattedResults = {};
 	for(var key in resIdVsOutlierItems){
 		var topArr = resIdVsOutlierItems[key];
 		topArr.forEach(function(firstLChild){
 			firstLChild.items.forEach(function(secondLChild){
 				secondLChild.items.forEach(function(thirdLChild){
-					var year = new Date(thirdLChild.key).getFullYear();
+					var year = outlierTop.getStrKeyForTimeKey(thirdLChild.key);
 					if(!timeFormattedResults[year])
 						timeFormattedResults[year] = [];
 					thirdLChild.label = firstLChild.key;
