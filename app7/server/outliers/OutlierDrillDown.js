@@ -1,12 +1,10 @@
-var rio = require("rio");
 var _ = require('underscore');
-var config = require('./../../config/config').rConfig;
-var logger = require('./../utils/Logger');
 var ResponseParser = require('./../utils/ResponseParser');
-var OutlierTop = require('./OutlierTop');
+var OutlierHelper = require('./OutlierHelper');
 
 function OutlierDrillDown(){
 	this.timeDistribution = 'yearly';
+	this.helper = new OutlierHelper();
 }
 
 OutlierDrillDown.prototype.getOutliersForDrillDown = function(drillDownSearchResults, line, cbOnDone){	
@@ -18,9 +16,9 @@ OutlierDrillDown.prototype.getOutliersForDrillDown = function(drillDownSearchRes
 		
 		dsr.response = resParser.parse(dsr.response)[0];
 		
-		var olItems = this.getOutlierItemsForLine(dsr.response, line);
+		var olItems = this.helper.getOutlierItemsForLine(dsr.response, line);
 
-		resIdVsOutlierItems[dsr.id] = olItems;
+		resIdVsOutlierItems[dsr.id] = olItems.items;
 
 	}).bind(this));
 	
@@ -30,33 +28,6 @@ OutlierDrillDown.prototype.getOutliersForDrillDown = function(drillDownSearchRes
 		cbOnDone(timeFormatedOutliers);
 	}
 	this.markOutliersInItems(resIdVsOutlierItems, onDone);
-}
-
-OutlierDrillDown.prototype.getOutlierItemsForLine = function(parsedResponse, line){
-	var keys = ['key1', 'key2'];
-	for(var i = 0 ; i < keys.length; i++){
-		var key = keys[i];
-		var src = parsedResponse[key];
-		if(src){
-			if(this.isProductType(src.key) && line === 'product'){
-				return src.items;
-			}
-			else if(this.isRegionType(src.key) && line === 'region'){
-				return src.items
-			}
-		}
-	}
-	return [];
-}
-
-OutlierDrillDown.prototype.isProductType = function(pType){
-	var products = ['categories', 'types', 'brands', 'models'];
-	return products.indexOf(pType) !== -1;
-}
-
-OutlierDrillDown.prototype.isRegionType = function(rType){
-	var regions = ['regions', 'states', 'cities'];
-	return regions.indexOf(rType) !== -1;
 }
 
 OutlierDrillDown.prototype.markOutliersInItems = function(resIdVsOutlierItems, cbOnDone){
@@ -125,20 +96,18 @@ OutlierDrillDown.prototype.getOutlierFlagsForTimeItems = function(timeKeyVsCount
 			cbOnDone(res);
 		}
 	}
-	var outlierTop = new OutlierTop();
-	outlierTop.getOutlierFlagsForTimeItems(timeKeyVsCount, this.timeDistribution, onDone);
+	this.helper.getOutlierFlagsForTimeItems(timeKeyVsCount, this.timeDistribution, onDone);
 }
 
 OutlierDrillDown.prototype.getTimeFormattedOutliers = function(resIdVsOutlierItems){
 	var self = this;
-	var outlierTop = new OutlierTop();
 	var timeFormattedResults = {};
 	for(var key in resIdVsOutlierItems){
 		var topArr = resIdVsOutlierItems[key];
 		topArr.forEach(function(firstLChild){
 			firstLChild.items.forEach(function(secondLChild){
 				secondLChild.items.forEach(function(thirdLChild){
-					var year = outlierTop.getStrKeyForTimeKey(thirdLChild.key, self.timeDistribution);
+					var year = self.helper.getStrKeyForTimeKey(thirdLChild.key, self.timeDistribution);
 					if(!timeFormattedResults[year])
 						timeFormattedResults[year] = [];
 					thirdLChild.label = firstLChild.key;
