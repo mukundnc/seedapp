@@ -12,4 +12,5 @@ function setViewPort(){
 	var svg = d3.selectAll('svg');
 	svg.attr('width', $('.svg-container').width());
 	svg.attr('height', $('.svg-container').height());
+	$('.opt-menu').css('top', -($('.svg-container').height()) + 'px')
 }
