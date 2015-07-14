@@ -252,7 +252,6 @@ SearchTimeView.prototype.handleDrilldownClick = function(elemId){
 
 SearchTimeView.prototype.onOutlierDataResponse = function(data){
 	this.model.outliers = data;
-	console.log(data);
 	this.showOutliersForCurrentTimeGroup();
 }
 
