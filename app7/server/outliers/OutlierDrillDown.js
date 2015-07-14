@@ -7,7 +7,7 @@ function OutlierDrillDown(){
 	this.helper = new OutlierHelper();
 }
 
-OutlierDrillDown.prototype.getOutliersForDrillDown = function(drillDownSearchResults, line, cbOnDone){	
+OutlierDrillDown.prototype.getOutliersForDrillDown = function(drillDownSearchResults, rootSearchResults, line, cbOnDone){	
 	var resParser = new ResponseParser();
 	
 	var resIdVsOutlierItems = {};
@@ -25,7 +25,13 @@ OutlierDrillDown.prototype.getOutliersForDrillDown = function(drillDownSearchRes
 	var self = this;
 	function onDone(){
 		var timeFormatedOutliers = self.getTimeFormattedOutliers(resIdVsOutlierItems);
-		cbOnDone(timeFormatedOutliers);
+		cbOnDone({
+			success : true,
+			query : rootSearchResults.query,
+			qSource : rootSearchResults.results[0].qSource,
+			qTarget : rootSearchResults.results[0].qTarget,
+			results : timeFormatedOutliers
+		});
 	}
 	this.markOutliersInItems(resIdVsOutlierItems, onDone);
 }

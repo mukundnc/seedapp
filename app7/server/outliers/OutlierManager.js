@@ -37,15 +37,16 @@ OutlierManager.prototype.executeOutliersForTopMode = function(reqHttp, line, cbO
 
 OutlierManager.prototype.executeOutliersForDrilldownMode = function(reqHttp, query, line, cbOnDone){
 	var self = this;	
-
+	var rootSearchResponse = {};
 	function onDrilldownSearchExecutionComplete(allExecutedSearches){
 		var outlierDrillDown = new OutlierDrillDown();
 		//var t = [allExecutedSearches[0]];
-		outlierDrillDown.getOutliersForDrillDown(allExecutedSearches, line, cbOnDone);
+		outlierDrillDown.getOutliersForDrillDown(allExecutedSearches, rootSearchResponse, line, cbOnDone);
 	}
 
 	var onSearchQueryResponse = {
 		json : function(res){
+			rootSearchResponse = res;
 			self.buildAndExecuteDrilldownSearches(res, query, line, onDrilldownSearchExecutionComplete);
 		}
 	}

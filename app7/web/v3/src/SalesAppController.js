@@ -3,6 +3,7 @@ function SalesAppController (){
 	this.searchController = new SearchController(this);
 	this.noAggController = new NoAggSearchController(this);
 	this.compareController = new CompareController(this);
+	this.outlierController = new OutlierController(this);
 	this.searchTreeView = new SearchTreeView({controller : this});
 	this.queryIndex = 0;
 	this.queryIndices = {};
@@ -101,13 +102,46 @@ SalesAppController.prototype.getControllerForSearch = function(apiRes){
 }
 
 SalesAppController.prototype.getOutlierData = function(params, cbOnDataReceived){
+	if(params.mode === 'top')
+		this.getOutlierDataTopMode(params, cbOnDataReceived);
+	else if(params.mode === 'drilldown')
+		this.getOutlierDataDrilldownMode(params);
+
+}
+
+SalesAppController.prototype.getOutlierDataTopMode = function(params, cbOnDataReceived){
 	var url = '/api/ol?q=' + this.getQueryById(params.qid) + '&mode=' + params.mode + '&line=' + params.line;
 	showLoading();
 	$.getJSON(url, function(data){
 		hideLoading();
-		if(params.mode === 'top')
-			cbOnDataReceived(data);
-		else
-			console.log(data);
+		cbOnDataReceived(data);
 	});
+}
+
+SalesAppController.prototype.getOutlierDataDrilldownMode = function(params){
+	var query = this.getQueryById(params.qid);
+	var idxWhere = query.indexOf('where');
+	if(idxWhere !== -1)
+		query = query.substr(0, idxWhere);
+	query += ' where date in last 1 years ';
+	var url = '/api/ol?q=' + query + '&mode=' + params.mode + '&line=' + params.line;
+	showLoading();
+	$.getJSON(url, (function(result){
+		hideLoading();
+		if(result.success){
+			var qid = this.getQueryId('outlier ' + query);
+			$('#tbSearch').val('outlier ' + query);
+			this.queryIdVsController[qid] = this.outlierController;
+			this.queryIdVsController[qid].renderView(qid, result);
+			var treeText = 'outlier-' + result.qSource.value;
+			if(result.qTarget)
+				treeText += '-' + result.qTarget.value;
+			this.searchTreeView.add({id : qid, name : strToFirstUpper(treeText)});
+		}
+		else{
+			console.error(result.message);
+		}
+		
+	}).bind(this));
+
 }
