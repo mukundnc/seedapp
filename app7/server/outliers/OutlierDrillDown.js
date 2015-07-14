@@ -84,9 +84,10 @@ OutlierDrillDown.prototype.markOutlierInOneItem = function(outlierItem, cbOnDone
 				timeKeyVsItem[timeKey].outlier = timeKeyVsOutlierFlag[timeKey];
 			});
 			objChild.items.forEach(function(objChildTimeItem){
-				var olItems1 = _.where(objChildTimeItem.items, {outlier : 1});
-				var olItems2 = _.where(objChildTimeItem.items, {outlier : -1});
-				objChildTimeItem.items = olItems1.concat(olItems2);
+				var olItems = _.filter(objChildTimeItem.items, function(d) {
+					return d.outlier && d.outlier !== 0;
+				});
+				objChildTimeItem.items = olItems;
 			});
 			onDone(keys.length);
 		});	

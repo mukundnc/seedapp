@@ -51,9 +51,10 @@ OutlierTop.prototype.markOutliersInObject = function(obj, cbOnDone){
 			return;
 		}
 		else{
-			var olItems1 = _.where(oneOlItem.items.items, {outlier : 1});
-			var olItems2 = _.where(oneOlItem.items.items, {outlier : -1});
-			oneOlItem.items.items = olItems1.concat(olItems2);
+			var olItems = _.filter(oneOlItem.items.items, function(d) {
+				return d.outlier && d.outlier !== 0;
+			});
+			oneOlItem.items.items = olItems
 			resIdOutlierItems[id] = JSON.parse(JSON.stringify(oneOlItem));
 			id = ids.pop();
 			if(id){
