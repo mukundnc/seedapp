@@ -8,6 +8,10 @@ function SearchTimeView(model, options){
 		backnext : 'st-backnext'
 	}
 	this.currTimeModelIndex = 0;
+	$(document).on('click', function(e){
+		if(false === $(e.originalEvent.srcElement).hasClass('opt-menu-img'))
+				$('.opt-menu-container').hide();
+	});
 }
 
 SearchTimeView.prototype.clear = function(){
@@ -21,6 +25,7 @@ SearchTimeView.prototype.render = function(){
 	var g = this.getGroupById(this.groups.axes);
 	this.addAxes();
 	this.showTimeView();
+	this.initOptionsMenu();
 }
 
 SearchTimeView.prototype.getGroupById = function(clsName){
@@ -197,4 +202,31 @@ SearchTimeView.prototype.addTimeGroupContentMarkers = function(g){
 
 }
 
+SearchTimeView.prototype.initOptionsMenu = function(){
+	var self = this;
+	$('.opt-menu-icon').off('click');
+	$('.opt-menu-icon').on('click', function(e){
+		$('.opt-menu-container').show();
+		var l = (window.innerWidth - $('.opt-menu-container').width() - $('.opt-menu-icon').width() - 25 )+ 'px';
+		var t = ($('.header-container').height() + 10) + 'px'
+		$('.opt-menu-container').css('left', l);
+		$('.opt-menu-container').css('top', t);
+		$('.opt-menu-item').on('mouseover', function(e){
+			$(this).css('background-color', '#4d90fe');
+			$(this).css('color', 'white');
+		});
+		$('.opt-menu-item').on('mouseout', function(e){
+			$(this).css('background-color', '');
+			$(this).css('color', 'grey');
+		});
+	})
+	$('.opt-menu-item').off('click');
+	$('.opt-menu-item').on('click', function(e){
+		self.handleDrilldownClick($(this).attr('id'));
+	});
 
+}
+
+SearchTimeView.prototype.handleDrilldownClick = function(elemId){
+	$('.opt-menu-container').hide();
+}

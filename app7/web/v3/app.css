@@ -251,7 +251,7 @@ body{
 }
 
 
-.opt-menu{
+.opt-menu-icon{
 	float: right;
 	height: 25px;
 	top: 3px;
@@ -260,12 +260,27 @@ body{
 	border-style: solid;
 	border-width: 1px;
 	border-color: grey;
-	display: none;
 }
 
+.opt-menu-container{
+	position : absolute;
+	display: none;
+}
+.opt-menu-list{
+	list-style-type: none;
+}
 
+.opt-menu-item{
+	color : grey;
+	border-style: solid;
+  	border-width: 1px;
+  	cursor: pointer;
+  	padding: 5px 5px 5px 5px;
+}
 
-
+.opt-menu-list li: hover{
+	background-color: #4d90fe;
+}
 
 
 .cell-rect-1{

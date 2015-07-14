@@ -222,3 +222,18 @@ SvgUtils.prototype.getDefaultColors = function(){
 	var myColors =  ["#3366CC", "#DC3912", "#FF9900", "#109618", "#990099", "#2b908f"];
 	return d3Colors.concat(myColors);
 }
+
+function isProductType(pType){
+	var products = ['categories', 'types', 'brands', 'models', 'category', 'type', 'brand', 'model'];
+	return products.indexOf(pType.toLowerCase()) !== -1;
+}
+
+function isRegionType(rType){
+	var regions = ['regions', 'states', 'cities', 'region', 'state', 'city'];
+	return regions.indexOf(rType.toLowerCase()) !== -1;
+}
+
+function isTimeType(tType){
+	var times = ['yearly', 'monthly', 'daily'];
+	return times.indexOf(tType.toLowerCase()) !== -1;
+}
