@@ -299,6 +299,18 @@ body{
 	display : none;
 }
 
+.ol-pos-circle{
+	fill : white;
+}
+
+.ol-neg-circle{
+	fill : rgb(173, 89, 95);
+}
+
+.ol-text{
+	color:black;
+	font-size:15px;
+}
 
 
 .cell-rect-1{

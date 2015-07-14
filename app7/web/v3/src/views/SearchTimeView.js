@@ -8,6 +8,7 @@ function SearchTimeView(model, options){
 		backnext : 'st-backnext'
 	}
 	this.currTimeModelIndex = 0;
+	this.isOullierOn = false;
 	$(document).on('click', function(e){
 		if(false === $(e.originalEvent.srcElement).hasClass('opt-menu-img'))
 				$('.opt-menu-container').hide();
@@ -152,6 +153,9 @@ SearchTimeView.prototype.showTimeGroupView = function(){
 	}
 	this.addTimeGroupContentMarkers(g);
 	this.animateCategoryHeights(g, allHeights);
+	setTimeout(function(){
+		self.showOutliersForCurrentTimeGroup()
+	},  200);	
 	var self = this;
 	$('.bh').on('click', function(e){
 		var t = d3.select(this).attr('tKey');
@@ -165,6 +169,7 @@ SearchTimeView.prototype.showTimeGroupView = function(){
 			})	
 		}	
 	});
+
 }
 
 SearchTimeView.prototype.animateCategoryHeights = function(g, heights){
@@ -233,15 +238,59 @@ SearchTimeView.prototype.initOptionsMenu = function(){
 
 SearchTimeView.prototype.handleDrilldownClick = function(elemId){
 	$('.opt-menu-container').hide();
+	if(elemId === 'olTop')
+		this.isOullierOn = true;
+
 	var params = {
 		qid : this.options.qid,
 		mode : elemId === 'olTop' ? 'top' : 'drilldown',
 		line : isProductType(this.model.type) ? 'product': 'region' 
 	}
-	this.options.controller.getOutlierData(params, this.onOutlierDataResponse.bind(this));
+	if(!this.model.outliers)
+		this.options.controller.getOutlierData(params, this.onOutlierDataResponse.bind(this));
 }
 
 SearchTimeView.prototype.onOutlierDataResponse = function(data){
 	this.model.outliers = data;
 	console.log(data);
+	this.showOutliersForCurrentTimeGroup();
+}
+
+SearchTimeView.prototype.showOutliersForCurrentTimeGroup = function(){
+	if(!this.model.outliers) return;
+
+	var outliers = [];
+	var id = 1;
+	$.each($('.bh'), (function(idx, item){
+		var t = d3.select(item);
+		var label = t.attr('label');
+		var tKey = t.attr('tKey');
+		
+		var olItems = this.model.outliers[tKey];
+		if(olItems){
+			var olItemsForLabel = _.where(olItems, {label : label});			
+			if(olItemsForLabel.length > 0){
+				outliers.push({
+					rect : t,
+					outlier : olItemsForLabel[0].outlier
+				});
+				id++;
+			}
+		}
+	}).bind(this));
+	if(outliers.length > 0)
+		this.addMarkersForOutliers(outliers);
+}
+
+SearchTimeView.prototype.addMarkersForOutliers = function(outliers){
+	var g = this.getGroupById(this.groups.times);
+	outliers.forEach((function(ol){
+		var x = parseFloat(ol.rect.attr('x'));
+		var w = parseFloat(ol.rect.attr('width'));
+		var y = parseFloat(ol.rect.attr('height'));
+		x = x+w/2;
+		var cssCircle = ol.outlier > 0 ? 'ol-pos-circle' : 'ol-neg-circle';
+		var olText = ol.outlier > 0 ? '+' : '-';
+		this.utils.addBalloon(g, x, y, olText, 50, 5, 'chart-axis', cssCircle, 'ol-text');
+	}).bind(this));
 }

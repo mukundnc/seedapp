@@ -105,6 +105,9 @@ SalesAppController.prototype.getOutlierData = function(params, cbOnDataReceived)
 	showLoading();
 	$.getJSON(url, function(data){
 		hideLoading();
-		cbOnDataReceived(data);
+		if(params.mode === 'top')
+			cbOnDataReceived(data);
+		else
+			console.log(data);
 	});
 }

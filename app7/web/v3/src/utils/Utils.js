@@ -123,6 +123,25 @@ SvgUtils.prototype.addRect = function(g, x, y, w, h, cssRect){
 	return r
 }
 
+SvgUtils.prototype.addCircle = function(g, cx, cy, r, cssCircle){
+	var c = g.append('circle')
+	 		 .attr({
+	 		 	cx : cx,
+	 			cy : cy,
+			 	r : r,
+			 	class : cssCircle
+			 })
+	return c;
+}
+
+SvgUtils.prototype.addBalloon = function(g, x, y, label, d, r, cssLine, cssCircle, cssText){
+	var cx = x;
+	var cy = y + d + r;
+	this.addLine(g, x, y, x, y+d, cssLine);
+	this.addCircle(g, cx, cy, r, cssCircle);
+	this.addTextXForm(g, cx, -cy+4, label, 'cssText', 'middle');
+}
+
 SvgUtils.prototype.getCodtSystemXForm = function(xOrg, yOrg){
 	return 'translate(' + xOrg +' ,'  + yOrg + ') scale(1, -1)';
 }
@@ -222,6 +241,7 @@ SvgUtils.prototype.getDefaultColors = function(){
 	var myColors =  ["#3366CC", "#DC3912", "#FF9900", "#109618", "#990099", "#2b908f"];
 	return d3Colors.concat(myColors);
 }
+
 
 function isProductType(pType){
 	var products = ['categories', 'types', 'brands', 'models', 'category', 'type', 'brand', 'model'];
