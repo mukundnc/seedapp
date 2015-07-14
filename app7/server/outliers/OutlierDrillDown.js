@@ -30,6 +30,7 @@ OutlierDrillDown.prototype.getOutliersForDrillDown = function(drillDownSearchRes
 			query : rootSearchResults.query,
 			qSource : rootSearchResults.results[0].qSource,
 			qTarget : rootSearchResults.results[0].qTarget,
+			timeDistribution : self.timeDistribution,
 			results : timeFormatedOutliers
 		});
 	}

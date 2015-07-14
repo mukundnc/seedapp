@@ -242,7 +242,7 @@ SearchTimeView.prototype.handleDrilldownClick = function(elemId){
 		mode : elemId === 'olTop' ? 'top' : 'drilldown',
 		line : isProductType(this.model.type) ? 'product': 'region' 
 	}
-	if(!this.model.outliers)
+	if(!this.model.outliers || params.mode == 'drilldown')
 		this.options.controller.getOutlierData(params, this.onOutlierDataResponse.bind(this));
 }
 
