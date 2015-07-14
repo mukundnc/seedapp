@@ -8,7 +8,6 @@ function SearchTimeView(model, options){
 		backnext : 'st-backnext'
 	}
 	this.currTimeModelIndex = 0;
-	this.isOullierOn = false;
 	$(document).on('click', function(e){
 		if(false === $(e.originalEvent.srcElement).hasClass('opt-menu-img'))
 				$('.opt-menu-container').hide();
@@ -238,9 +237,6 @@ SearchTimeView.prototype.initOptionsMenu = function(){
 
 SearchTimeView.prototype.handleDrilldownClick = function(elemId){
 	$('.opt-menu-container').hide();
-	if(elemId === 'olTop')
-		this.isOullierOn = true;
-
 	var params = {
 		qid : this.options.qid,
 		mode : elemId === 'olTop' ? 'top' : 'drilldown',
