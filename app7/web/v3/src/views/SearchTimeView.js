@@ -204,24 +204,28 @@ SearchTimeView.prototype.addTimeGroupContentMarkers = function(g){
 
 SearchTimeView.prototype.initOptionsMenu = function(){
 	var self = this;
-	$('.opt-menu-icon').off('click');
-	$('.opt-menu-icon').on('click', function(e){
-		$('.opt-menu-container').show();
-		var l = (window.innerWidth - $('.opt-menu-container').width() - $('.opt-menu-icon').width() - 25 )+ 'px';
+	var $menuIcon = $('.opt-menu-icon');
+	var $menuContainer = $('.opt-menu-container');
+	var $headerContainer = $('.header-container');
+	var $menuItem = $('.opt-menu-item');
+
+	$menuIcon.off('click');
+	$menuIcon.on('click', function(e){
+		$menuContainer.show();
+		var l = (window.innerWidth - $menuContainer.width() - $menuIcon.width() - 25 )+ 'px';
 		var t = ($('.header-container').height() + 10) + 'px'
-		$('.opt-menu-container').css('left', l);
-		$('.opt-menu-container').css('top', t);
-		$('.opt-menu-item').on('mouseover', function(e){
+		$menuContainer.css({top : t, left : l});
+		$menuItem.on('mouseover', function(e){
 			$(this).css('background-color', '#4d90fe');
 			$(this).css('color', 'white');
 		});
-		$('.opt-menu-item').on('mouseout', function(e){
+		$menuItem.on('mouseout', function(e){
 			$(this).css('background-color', '');
 			$(this).css('color', 'grey');
 		});
 	})
-	$('.opt-menu-item').off('click');
-	$('.opt-menu-item').on('click', function(e){
+	$menuItem.off('click');
+	$menuItem.on('click', function(e){
 		self.handleDrilldownClick($(this).attr('id'));
 	});
 
