@@ -237,3 +237,20 @@ function isTimeType(tType){
 	var times = ['yearly', 'monthly', 'daily'];
 	return times.indexOf(tType.toLowerCase()) !== -1;
 }
+
+function showLoading(){
+	var T = window.innerHeight/3 + 100;
+	var L = window.innerWidth/3 + 200;
+	$('#loading').css('position', 'absolute');
+	$('#loading').css('top', T + 'px');
+	$('#loading').css('left',L + 'px');
+	$('#loading').css('width','50px');
+	$('#loading').css('z-index','999');
+	$('#loading').show();
+	$('#overlay').show();
+}
+
+function hideLoading(){
+	$('#loading').hide();
+	$('#overlay').hide();
+}

@@ -102,5 +102,9 @@ SalesAppController.prototype.getControllerForSearch = function(apiRes){
 
 SalesAppController.prototype.getOutlierData = function(params, cbOnDataReceived){
 	var url = '/api/ol?q=' + this.getQueryById(params.qid) + '&mode=' + params.mode + '&line=' + params.line;
-	$.getJSON(url, cbOnDataReceived);
+	showLoading();
+	$.getJSON(url, function(data){
+		hideLoading();
+		cbOnDataReceived(data);
+	});
 }
