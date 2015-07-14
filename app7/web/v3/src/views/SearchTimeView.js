@@ -233,4 +233,15 @@ SearchTimeView.prototype.initOptionsMenu = function(){
 
 SearchTimeView.prototype.handleDrilldownClick = function(elemId){
 	$('.opt-menu-container').hide();
+	var params = {
+		qid : this.options.qid,
+		mode : elemId === 'olTop' ? 'top' : drilldown,
+		line : isProductType(this.model.type) ? 'product': 'region' 
+	}
+	this.options.controller.getOutlierData(params, this.onOutlierDataResponse.bind(this));
+}
+
+SearchTimeView.prototype.onOutlierDataResponse = function(data){
+	this.model.outliers = data;
+	console.log(data);
 }

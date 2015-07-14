@@ -185,3 +185,7 @@ SearchController.prototype.getTimeFilterSuffix = function(queryParams){
 		return ' where date from ' + queryParams.tKey + '/01/01 and date to ' + queryParams.tKey + '/12/31';
 	}
 }
+
+SearchController.prototype.getOutlierData = function(params, cbOnDataReceived){
+	this.appController.getOutlierData(params, cbOnDataReceived);
+}
