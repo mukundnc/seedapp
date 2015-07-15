@@ -181,3 +181,7 @@ ModelFactory.prototype.getTimeLinesForCompare = function(timeline, tLabels){
 	});
 	return timelines;
 }
+
+ModelFactory.prototype.getOutlierModel = function(apiRes, options){
+	return new OutlierModel().getModel(apiRes, options);
+}
