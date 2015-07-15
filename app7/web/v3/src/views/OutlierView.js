@@ -50,5 +50,9 @@ OutlierView.prototype.addYAxis = function(){
 	var xS = this.model.axes.x.blocks[0].xS;
 	var yS = this.model.axes.x.blocks[0].yS;
 	this.utils.addLine(g, xS, yS, xS, yE, 'chart-axis');
+	xS = this.model.axes.x.blocks[0].bars[0].xS;
+	yS = this.model.axes.x.blocks[0].bars[0].yS;
+	this.utils.addTextXForm(g, xS-10, yS, '0%', 'st-text', 'end');
+
 }
 

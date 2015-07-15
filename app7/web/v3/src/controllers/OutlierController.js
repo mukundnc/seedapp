@@ -38,7 +38,7 @@ OutlierController.prototype.getViewOptions = function(results, qid){
 	var options = {
 		w : this.W - 100,
 		h : this.H/2 - 150,
-		xOrg : 90,
+		xOrg : 70,
 		yOrg : this.H/2
 	}
 	return options;
