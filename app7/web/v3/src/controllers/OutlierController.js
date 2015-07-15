@@ -2,6 +2,8 @@ function OutlierController(appController){
 	this.appController = appController;
 	this.qidResults = {};
 	this.qidModels = {};
+	this.H = $('.svg-container').height();
+	this.W = $('.svg-container').width();
 }
 
 OutlierController.prototype.renderView = function(qid, apiRes){
@@ -26,7 +28,8 @@ OutlierController.prototype.initModel = function(results, qid){
 
 OutlierController.prototype.getModelOptions = function(results, qid){
 	var options = {
-
+		w : this.W - 50,
+		h : this.H - 50
 	}
 	return options;
 }
