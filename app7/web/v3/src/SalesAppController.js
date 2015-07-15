@@ -124,13 +124,20 @@ SalesAppController.prototype.getOutlierDataDrilldownMode = function(params){
 	if(idxWhere !== -1)
 		query = query.substr(0, idxWhere);
 	query += ' where date in last 1 years ';
+	var queryDisplay = 'outlier ' + query;
+	var qid = this.getQueryId(queryDisplay);
+	$('#tbSearch').val(queryDisplay);
+	var controller = this.queryIdVsController[qid];
+	if(controller){
+		controller.renderView(params.qid, null);
+		return;
+	}
+
 	var url = '/api/ol?q=' + query + '&mode=' + params.mode + '&line=' + params.line;
 	showLoading();
 	$.getJSON(url, (function(result){
 		hideLoading();
-		if(result.success){
-			var qid = this.getQueryId('outlier ' + query);
-			$('#tbSearch').val('outlier ' + query);
+		if(result.success){			
 			this.queryIdVsController[qid] = this.outlierController;
 			this.queryIdVsController[qid].renderView(qid, result);
 			var treeText = 'outlier-' + result.qSource.value;
@@ -143,5 +150,4 @@ SalesAppController.prototype.getOutlierDataDrilldownMode = function(params){
 		}
 		
 	}).bind(this));
-
 }

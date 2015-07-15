@@ -126,6 +126,7 @@ OutlierDrillDown.prototype.getTimeFormattedOutliers = function(resIdVsOutlierIte
 			});
 		});
 	}
+	timeFormattedResults = this.helper.sortObjectOnTimeKeys(timeFormattedResults, this.timeDistribution);
 	return timeFormattedResults;
 }
 
