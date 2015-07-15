@@ -27,7 +27,7 @@ OutlierModel.prototype.initXAxis = function(apiRes, options){
 	var tKeysVsResultCount = {};
 	var totalResults = 0;
 	var availableW = options.w;
-	var defaultW = 50;
+	var defaultW = 30;
 	var tKeysWithMoreResultsCount = 0;
 	tKeys.forEach(function(tk){
 		tKeysVsResultCount[tk] = apiRes.results[tk].length;
@@ -40,16 +40,16 @@ OutlierModel.prototype.initXAxis = function(apiRes, options){
 	var barW = availableW / totalResults;
 	var blockW = availableW / tKeysWithMoreResultsCount;
 	var x = 0;
-	var colors = this.getColors(totalResults);
+	this.colors = this.getColors(totalResults);
 	tKeys.forEach((function(tk){
 		var rCnt = apiRes.results[tk].length;
 		this.model.axes.x.blocks.push({
 			label : tk,
 			xS : x,
-			yS : 0,
+			yS : -(options.h/2 - 50),
 			xE : rCnt < 5 ? (x + defaultW) : (x + rCnt * barW),
-			yE : 0,
-			bars : this.getBars(apiRes.results[tk], x, barW, colors.pop()) 
+			yE : -(options.h/2 - 50),
+			bars : this.getBars(apiRes.results[tk], x, barW) 
 		})
 		x = rCnt < 5 ? (x + defaultW) : (x + rCnt * barW);
 	}).bind(this));
@@ -78,7 +78,7 @@ OutlierModel.prototype.initYAxis = function(apiRes, options){
 	}
 }
 
-OutlierModel.prototype.getBars = function(arrRes, xS, barW, color){
+OutlierModel.prototype.getBars = function(arrRes, xS, barW){
 	var bars = [];
 	var x = xS;
 	arrRes.forEach((function(r){
@@ -86,9 +86,9 @@ OutlierModel.prototype.getBars = function(arrRes, xS, barW, color){
 			xS : x,
 			yS : 0,
 			w : barW,
-			h : this.model.yScale(r.outlier),
+			h : this.model.yScale(Math.max(Math.abs(r.outlier), 200)),
 			label : r.label,
-			color : color,
+			color : this.colors.pop(),
 			outlier : r.outlier
 		});
 		x += barW;
