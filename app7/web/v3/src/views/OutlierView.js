@@ -39,6 +39,16 @@ OutlierView.prototype.addXAxis = function(){
 }
 
 OutlierView.prototype.addYAxis = function(){
-
+	var g = this.utils.getGroupByClassName(this.groups.graph);
+	var yE = 0;
+	this.model.axes.y.blocks.forEach((function(block){
+		this.utils.addLine(g, block.xS, block.yS, block.xE, block.yE, 'chart-axis');
+		this.utils.addTextXForm(g, block.xS, -block.yS, block.label, 'st-text', 'end');
+		if(block.yE > yE)
+			yE = block.yE;
+	}).bind(this));
+	var xS = this.model.axes.x.blocks[0].xS;
+	var yS = this.model.axes.x.blocks[0].yS;
+	this.utils.addLine(g, xS, yS, xS, yE, 'chart-axis');
 }
 

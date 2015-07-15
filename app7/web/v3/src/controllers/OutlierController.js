@@ -29,7 +29,7 @@ OutlierController.prototype.initModel = function(results, qid){
 OutlierController.prototype.getModelOptions = function(results, qid){
 	var options = {
 		w : this.W - 100,
-		h : this.H - 50
+		h : this.H - 150
 	}
 	return options;
 }
@@ -37,7 +37,7 @@ OutlierController.prototype.getModelOptions = function(results, qid){
 OutlierController.prototype.getViewOptions = function(results, qid){
 	var options = {
 		w : this.W - 100,
-		h : this.H/2,
+		h : this.H/2 - 150,
 		xOrg : 90,
 		yOrg : this.H/2
 	}

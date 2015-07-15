@@ -46,9 +46,9 @@ OutlierModel.prototype.initXAxis = function(apiRes, options){
 		this.model.axes.x.blocks.push({
 			label : tk,
 			xS : x,
-			yS : -(options.h/2 - 50),
+			yS : -(options.h/2 + 30),
 			xE : rCnt < 5 ? (x + defaultW) : (x + rCnt * barW),
-			yE : -(options.h/2 - 50),
+			yE : -(options.h/2 + 30),
 			bars : this.getBars(apiRes.results[tk], x, barW) 
 		})
 		x = rCnt < 5 ? (x + defaultW) : (x + rCnt * barW);
@@ -66,14 +66,14 @@ OutlierModel.prototype.initYAxis = function(apiRes, options){
 			yS : i,
 			xE : xE,
 			yE : i,
-			label : Math.round((yMax/yE) * i)
+			label : Math.round((yMax/yE) * i) + '%'
 		});
 		this.model.axes.y.blocks.push({
 			xS : 0,
 			yS : -i,
 			xE : xE,
 			yE : -i,
-			label : -Math.round((yMax/yE) * i)
+			label : -Math.round((yMax/yE) * i) + '%'
 		});
 	}
 }
