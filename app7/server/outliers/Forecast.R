@@ -26,11 +26,16 @@ execute <- function (jsonObj) {
 			min <- fVal$lower[1];
 			max <- fVal$upper[1];
 			mean <- fVal$mean['fit'];
-			if(mean > 0){
-				if(values[i+1] < min)
-					outVals[i+1] = ((values[i+1] - mean)/mean) * 100;
-			 	if(values[i+1] > max)
-				 	outVals[i+1] = ((values[i+1] - mean)/mean) * 100;
+			actVal <- values[i+1];
+
+			if(actVal > max && max != 0){
+				outVals[i+1] = ((actVal - max)/max) * 100;
+			}
+			else if(actVal < min && min != 0){
+				outVals[i+1] = ((actVal - min)/min) * 100;
+			}
+			else if(mean != 0){
+				outVals[i+1] = ((actVal - mean)/mean) * 100;
 			}
 			# print(keys[i+1]);
 			# print(values[i+1]);
