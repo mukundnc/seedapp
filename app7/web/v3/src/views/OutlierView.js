@@ -62,7 +62,7 @@ OutlierView.prototype.addBarLabel = function(g, bar){
 }
 
 OutlierView.prototype.addPositiveBarLabel = function(g, bar){
-	var x = bar.xS + bar.w/2;
+	var x = bar.xS + bar.w/2 + 2;
 	var y = -bar.h - 2 ;
 	var l = bar.label;
 	var gT = this.utils.addTextXForm(g, x, y, l, 'ol-chart-label', 'start');
@@ -70,7 +70,7 @@ OutlierView.prototype.addPositiveBarLabel = function(g, bar){
 }
 
 OutlierView.prototype.addNegativeBarLabel = function(g, bar){
-	var x = bar.xS + bar.w/2;
+	var x = bar.xS + bar.w/2 + 2;
 	var y = bar.h + 2 ;
 	var l = bar.label;
 	var gT = this.utils.addTextXForm(g, x, y, l, 'ol-chart-label', 'end');
