@@ -46,10 +46,62 @@ OutlierController.prototype.getViewOptions = function(results, qid){
 	return options;
 }
 
-OutlierController.prototype.executeOutlierDrilldownSearch = function(selLabel, qid){
-	var srcQuery = this.appController.getQueryById(qid).toLowerCase();
-	var src = this.qidResults[qid].qSource.value.toLowerCase();
-	srcQuery = srcQuery.replace('outlier', '').replace(src, selLabel);
-	$('#tbSearch').val(srcQuery);
+OutlierController.prototype.executeOutlierDrilldownSearch = function(selLabel, qid, line){
+	var qSource = this.qidResults[qid].qSource;
+	var qTarget = this.qidResults[qid].qTarget;
+	var qParams = {
+		type : line === 'product' ? 'brand' : 'region',
+		label : selLabel
+	}
+	var query = this.getQueryString(qParams, qSource, qTarget);
+	query += ' where date in last 1 year';
+	$('#tbSearch').val(query);
 	this.appController.executeQuery();
 }	
+
+OutlierController.prototype.getQueryString = function(queryParams, qSource, qTarget){
+	var regionTypes = ['regions', 'states', 'cities', 'region', 'state', 'city'];
+	var productTypes = ['categories', 'types', 'brands', 'models', 'category', 'type', 'brand', 'model'];
+
+	function isProductType(p){
+		return productTypes.indexOf(p) !== -1;
+	}
+
+	function isRegionType(t){
+		return regionTypes.indexOf(t) !== -1;
+	}
+	var q = '';
+	if(!qTarget){
+		if(isProductType(queryParams.type)){
+			if(isProductType(qSource.key)){
+				//Single word product drill down  search
+				q = queryParams.label;
+			}
+			else{
+				//product drilldown in region
+				q = queryParams.label + ' in ' + qSource.value; 
+			}
+		}
+		else{
+			if(isRegionType(qSource.key)){
+				//Single word region drill down  search
+				q = queryParams.label;
+			}
+			else{
+				//Org query now in region
+				q = qSource.value  + ' in ' + queryParams.label;
+			}
+		}
+	}
+	else{
+		if(isProductType(queryParams.type)){
+			//Drilldown product in region search
+			q = queryParams.label + ' in ' + qTarget.value;
+		}
+		else{
+			//Org query now in region drilldown
+			q = qSource.value  + ' in ' + queryParams.label;
+		}
+	}
+	return q;
+}

@@ -82,6 +82,6 @@ OutlierView.prototype.addEventHandlers = function(){
 	var self = this;
 	$('.ol-bar').on('click', function(e){
 		var selLabel = d3.select(this).attr('label');
-		self.options.controller.executeOutlierDrilldownSearch(selLabel, self.options.qid);
+		self.options.controller.executeOutlierDrilldownSearch(selLabel, self.options.qid, self.model.line);
 	});
 }

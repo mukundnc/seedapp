@@ -19,6 +19,7 @@ OutlierModel.prototype.getModel = function(apiRes, options){
 OutlierModel.prototype.initAxes = function(apiRes, options){
 	this.initXAxis(apiRes, options);
 	this.initYAxis(apiRes, options);
+	this.model.line = apiRes.line;
 }
 
 OutlierModel.prototype.initXAxis = function(apiRes, options){

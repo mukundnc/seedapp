@@ -124,7 +124,7 @@ SalesAppController.prototype.getOutlierDataDrilldownMode = function(params){
 	if(idxWhere !== -1)
 		query = query.substr(0, idxWhere);
 	query += ' where date in last 1 years ';
-	var queryDisplay = 'outlier ' + query;
+	var queryDisplay = 'outlier ' + params.line + ' ' + query;
 	var qid = this.getQueryId(queryDisplay);
 	$('#tbSearch').val(queryDisplay);
 	var controller = this.queryIdVsController[qid];
