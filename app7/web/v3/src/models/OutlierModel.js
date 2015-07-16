@@ -89,7 +89,7 @@ OutlierModel.prototype.getBars = function(arrRes, xS, barW){
 			xS : x,
 			yS : 0,
 			w : barW,
-			h : this.model.yScale(Math.max(Math.abs(r.outlier), 200)),
+			h : this.model.yScale(Math.abs(r.outlier)),
 			label : r.label,
 			color : this.colors.pop(),
 			outlier : r.outlier
