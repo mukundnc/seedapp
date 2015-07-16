@@ -29,7 +29,7 @@ OutlierView.prototype.addXAxis = function(){
 		this.utils.addTextXForm(g, (block.xS + block.xE)/2, -(block.yE-10), block.label, 'st-text', 'middle');
 		block.bars.forEach((function(bar){
 			var ry = bar.outlier > 0 ? 0 : -bar.h;
-			var r = this.utils.addRect(g, bar.xS, ry, bar.w, bar.h, '');
+			var r = this.utils.addRect(g, bar.xS, ry, bar.w, bar.h, 'ol-bar');
 			r.attr({
 				style : 'fill:' + bar.color,
 				label : bar.label

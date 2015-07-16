@@ -312,6 +312,10 @@ body{
 	font-size:15px;
 }
 
+.ol-bar{
+	cursor: pointer;
+}
+
 .ol-chart-label{
 	color: grey;
 	cursor: pointer;
