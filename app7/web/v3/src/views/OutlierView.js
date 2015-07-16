@@ -34,6 +34,7 @@ OutlierView.prototype.addXAxis = function(){
 				style : 'fill:' + bar.color,
 				label : bar.label
 			});
+			this.addBarLabel(g, bar);
 		}).bind(this));
 	}).bind(this));
 }
@@ -56,3 +57,22 @@ OutlierView.prototype.addYAxis = function(){
 
 }
 
+OutlierView.prototype.addBarLabel = function(g, bar){
+	bar.outlier > 0 ? this.addPositiveBarLabel(g, bar) : this.addNegativeBarLabel(g, bar);
+}
+
+OutlierView.prototype.addPositiveBarLabel = function(g, bar){
+	var x = bar.xS + bar.w/2;
+	var y = -bar.h - 2 ;
+	var l = bar.label;
+	var gT = this.utils.addTextXForm(g, x, y, l, 'ol-chart-label', 'start');
+	gT.attr('transform', 'scale(1, -1) rotate(-90, ' + x + ',' + y + ')' );	
+}
+
+OutlierView.prototype.addNegativeBarLabel = function(g, bar){
+	var x = bar.xS + bar.w/2;
+	var y = bar.h + 2 ;
+	var l = bar.label;
+	var gT = this.utils.addTextXForm(g, x, y, l, 'ol-chart-label', 'end');
+	gT.attr('transform', 'scale(1, -1) rotate(-90, ' + x + ',' + y + ')' );	
+}

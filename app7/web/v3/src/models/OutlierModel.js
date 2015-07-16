@@ -28,11 +28,12 @@ OutlierModel.prototype.initXAxis = function(apiRes, options){
 	var totalResults = 0;
 	var availableW = options.w;
 	var defaultW = 30;
+	var defaultResSize = 4;
 	var tKeysWithMoreResultsCount = 0;
 	tKeys.forEach(function(tk){
 		tKeysVsResultCount[tk] = apiRes.results[tk].length;
 		totalResults += apiRes.results[tk].length;
-		if(apiRes.results[tk].length < 5)
+		if(apiRes.results[tk].length < defaultResSize)
 			availableW -= defaultW;
 		else
 			tKeysWithMoreResultsCount++;
@@ -47,11 +48,11 @@ OutlierModel.prototype.initXAxis = function(apiRes, options){
 			label : tk,
 			xS : x,
 			yS : -(options.h/2 + 30),
-			xE : rCnt < 5 ? (x + defaultW) : (x + rCnt * barW),
+			xE : rCnt < defaultResSize ? (x + defaultW) : (x + rCnt * barW),
 			yE : -(options.h/2 + 30),
 			bars : this.getBars(apiRes.results[tk], x, barW) 
 		})
-		x = rCnt < 5 ? (x + defaultW) : (x + rCnt * barW);
+		x = rCnt < defaultResSize ? (x + defaultW) : (x + rCnt * barW);
 	}).bind(this));
 
 }
