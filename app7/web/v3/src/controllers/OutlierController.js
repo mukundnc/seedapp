@@ -36,6 +36,8 @@ OutlierController.prototype.getModelOptions = function(results, qid){
 
 OutlierController.prototype.getViewOptions = function(results, qid){
 	var options = {
+		controller : this,
+		qid : qid,
 		w : this.W - 100,
 		h : this.H/2 - 150,
 		xOrg : 70,
@@ -44,3 +46,10 @@ OutlierController.prototype.getViewOptions = function(results, qid){
 	return options;
 }
 
+OutlierController.prototype.executeOutlierDrilldownSearch = function(selLabel, qid){
+	var srcQuery = this.appController.getQueryById(qid).toLowerCase();
+	var src = this.qidResults[qid].qSource.value.toLowerCase();
+	srcQuery = srcQuery.replace('outlier', '').replace(src, selLabel);
+	$('#tbSearch').val(srcQuery);
+	this.appController.executeQuery();
+}	

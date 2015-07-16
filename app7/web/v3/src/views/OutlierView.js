@@ -16,6 +16,7 @@ OutlierView.prototype.render = function(model, options){
 OutlierView.prototype.addAxes = function(){
 	this.addXAxis();
 	this.addYAxis();
+	this.addEventHandlers();
 }
 
 OutlierView.prototype.addXAxis = function(){
@@ -75,4 +76,12 @@ OutlierView.prototype.addNegativeBarLabel = function(g, bar){
 	var l = bar.label;
 	var gT = this.utils.addTextXForm(g, x, y, l, 'ol-chart-label', 'end');
 	gT.attr('transform', 'scale(1, -1) rotate(-90, ' + x + ',' + y + ')' );	
+}
+
+OutlierView.prototype.addEventHandlers = function(){
+	var self = this;
+	$('.ol-bar').on('click', function(e){
+		var selLabel = d3.select(this).attr('label');
+		self.options.controller.executeOutlierDrilldownSearch(selLabel, self.options.qid);
+	});
 }
