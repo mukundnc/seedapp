@@ -75,6 +75,12 @@ OutlierHelper.prototype.getOutlierFlagsForTimeItems = function(timeKeyVsCount, t
 		else{
 			var jRes = JSON.parse(res);
 			Object.keys(jRes).forEach(function(strKey){
+				if(jRes[strKey] > 1000){
+					jRes[strKey] = 1000;
+					logger.log('***** Invalid forecast values in R');
+					logger.log(args);
+					logger.log(jRes);
+				}
 				outlierFlags[strKeyVsTimeKey[strKey]] = jRes[strKey];
 			})
 			cbOnDone(null, outlierFlags);
