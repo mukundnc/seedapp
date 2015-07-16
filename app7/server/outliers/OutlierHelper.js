@@ -79,7 +79,7 @@ OutlierHelper.prototype.getOutlierFlagsForTimeItems = function(timeKeyVsCount, t
 					logger.log('***** Invalid forecast values in R');
 					logger.log(args);
 					logger.log(jRes);
-					jRes[strKey] = 1000;
+					jRes[strKey] = 0;
 				}
 				outlierFlags[strKeyVsTimeKey[strKey]] = jRes[strKey];
 			})
