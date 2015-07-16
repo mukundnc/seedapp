@@ -34,9 +34,6 @@ execute <- function (jsonObj) {
 			else if(actVal < min && min != 0){
 				outVals[i+1] = ((actVal - min)/min) * 100;
 			}
-			else if(mean != 0){
-				outVals[i+1] = ((actVal - mean)/mean) * 100;
-			}
 			# print(keys[i+1]);
 			# print(values[i+1]);
 			# print(min);
