@@ -27,7 +27,7 @@ OutlierModel.prototype.initXAxis = function(apiRes, options){
 	var tKeysVsResultCount = {};
 	var totalResults = 0;
 	var availableW = options.w;
-	var defaultW = 30;
+	var defaultW = 40;
 	var defaultResSize = 4;
 	var tKeysWithMoreResultsCount = 0;
 	tKeys.forEach(function(tk){
@@ -44,15 +44,16 @@ OutlierModel.prototype.initXAxis = function(apiRes, options){
 	this.colors = this.getColors(totalResults);
 	tKeys.forEach((function(tk){
 		var rCnt = apiRes.results[tk].length;
+		var bw = rCnt < defaultResSize ? defaultW/rCnt : barW;
 		this.model.axes.x.blocks.push({
 			label : tk,
 			xS : x,
 			yS : -(options.h/2 + 30),
-			xE : rCnt < defaultResSize ? (x + defaultW) : (x + rCnt * barW),
+			xE : rCnt < defaultResSize ? (x + defaultW) : (x + rCnt * bw),
 			yE : -(options.h/2 + 30),
-			bars : this.getBars(apiRes.results[tk], x, barW) 
+			bars : this.getBars(apiRes.results[tk], x, bw) 
 		})
-		x = rCnt < defaultResSize ? (x + defaultW) : (x + rCnt * barW);
+		x = rCnt < defaultResSize ? (x + defaultW) : (x + rCnt * bw);
 	}).bind(this));
 
 }
