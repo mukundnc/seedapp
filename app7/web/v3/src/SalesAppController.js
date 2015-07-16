@@ -125,11 +125,11 @@ SalesAppController.prototype.getOutlierDataDrilldownMode = function(params){
 		query = query.substr(0, idxWhere);
 	query += ' where date in last 1 years ';
 	var queryDisplay = 'outlier ' + params.line + ' ' + query;
-	var qid = this.getQueryId(queryDisplay);
-	$('#tbSearch').val(queryDisplay);
+	var qid = this.getQueryId(queryDisplay);	
 	var controller = this.queryIdVsController[qid];
 	if(controller){
 		controller.renderView(params.qid, null);
+		$('#tbSearch').val(queryDisplay);
 		return;
 	}
 
@@ -138,6 +138,7 @@ SalesAppController.prototype.getOutlierDataDrilldownMode = function(params){
 	$.getJSON(url, (function(result){
 		hideLoading();
 		if(result.success){			
+			$('#tbSearch').val(queryDisplay);
 			this.queryIdVsController[qid] = this.outlierController;
 			this.queryIdVsController[qid].renderView(qid, result);
 			var treeText = 'outlier-' + result.qSource.value;
