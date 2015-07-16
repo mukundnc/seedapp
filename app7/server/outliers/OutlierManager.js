@@ -38,10 +38,14 @@ OutlierManager.prototype.executeOutliersForTopMode = function(reqHttp, line, cbO
 OutlierManager.prototype.executeOutliersForDrilldownMode = function(reqHttp, query, line, cbOnDone){
 	var self = this;	
 	var rootSearchResponse = {};
-	function onDrilldownSearchExecutionComplete(allExecutedSearches){
+	function onDrilldownSearchExecutionComplete(result){
+		if(!result.success){
+			cbOnDone(result);
+			return
+		}
 		var outlierDrillDown = new OutlierDrillDown();
 		//var t = [allExecutedSearches[0]];
-		outlierDrillDown.getOutliersForDrillDown(allExecutedSearches, rootSearchResponse, line, cbOnDone);
+		outlierDrillDown.getOutliersForDrillDown(result.data, rootSearchResponse, line, cbOnDone);
 	}
 
 	var onSearchQueryResponse = {
@@ -87,10 +91,10 @@ OutlierManager.prototype.isDrilldownSupported = function(parsedResponse, line){
 	keys.forEach((function(key){
 		var src = parsedResponse[0][key];
 		if(src){
-			if(this.isProductType(src.key)){
+			if(this.isProductType(src.key) && line === 'product'){
 				supported.isProduct = true;
 			}
-			if(this.isRegionType(src.key)){
+			if(this.isRegionType(src.key) && line === 'region'){
 				supported.isRegion = true;
 			}
 		}
@@ -223,7 +227,10 @@ OutlierManager.prototype.executeAllDrilldownSearches = function(allSearchDetails
 				queryParser.parse(oneSearch.query, onParseResponse);
 			}
 			else{
-				cbOnDone(executedSearches);
+				cbOnDone({
+					success : true,
+					data : executedSearches
+				});
 			}
 		}
 	}	
