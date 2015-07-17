@@ -71,7 +71,9 @@ OutlierTop.prototype.markOutliersInObject = function(obj, cbOnDone){
 OutlierTop.prototype.markOutliersInOneTimeItem = function(timeItem, cbOnDone){
 	var timeKeyVsItem = {};
 	var timeKeyVsCount = {};
-	timeItem.items.items.forEach(function(tItem){
+	var tItems = timeItem.items.items;
+	tItems = this.helper.addMissingItemsInTimeSeries(tItems, this.timeDistribution);
+	tItems.forEach(function(tItem){
 		timeKeyVsItem[tItem.key] = tItem;
 		timeKeyVsCount[tItem.key] = tItem.doc_count;
 	});	

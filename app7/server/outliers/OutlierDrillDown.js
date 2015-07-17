@@ -74,7 +74,9 @@ OutlierDrillDown.prototype.markOutlierInOneItem = function(outlierItem, cbOnDone
 		objChild.items.forEach(function(objChildTimeItem){
 			if(self.helper.isTimeType(objChildTimeItem.key)){
 				self.timeDistribution = objChildTimeItem.key;
-				objChildTimeItem.items.forEach(function(tItem){
+				var tItems = objChildTimeItem.items;
+				tItems = self.helper.addMissingItemsInTimeSeries(tItems, self.timeDistribution);
+				tItems.forEach(function(tItem){
 					timeKeyVsItem[tItem.key] = tItem;
 					timeKeyVsCount[tItem.key] = tItem.doc_count;
 				});	

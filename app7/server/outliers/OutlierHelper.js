@@ -147,4 +147,38 @@ OutlierHelper.prototype.getMonthIndex = function(monthStr){
 	if(monthStr.indexOf('Nov') !== -1) return 11;
 	if(monthStr.indexOf('Dec') !== -1) return 12;
 }
+
+OutlierHelper.prototype.addMissingItemsInTimeSeries = function(timeSeries, timeDistribution){
+	var all = [];
+	timeSeries.forEach(function(ts){
+		var dt = new Date(ts.key);
+		var y = dt.getFullYear();
+		var m = dt.getMonth();
+		timeDistribution === 'yearly' ? all.push(y) : all.push(m);
+	});
+	var min = timeDistribution === 'yearly' ? 2000 : 0;
+	var max = timeDistribution === 'yearly' ? 2014 : 11;
+	for(var i = min ; i <= max ; i++){
+		if(all.indexOf(i) === -1){
+			if(timeDistribution === 'yearly'){
+				timeSeries.push({
+					key : Date.parse(i + '/06/15'),
+					key_as_string : i + '/06/15',
+					doc_count : 0
+				});
+			}
+			else if(timeDistribution === 'monthly'){
+				timeSeries.push({
+					key : Date.parse('2014/' + (i+1).toString() + '/15'),
+					key_as_string : '2014/' + (i+1).toString() + '/15',
+					doc_count : 0
+				});
+			}
+		}
+	}
+	var sorted = _.sortBy(timeSeries, function(ts) { 
+		return ts.key;
+	});
+	return sorted;
+}
 module.exports = OutlierHelper

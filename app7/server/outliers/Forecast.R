@@ -29,7 +29,10 @@ execute <- function (jsonObj) {
 			actVal <- values[i+1];
 
 			if(actVal > max && max != 0){
-				outVals[i+1] = ((actVal - max)/max) * 100;
+				denom <- max;
+				if(denom < 0)
+					denom <- -1 * denom;
+				outVals[i+1] = ((actVal - max)/denom) * 100;
 			}
 			else if(actVal < min && min != 0){
 				outVals[i+1] = ((actVal - min)/min) * 100;
