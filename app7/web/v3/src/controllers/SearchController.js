@@ -189,3 +189,4 @@ SearchController.prototype.getTimeFilterSuffix = function(queryParams){
 SearchController.prototype.getOutlierData = function(params, cbOnDataReceived){
 	this.appController.getOutlierData(params, cbOnDataReceived);
 }
+

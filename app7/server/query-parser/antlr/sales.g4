@@ -2,101 +2,86 @@ grammar sales;
 import commonlexer;
 
 query 
-	: display_aspect container_in_container filter_expression? EOF
-	| display_aspect container_in_leaf filter_expression? EOF
-	| display_aspect leaf_in_container filter_expression? EOF
-	| display_aspect leaf_in_leaf filter_expression? EOF
-	| display_aspect single_entity filter_expression? EOF
+	: display_aspect double_entity_spec ASSOC? region_spec? ASSOC? time_spec? EOF
+	| display_aspect single_entity_spec ASSOC? region_spec? ASSOC? time_spec? EOF
 	;
 
-display_aspect : displaySpec;
+display_aspect : DISPLAY_PREFIX?;
 
-container_in_container 
-	:	category_in_region
-	|	category_in_state	
-	|	type_in_region
-	|	type_in_state	
-	|	brand_in_region
-	|	brand_in_state
-	;
-
-container_in_leaf
-	:	category_in_city
-	|	type_in_city
-	|	brand_in_city
-	;
-
-leaf_in_container
-	:	model_in_region
-	|	model_in_state
-	;
-
-leaf_in_leaf
-	:
-	|	model_in_city
-	;
-
-category_in_region 
-	: categorySpec (',' categorySpec)* ASSOC regionSpec (',' regionSpec)*
-	;
-category_in_state
-	: categorySpec (',' categorySpec)* ASSOC stateSpec (',' stateSpec)* 
+double_entity_spec
+	: category_region_spec
+	| category_state_spec
+	| category_city_spec 
+	| type_region_spec
+	| type_state_spec
+	| type_city_spec 
+	| brand_region_spec
+	| brand_state_spec
+	| brand_city_spec 
+	| brand_type_spec
+	| model_region_spec
+	| model_state_spec
+	| model_city_spec 
+	| region_category_spec
+	| region_type_spec
+	| region_brand_spec
+	| region_model_spec
+	| state_category_spec
+	| state_type_spec
+	| state_brand_spec
+	| state_model_spec
+	| city_category_spec
+	| city_type_spec
+	| city_brand_spec
+	| city_model_spec
 	;
 
-category_in_city
-	: categorySpec (',' categorySpec)* ASSOC citySpec (',' citySpec)* 
-	;
-
-type_in_region
-	: typeSpec (',' typeSpec)* ASSOC regionSpec (',' regionSpec)* 
-	;
-
-type_in_state 
-	: typeSpec (',' typeSpec)* ASSOC stateSpec (',' stateSpec)* 
-	;
-
-type_in_city
-	: typeSpec (',' typeSpec)* ASSOC citySpec (',' citySpec)* 
-	;
-
-brand_in_region 
-	: brandSpec (',' brandSpec)* ASSOC regionSpec (',' regionSpec)* 
-	;
-
-brand_in_state
-	: brandSpec (',' brandSpec)* ASSOC stateSpec (',' stateSpec)* 
-	;
-brand_in_city
-	: brandSpec (',' brandSpec)* ASSOC citySpec (',' citySpec)* 
-	;
-
-model_in_region
-	: modelSpec (',' modelSpec)* ASSOC regionSpec (',' regionSpec)* 
-	;
-
-model_in_state
-	: modelSpec (',' modelSpec)* ASSOC stateSpec (',' stateSpec)* 
-	;
-
-model_in_city 
-	: modelSpec (',' modelSpec)* ASSOC citySpec (',' citySpec)* 
-	;
-
-filter_expression 
-	: filterSpec
-	;
-
-single_entity
+single_entity_spec
 	: categorySpec (',' categorySpec)*
 	| typeSpec (',' typeSpec)*
 	| brandSpec (',' brandSpec)*
+	| modelSpec (',' modelSpec)*
 	| regionSpec (',' regionSpec)*
 	| stateSpec (',' stateSpec)*
-	| modelSpec (',' modelSpec)*
 	| citySpec (',' citySpec)*
 	;
 
-displaySpec : DISPLAY_PREFIX?;
+region_spec 
+	: regionSpec (',' regionSpec)*
+	| stateSpec (',' stateSpec)*
+	| citySpec (',' citySpec)*
+	;	
+
+time_spec : timeSpec;
+
+
+
+category_region_spec : categorySpec regionSpec;
+category_state_spec : categorySpec stateSpec;
+category_city_spec : categorySpec citySpec; 
+type_region_spec : typeSpec regionSpec;
+type_state_spec : typeSpec stateSpec;
+type_city_spec : typeSpec citySpec;
+brand_region_spec : brandSpec regionSpec;
+brand_state_spec : brandSpec stateSpec;
+brand_city_spec : brandSpec citySpec; 
+brand_type_spec : brandSpec typeSpec;
+model_region_spec : modelSpec regionSpec;
+model_state_spec : modelSpec stateSpec;
+model_city_spec : modelSpec citySpec; 
+region_category_spec : regionSpec categorySpec;
+region_type_spec : regionSpec typeSpec;
+region_brand_spec : regionSpec brandSpec;
+region_model_spec : regionSpec modelSpec;
+state_category_spec : stateSpec categorySpec;
+state_type_spec : stateSpec typeSpec;
+state_brand_spec : stateSpec brandSpec;
+state_model_spec : stateSpec modelSpec;
+city_category_spec : citySpec categorySpec;
+city_type_spec : citySpec typeSpec;
+city_brand_spec : citySpec brandSpec;
+city_model_spec : citySpec modelSpec;
+
 
 categorySpec
 	: automibileSpec
@@ -190,39 +175,14 @@ modelSpec
 	: STR 
 	| STRNUM
 	| STR '-' NUM
-	| year_spec
 	;
 
 citySpec : STR;
-
-filterSpec 
-	: FILTER_ID expression RELATION_OPERATOR?
-	;
-
-term
-	: 
-	| '(' expression ')'
-	| categorySpec
-	| typeSpec
-	| brandSpec
-	| modelSpec
-	| regionSpec
-	| stateSpec
-	| citySpec 
-	| dateSpec
-	;
-
-relation
-	: term (RELATION_OPERATOR term)*
-	;
-	
-expression
-	: relation (AND_OR_OPERATOR relation)*
-	;
 		
-dateSpec 
+timeSpec 
 	: NUM (year_spec | month_spec | day_spec)
 	| NUM
+	| NUM AND_OR_OPERATOR NUM
 	| YYYY_MM_DD
 	;
 
@@ -230,8 +190,4 @@ year_spec : 'years' | 'year';
 month_spec :  'months' | 'month';
 day_spec : 'days' | 'day';
 
-
-parseDate 
-	: STR RELATION_OPERATOR dateSpec
-	;
 
