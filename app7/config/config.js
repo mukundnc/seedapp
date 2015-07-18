@@ -27,7 +27,8 @@ var config = {
 		model_in_city : 16,
 		region : 17,
 		state : 18,
-		city : 19
+		city : 19,
+		type_in_brand : 20
 	},
 	saleStrategy : {
 		strategyFileName : './web/v1/sales.txt'
