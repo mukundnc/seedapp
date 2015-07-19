@@ -155,6 +155,73 @@ QueryParseListener.prototype.enterCity_model_spec = function(ctx) {
 	this.enterModel_city_spec(ctx);
 };
 
+// Enter a parse tree produced by salesParser#single_entity_spec.
+QueryParseListener.prototype.enterSingle_entity_spec = function(ctx) {
+	if(ctx.categorySpec())
+		this.addSingleKeyToMemory('category', ctx.categorySpec(), sc.category);
+	
+	if(ctx.typeSpec())
+		this.addSingleKeyToMemory('type', ctx.typeSpec(), sc.type);
+
+	if(ctx.brandSpec())
+		this.addSingleKeyToMemory('brand', ctx.brandSpec(), sc.brand);
+
+	if(ctx.regionSpec())
+		this.addSingleKeyToMemory('region', ctx.regionSpec(), sc.region);
+
+	if(ctx.stateSpec())
+		this.addSingleKeyToMemory('state', ctx.stateSpec(), sc.state);
+
+	if(ctx.modelSpec()){
+		if(this.isCitySpec(ctx.modelSpec()))
+			this.addSingleKeyToMemory('city', ctx.modelSpec(), sc.city);
+		else 
+			this.addSingleKeyToMemory('model', ctx.modelSpec(), sc.model);
+	}
+};
+
+// Enter a parse tree produced by salesParser#region_spec.
+QueryParseListener.prototype.enterRegion_spec = function(ctx) {
+	var regions = ['region', 'state', 'city'];
+	for(var key in this.memory){
+		if(regions.indexOf(key) !== -1)
+			return;
+	}
+	var key = '';
+	var spec = null;
+
+	if(ctx.regionSpec().length){
+		key = 'region';
+		spec = ctx.regionSpec();	
+	}
+	
+	if(ctx.stateSpec().length){
+		key = 'state';
+		spec = ctx.stateSpec();
+	}
+	
+	if(ctx.citySpec().length){
+		key = 'city';
+		spec = ctx.citySpec();
+	}
+
+	this.memory.searchContext = this.getSearchContextForIn(key);
+	this.memory.query[key] = [];
+	if(Array.isArray(spec)){
+		spec.forEach((function(s){
+			this.memory.query[key].push(s.getText());
+		}).bind(this));
+	}
+	else{
+		this.memory.query[key].push(spec.getText());
+	}
+
+};
+
+// Enter a parse tree produced by salesParser#time_spec.
+QueryParseListener.prototype.enterTime_spec = function(ctx) {
+};
+
 QueryParseListener.prototype.addSingleKeyToMemory = function(key, spec, searchContext){
 	if (spec.length === 0) return;
 
@@ -200,5 +267,37 @@ QueryParseListener.prototype.isCitySpec = function(spec){
 	});
 	var res = _.where(allRegions, {'city' : dict.getDomainQualifiedStr(arr[0])});
 	return res && res.length > 0;
+}
+
+QueryParseListener.prototype.getSearchContextForIn = function(inRegionKey){
+	var keys = Object.keys(this.memory.query);
+	if(keys.length > 1) return this.memory.searchContext;
+	if(keys.length === 0){
+		switch(inRegionKey){
+			case 'region' : return sc.region;
+			case 'state' : return sc.state;
+			case 'city' : return sc.city;
+		}
+	}
+
+	var srcKey = keys[0];
+	switch(srcKey){
+		case 'category' : 
+			if(inRegionKey === 'region') return sc.category_in_region;
+			if(inRegionKey === 'state') return sc.category_in_state;
+			if(inRegionKey === 'city') return sc.category_in_city;
+		case 'type' : 
+			if(inRegionKey === 'region') return sc.type_in_region;
+			if(inRegionKey === 'state') return sc.type_in_state;
+			if(inRegionKey === 'city') return sc.type_in_city;
+		case 'brand' : 
+			if(inRegionKey === 'region') return sc.brand_in_region;
+			if(inRegionKey === 'state') return sc.brand_in_state;
+			if(inRegionKey === 'region') return sc.brand_in_city;
+		case 'model' : 
+			if(inRegionKey === 'region') return sc.model_in_region;
+			if(inRegionKey === 'state') return sc.model_in_state;
+			if(inRegionKey === 'region') return sc.model_in_city;
+	}
 }
 module.exports = QueryParseListener;

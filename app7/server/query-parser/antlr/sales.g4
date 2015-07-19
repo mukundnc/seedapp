@@ -183,7 +183,7 @@ timeSpec
 	: NUM (year_spec | month_spec | day_spec)
 	| NUM
 	| NUM AND_OR_OPERATOR NUM
-	| YYYY_MM_DD
+	| YYYY_MM_DD AND_OR_OPERATOR YYYY_MM_DD
 	;
 
 year_spec : 'years' | 'year';
