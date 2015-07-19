@@ -118,7 +118,7 @@ OutlierManager.prototype.getAllDrilldownSearches = function(parsedResponse, quer
 			label : ddSub
 		}
 		var ddQuery = this.getQueryString(qParams, qSource, qTarget);
-		ddQuery += this.getFilterString(query);
+		ddQuery += ' in last 1 year';
 		drillDownQueries.push(ddQuery);
 	}).bind(this));
 	return drillDownQueries;
@@ -187,14 +187,6 @@ OutlierManager.prototype.getQueryString = function(queryParams, qSource, qTarget
 		}
 	}
 	return q;
-}
-
-OutlierManager.prototype.getFilterString = function(query){
-	var idxWhere = query.indexOf('where');
-	if(idxWhere !== -1){
-		return '  ' + query.substr(idxWhere, query.length);
-	}
-	return '';
 }
 
 OutlierManager.prototype.isProductType = function(pType){
