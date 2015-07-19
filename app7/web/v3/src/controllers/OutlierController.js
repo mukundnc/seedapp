@@ -54,7 +54,7 @@ OutlierController.prototype.executeOutlierDrilldownSearch = function(selLabel, q
 		label : selLabel
 	}
 	var query = this.getQueryString(qParams, qSource, qTarget);
-	query += ' where date in last 1 year';
+	query += ' in last 1 year';
 	$('#tbSearch').val(query);
 	this.appController.executeQuery();
 }	

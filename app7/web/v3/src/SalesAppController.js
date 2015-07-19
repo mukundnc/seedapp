@@ -123,7 +123,7 @@ SalesAppController.prototype.getOutlierDataDrilldownMode = function(params){
 	var idxWhere = query.indexOf('where');
 	if(idxWhere !== -1)
 		query = query.substr(0, idxWhere);
-	query += ' where date in last 1 years ';
+	query += ' in last 1 year ';
 	var queryDisplay = 'outlier ' + params.line + ' ' + query;
 	var qid = this.getQueryId(queryDisplay);	
 	var controller = this.queryIdVsController[qid];

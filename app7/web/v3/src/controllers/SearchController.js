@@ -179,10 +179,10 @@ SearchController.prototype.getTimeFilterSuffix = function(queryParams){
 		var year = 2000 + parseInt(arr[1]);
 		var month = map[arr[0]].m;
 		var date = map[arr[0]].d;
-		return ' where date from ' + year + '/' + month + '/01 and date to ' + year + '/' + month + '/' + date;
+		return ' between ' + year + '/' + month + '/01 and ' + year + '/' + month + '/' + date;
 	}
 	else{
-		return ' where date from ' + queryParams.tKey + '/01/01 and date to ' + queryParams.tKey + '/12/31';
+		return ' between ' + queryParams.tKey + '/01/01 and ' + queryParams.tKey + '/12/31';
 	}
 }
 
