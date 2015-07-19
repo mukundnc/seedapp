@@ -112,7 +112,11 @@ CompareTimeView.prototype.addTimeLine = function(g, timeGroup, tlLabel, tlColor)
 	var i = 0;
 	var path = new Path();
 	Object.keys(timeGroup).forEach((function(xLabel){
-		var count = timeGroup[xLabel].count || timeGroup[xLabel].totalCount;
+		var count = 0;
+		if(!_.isUndefined(timeGroup[xLabel].count))
+			count = timeGroup[xLabel].count;
+		else if(!_.isUndefined(timeGroup[xLabel].totalCount))
+			count = timeGroup[xLabel].totalCount;
 		var xL = this.getXLabelEndPoints(xLabel);
 		var x = (xL.xS + xL.xE)/2;
 		var y = this.yScale(count);
