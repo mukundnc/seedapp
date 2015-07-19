@@ -180,11 +180,21 @@ modelSpec
 citySpec : STR;
 		
 timeSpec 
-	: NUM (year_spec | month_spec | day_spec)
-	| NUM
-	| NUM AND_OR_OPERATOR NUM
-	| YYYY_MM_DD AND_OR_OPERATOR YYYY_MM_DD
+	: timeInLastYearsSpec
+	| timeInLastMonthsSpec
+	| timeInLastDaysSpec
+	| timeInYearSpec
+	| timeBetweenYearsSpec
+	| timeBetweenDatesSpec
 	;
+
+timeInLastYearsSpec : NUM year_spec;
+timeInLastMonthsSpec : NUM month_spec;
+timeInLastDaysSpec : NUM day_spec;
+timeInYearSpec : NUM;
+timeBetweenYearsSpec : NUM AND_OR_OPERATOR NUM;
+timeBetweenDatesSpec : YYYY_MM_DD AND_OR_OPERATOR YYYY_MM_DD;
+
 
 year_spec : 'years' | 'year';
 month_spec :  'months' | 'month';

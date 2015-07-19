@@ -26,7 +26,7 @@ QueryParseListener.prototype.exitQuery = function(ctx){
 		success: true, 
 		data : this.memory
 	});
-	console.log(JSON.stringify(this.memory));
+	//console.log(JSON.stringify(this.memory));
 	logger.log('exit query');
 }
 
@@ -220,6 +220,8 @@ QueryParseListener.prototype.enterRegion_spec = function(ctx) {
 
 // Enter a parse tree produced by salesParser#time_spec.
 QueryParseListener.prototype.enterTime_spec = function(ctx) {
+	var expBldr = new ExpressionBuilder();
+	this.memory.filters = expBldr.build(ctx.timeSpec());
 };
 
 QueryParseListener.prototype.addSingleKeyToMemory = function(key, spec, searchContext){
