@@ -104,12 +104,46 @@ SearchController.prototype.executeSearch = function(queryParams){
 	var apiRes = this.qidResults[queryParams.qid];	
 	var qSource = apiRes.results[0].qSource;
 	var qTarget = apiRes.results[0].qTarget;
-	var filters = apiRes.query.filters? apiRes.query.filters.and : null;
-	var queryStr = getQueryString(queryParams, qSource, qTarget, filters);
+	var queryStr = '';
+	if(queryParams.source === 'timeline'){
+		queryStr = getQueryString(queryParams, qSource, qTarget, null);
+		queryStr += this.getTimeFilterSuffix(queryParams);
+	}
+	else{
+		var filters  = apiRes.query.filters? apiRes.query.filters.and : null;
+		queryStr = getQueryString(queryParams, qSource, qTarget, filters);
+	}
+	
 	$('#tbSearch').val(queryStr)
 	this.appController.executeQuery();
 }
 
+SearchController.prototype.getTimeFilterSuffix = function(queryParams){
+	var map = {
+		'Jan' : { m : 1, d : 31},
+		'Feb' : { m : 2, d : 28},
+		'Mar' : { m : 3, d : 31},
+		'Apr' : { m : 4, d : 30},
+		'May' : { m : 5, d : 31},
+		'Jun' : { m : 6, d : 30},
+		'Jul' : { m : 7, d : 31},
+		'Aug' : { m : 8, d : 31},
+		'Sep' : { m : 9, d : 30},
+		'Oct' : { m : 10, d : 31},
+		'Nov' : { m : 11, d : 30},
+		'Dec' : { m : 12, d : 31}
+	};
+	if(queryParams.tKey.indexOf('-') !== -1){
+		var arr = queryParams.tKey.split('-');
+		var year = 2000 + parseInt(arr[1]);
+		var month = map[arr[0]].m;
+		var date = map[arr[0]].d;
+		return ' between ' + year + '/' + month + '/01 and ' + year + '/' + month + '/' + date;
+	}
+	else{
+		return ' between ' + queryParams.tKey + '/01/01 and ' + queryParams.tKey + '/12/31';
+	}
+}
 SearchController.prototype.getOutlierData = function(params, cbOnDataReceived){
 	if(params.mode === 'drilldown'){
 		var orgQuery = this.appController.getQueryById(params.qid);
