@@ -126,6 +126,10 @@ ESQueryBuilder.prototype.getBoolFilteredQuery = function(){
 		}
 	}
 }
+
+ESQueryBuilder.prototype.getMatchAllWithMultiAndQuery = function(){
+	
+}
 ESQueryBuilder.prototype.executeQuery = function(url, cbOnDone){
 	$.getJSON(url, cbOnDone);
 	return;

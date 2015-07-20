@@ -193,10 +193,13 @@ ESQueryHelper.prototype.getESQueryToCompare = function(allSrcTargetFilters){
 	return esQuery.toESQuery();
 }
 
-ESQueryHelper.prototype.getESQueryForTypeInBrand = function(brand, type, filters){
+ESQueryHelper.prototype.getESQueryForTypeInBrand = function(brand, type, region, filters){
 	var esQuery = new qb.MatchAllWithMultiAndFiltersQuery();
 	esQuery.addFilter(brand.key, brand.value);
 	esQuery.addFilter(type.key, type.value);
+	if(region){
+		esQuery.addFilter(region.key, region.value);
+	}
 	var dateRange = dtm.getDateRangeFromFilters(filters);
 	if(dateRange.hasDates)
 		esQuery.addDateRange(dateRange.startDate, dateRange.endDate);
