@@ -117,7 +117,6 @@ SearchController.prototype.getOutlierData = function(params, cbOnDataReceived){
 		var qSource = apiRes.results[0].qSource;
 		var qTarget = apiRes.results[0].qTarget;
 		var filters = apiRes.query.filters? apiRes.query.filters.and : null;
-		var ddQueryStr = ''
 		if(filters && filters.length > 1){
 			params.query = qSource.value;
 			if(qTarget)
