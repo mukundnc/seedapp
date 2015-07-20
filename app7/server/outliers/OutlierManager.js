@@ -16,7 +16,6 @@ OutlierManager.prototype.handleOutlierRequest = function(reqHttp, resHttp){
 	var query = decodeURIComponent(reqHttp.query.q).toLowerCase();	
 	var mode = decodeURIComponent(reqHttp.query.mode).toLowerCase();	
 	var line = decodeURIComponent(reqHttp.query.line).toLowerCase();	
-
 	if(mode === 'top')
 		this.executeOutliersForTopMode(reqHttp, line, cbOnDone);
 	else if(mode === 'drilldown')

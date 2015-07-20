@@ -119,12 +119,7 @@ SalesAppController.prototype.getOutlierDataTopMode = function(params, cbOnDataRe
 }
 
 SalesAppController.prototype.getOutlierDataDrilldownMode = function(params){
-	var query = this.getQueryById(params.qid);
-	var idxWhere = query.indexOf('where');
-	if(idxWhere !== -1)
-		query = query.substr(0, idxWhere);
-	query += ' in last 1 year ';
-	var queryDisplay = 'outlier ' + params.line + ' ' + query;
+	var queryDisplay = 'outlier ' + params.line + ' ' + params.query;
 	var qid = this.getQueryId(queryDisplay);	
 	var controller = this.queryIdVsController[qid];
 	if(controller){
@@ -133,7 +128,7 @@ SalesAppController.prototype.getOutlierDataDrilldownMode = function(params){
 		return;
 	}
 
-	var url = '/api/ol?q=' + query + '&mode=' + params.mode + '&line=' + params.line;
+	var url = '/api/ol?q=' + params.query + '&mode=' + params.mode + '&line=' + params.line;
 	showLoading();
 	$.getJSON(url, (function(result){
 		hideLoading();
