@@ -104,8 +104,8 @@ SearchController.prototype.executeSearch = function(queryParams){
 	var apiRes = this.qidResults[queryParams.qid];	
 	var qSource = apiRes.results[0].qSource;
 	var qTarget = apiRes.results[0].qTarget;
-
-	var queryStr = getQueryString(queryParams, qSource, qTarget, apiRes.query.filters.and);
+	var filters = apiRes.query.filters? apiRes.query.filters.and : null;
+	var queryStr = getQueryString(queryParams, qSource, qTarget, filters);
 	$('#tbSearch').val(queryStr)
 	this.appController.executeQuery();
 }

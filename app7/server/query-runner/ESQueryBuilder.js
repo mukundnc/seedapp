@@ -381,6 +381,50 @@ CompareQueryWithTermsAndFilters.prototype.toESQuery = function(){
 	return this.query;
 }
 
+function MatchAllWithMultiAndFiltersQuery(){
+	this.query = {
+		index: config.elasticSearch.salesIndex,
+		type: config.elasticSearch.salesType,
+		body: {
+			query: {
+				filtered: {
+					query :{
+						match_all: {
+						}
+					},
+					filter : {
+						and : []
+					}
+				}		
+			}
+		}
+	};
+}
+
+MatchAllWithMultiAndFiltersQuery.prototype.addFilter = function(key, value){
+	var qValue = dictonary.getDomainQualifiedStr(value);
+	var term = {term: {}};
+	term.term[key] = qValue;
+	this.query.body.query.filtered.filter.and.push(term);
+}
+
+MatchAllWithMultiAndFiltersQuery.prototype.addDateRange = function(start, end){
+	var range = {
+		range : {
+			timestamp : {
+				gte : start,
+				lte : end
+			}
+		}
+	}
+	this.query.body.query.filtered.filter.and.push(range);
+}
+
+MatchAllWithMultiAndFiltersQuery.prototype.toESQuery = function(){
+	return this.query;
+}
+
+
 module.exports = {
 	getRootQuery : getRootQuery,
 	MatchQuery : MatchQuery,
@@ -389,7 +433,8 @@ module.exports = {
 	MatchQueryWithOrFilters : MatchQueryWithOrFilters,
 	MatchQueryWithAndOrFilters : MatchQueryWithAndOrFilters,
 	FilterOnly : FilterOnly,
-	CompareQueryWithTermsAndFilters : CompareQueryWithTermsAndFilters
+	CompareQueryWithTermsAndFilters : CompareQueryWithTermsAndFilters,
+	MatchAllWithMultiAndFiltersQuery : MatchAllWithMultiAndFiltersQuery
 }
 
 

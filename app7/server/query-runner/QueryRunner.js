@@ -52,7 +52,9 @@ QueryRunner.prototype.run = function(antlrQueryObject, cbOnDone){
 
 QueryRunner.prototype.runSingle = function(srcTargetFilter, antlrQueryObject, cbOnDone){
 	var qHlpr = new ESQueryHelper();
-	var esQuery = qHlpr.getESQuery(srcTargetFilter.source, srcTargetFilter.target, srcTargetFilter.filters);
+	var esQuery = antlrQueryObject.searchContext === config.searchContext.type_in_brand ?
+				  qHlpr.getESQueryForTypeInBrand(srcTargetFilter.source, srcTargetFilter.target, srcTargetFilter.filters):
+				  qHlpr.getESQuery(srcTargetFilter.source, srcTargetFilter.target, srcTargetFilter.filters);
 	this.applyAggregatorsToESQuery(esQuery, antlrQueryObject);
 	this.client.search(esQuery, function(err, res){
 		if(err){
@@ -60,8 +62,14 @@ QueryRunner.prototype.runSingle = function(srcTargetFilter, antlrQueryObject, cb
 			cbOnDone({success : false, results : 'error in ES query execute'});
 		}
 		else{
-			res.qSource = srcTargetFilter.source;
-			res.qTarget = srcTargetFilter.target;
+			if(antlrQueryObject.searchContext === config.searchContext.type_in_brand){
+				res.qSource = srcTargetFilter.target;
+				res.qTarget = null;
+			}
+			else{
+				res.qSource = srcTargetFilter.source;
+				res.qTarget = srcTargetFilter.target;
+			}
 			cbOnDone({success : true, results : res});
 		}
 	});	

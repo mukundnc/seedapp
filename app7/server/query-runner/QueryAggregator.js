@@ -68,6 +68,9 @@ QueryAggreagator.prototype.getAggregates = function(query){
 		case sc.city :
 			agg = this.getCityAgg();
 			break;		
+		case sc.type_in_brand:
+			agg = this.getBrandAgg();
+			break;
 	}
 	this.addTimeAggregate(agg);
 	return agg;
