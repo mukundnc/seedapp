@@ -9,7 +9,7 @@ function SearchTimeView(model, options){
 	}
 	this.currTimeModelIndex = 0;
 	$(document).on('click', function(e){
-		if(false === $(e.originalEvent.srcElement).hasClass('opt-menu-img'))
+		if(false === $(e.target).hasClass('opt-menu-img'))
 				$('.opt-menu-container').hide();
 	});
 }
