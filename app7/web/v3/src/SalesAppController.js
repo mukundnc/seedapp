@@ -91,7 +91,7 @@ SalesAppController.prototype.getTreeText = function(apiRes){
 }
 
 SalesAppController.prototype.getControllerForSearch = function(apiRes){
-	if(_.contains(this.getTreeText(apiRes), '-')){			
+	if(_.contains(this.getTreeText(apiRes), '-') && apiRes.results[0].aggregations){			
 		return this.compareController;
 	}
 		
