@@ -1,0 +1,4 @@
+node_modules
+server/log/app.log
+server/query-parser/antlr/generated
+web/v1/sales.csv
