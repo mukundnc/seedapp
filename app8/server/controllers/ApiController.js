@@ -20,7 +20,7 @@ ApiController.prototype.onQueryParseResponse = function(respHttp, respQueryParse
 		respHttp.json(respQueryParse);
 		return;
 	}
-
+	respHttp.json({success : true, results : respQueryParse});
 	//this.executeQuery(respQueryParse.data, respHttp);
 }
 
