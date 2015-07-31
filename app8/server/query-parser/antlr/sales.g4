@@ -42,6 +42,17 @@ supplierNameSpec
 	| 'krustyco'  | 'stay puft corporation' | 'roxxon' | 'sixty second corp' | 'gadgetron'
 	;
 
+supplierCitySpec
+	: 'manchester' | 'tianjin' | 'houston' | 'mumbai' | 'chicago' | 'delhi' | 'toronto' | 'shanghai' | 'birmingham' | 'stuttgart' 
+	| 'detroit' | 'nagoy' | 'ottawa' | 'leverpool' | 'dresden' | 'osaka' | 'kolkata' | 'beijing' | 'hangzhou' | 'shenzhen' | 'boston' 
+	| 'bangalore' | 'toulouse' | 'munich' | 'tokyo' | 'kobe' | 'seattle'
+	;
+
+supplierCountrySpec
+	: 'uk' | 'china' | 'usa' | 'india' | 'canada' | 'germany' | 'japan' | 'france'
+	;
+
+
 time_spec : timeSpec;
 by_time_spec : ;
 
