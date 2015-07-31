@@ -28,10 +28,7 @@ ExpressionBuilder.prototype.build = function(timeSpec){
 	if(timeSpec.timeBetweenDatesSpec())
 		filters = this.getTimeFiltersForBetweenDates(timeSpec.timeBetweenDatesSpec());
 	
-	return {
-		and : filters,
-		or : []
-	};
+	return filters;
 }
 
 ExpressionBuilder.prototype.getTimeFiltersForInLastYears = function(timeSpec){

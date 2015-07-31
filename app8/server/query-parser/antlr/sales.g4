@@ -2,12 +2,12 @@ grammar sales;
 import commonlexer;
 
 query 
-	: display_aspect product_spec PART? FROM_FOR_IN? supplier_spec? ASSOC? time_spec? EOF
-	| display_aspect PART FROM_FOR_IN supplier_spec FROM_FOR_IN? product_spec?  ASSOC? time_spec? EOF
-	| display_aspect product_spec PART? SPEND FROM_FOR_IN? supplier_spec? ASSOC? time_spec? EOF
-	| display_aspect SPEND FROM_FOR_IN supplier_spec FROM_FOR_IN? product_spec?  ASSOC? time_spec? EOF
-	| display_aspect AVERAGE product_spec PART? SPEND FROM_FOR_IN? supplier_spec? by_time_spec
-	| display_aspect AVERAGE PART FROM_FOR_IN supplier_spec by_time_spec
+	: display_aspect product_spec part_spec? FROM_FOR_IN? supplier_spec? ASSOC? time_spec? EOF
+	| display_aspect part_spec FROM_FOR_IN supplier_spec FROM_FOR_IN? product_spec?  ASSOC? time_spec? EOF
+	| display_aspect product_spec part_spec? spend_spec FROM_FOR_IN? supplier_spec? ASSOC? time_spec? EOF
+	| display_aspect spend_spec FROM_FOR_IN supplier_spec FROM_FOR_IN? product_spec?  ASSOC? time_spec? EOF
+	| display_aspect average_spec product_spec part_spec? spend_spec FROM_FOR_IN? supplier_spec? by_time_spec
+	| display_aspect average_spec part_spec FROM_FOR_IN supplier_spec by_time_spec
 	;
 
 display_aspect : DISPLAY_PREFIX?;
@@ -23,6 +23,10 @@ supplier_spec
 	| supplierCitySpec (',' supplierCitySpec)? 
 	| supplierCountrySpec (',' supplierCountrySpec)?
 	;
+
+part_spec : PART;
+spend_spec : SPEND;
+average_spec : AVERAGE;
 
 lineSpec : 'microwave' 	| 'refrigerator'	| 'desktop pc'	| 'ac';
 modelSpec : mwSpec | rfSpec | pcSpec | acSpec;

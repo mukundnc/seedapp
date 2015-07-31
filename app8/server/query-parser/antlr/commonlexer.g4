@@ -15,7 +15,9 @@ RELATION_OPERATOR : ('=' | '!=' | '<=' | '<' | '>' | '>=' | 'is');
 AND_OR_OPERATOR : ('and' | '&&' | 'or' | '|');
 
 FROM_FOR_IN : 'from' | 'for' | 'in';
-PART : 'part' | 'parts' | 'component' | 'components' | 'part quantity' | 'parts quantity' | 'component quantity' | 'components quantity';
+PART : 'part' | 'parts' | 'component' | 'components' | 'part quantity' | 'parts quantity' 
+	 | 'component quantity' | 'components quantity' | 'quantity'
+	 ;
 SPEND : 'spend';
 AVERAGE : 'average';
 BY_MONTH : 'by month';
