@@ -12,8 +12,17 @@ query
 
 display_aspect : DISPLAY_PREFIX?;
 
-product_spec : lineSpec | modelSpec | componentSpec;
-supplier_spec : supplierNameSpec | supplierCitySpec | supplierCountrySpec;
+product_spec 
+	: lineSpec (',' lineSpec)?
+	| modelSpec  (',' modelSpec)?
+	| componentSpec (',' componentSpec)?
+	;
+	
+supplier_spec 
+	: supplierNameSpec (',' supplierNameSpec)? 
+	| supplierCitySpec (',' supplierCitySpec)? 
+	| supplierCountrySpec (',' supplierCountrySpec)?
+	;
 
 lineSpec : 'microwave' 	| 'refrigerator'	| 'desktop pc'	| 'ac';
 modelSpec : mwSpec | rfSpec | pcSpec | acSpec;
@@ -54,7 +63,7 @@ supplierCountrySpec
 
 
 time_spec : timeSpec;
-by_time_spec : ;
+by_time_spec : BY_MONTH | BY_YEAR;
 
 timeSpec 
 	: timeInLastYearsSpec

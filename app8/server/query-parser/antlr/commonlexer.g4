@@ -18,6 +18,8 @@ FROM_FOR_IN : 'from' | 'for' | 'in';
 PART : 'part' | 'parts' | 'component' | 'components';
 SPEND : 'spend';
 AVERAGE : 'average';
+BY_MONTH : 'by month';
+BY_YEAR : 'by year';
 
 STR : [a-z]+;
 NUM : [0-9]+;
