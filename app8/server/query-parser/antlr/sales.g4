@@ -2,9 +2,9 @@ grammar sales;
 import commonlexer;
 
 query 
-	| display_aspect product_spec PART FROM_FOR_IN? supplier_spec? time_spec? EOF
-	| display_aspect PART FROM supplier_spec FROM_FOR_IN? product_spec?  time_spec? EOF
-	| display_aspect product_spec SPEND FROM? supplier_spec? time_spec? EOF
+	: display_aspect product_spec PART FROM_FOR_IN? supplier_spec? time_spec? EOF
+	| display_aspect PART FROM_FOR_IN supplier_spec FROM_FOR_IN? product_spec?  time_spec? EOF
+	| display_aspect product_spec SPEND FROM_FOR_IN? supplier_spec? time_spec? EOF
 	| display_aspect SPEND FROM_FOR_IN supplier_spec FROM_FOR_IN? product_spec?  time_spec? EOF
 	| display_aspect AVERAGE product_spec PART? SPEND FROM_FOR_IN? supplier_spec? by_time_spec
 	| display_aspect AVERAGE PART FROM_FOR_IN supplier_spec by_time_spec
@@ -17,7 +17,7 @@ product_spec
 	| modelSpec  (',' modelSpec)?
 	| componentSpec (',' componentSpec)?
 	;
-	
+
 supplier_spec 
 	: supplierNameSpec (',' supplierNameSpec)? 
 	| supplierCitySpec (',' supplierCitySpec)? 
@@ -29,7 +29,7 @@ modelSpec : mwSpec | rfSpec | pcSpec | acSpec;
 
 mwSpec : 'mw-2012';
 rfSpec : 'rf-x-3001';
-pc : 'pc-x-201';
+pcSpec : 'pc-x-201';
 acSpec : 'ac-3-2014';
 
 
