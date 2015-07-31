@@ -1,5 +1,5 @@
 var logger = require('./../utils/Logger');
-// var QueryParser = require('./../query-parser/QueryParser');
+ var QueryParser = require('./../query-parser/QueryParser');
 // var QueryRunner = require('./../query-runner/QueryRunner');
 // var DataManager = require('./../data-manager/DataManager');
 // var OutlierManager = require('./../outliers/OutlierManager');
