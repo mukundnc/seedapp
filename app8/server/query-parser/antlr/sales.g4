@@ -2,10 +2,10 @@ grammar sales;
 import commonlexer;
 
 query 
-	: display_aspect product_spec PART FROM_FOR_IN? supplier_spec? time_spec? EOF
-	| display_aspect PART FROM_FOR_IN supplier_spec FROM_FOR_IN? product_spec?  time_spec? EOF
-	| display_aspect product_spec SPEND FROM_FOR_IN? supplier_spec? time_spec? EOF
-	| display_aspect SPEND FROM_FOR_IN supplier_spec FROM_FOR_IN? product_spec?  time_spec? EOF
+	: display_aspect product_spec PART? FROM_FOR_IN? supplier_spec? ASSOC? time_spec? EOF
+	| display_aspect PART FROM_FOR_IN supplier_spec FROM_FOR_IN? product_spec?  ASSOC? time_spec? EOF
+	| display_aspect product_spec SPEND FROM_FOR_IN? supplier_spec? ASSOC time_spec? EOF
+	| display_aspect SPEND FROM_FOR_IN supplier_spec FROM_FOR_IN? product_spec?  ASSOC? time_spec? EOF
 	| display_aspect AVERAGE product_spec PART? SPEND FROM_FOR_IN? supplier_spec? by_time_spec
 	| display_aspect AVERAGE PART FROM_FOR_IN supplier_spec by_time_spec
 	;
