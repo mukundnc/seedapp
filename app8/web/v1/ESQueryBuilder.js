@@ -11,7 +11,7 @@ ESQueryBuilder.prototype.getBasicQuery = function(){
 		body: {
 			query: {
 				match: {
-					name: '123 Warehousing'
+					line: 'Desktop PC'
 				}
 			},
 			//fields : ['city'],
