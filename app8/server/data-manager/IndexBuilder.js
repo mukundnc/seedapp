@@ -17,7 +17,7 @@ function IndexBuilder(){
 
 IndexBuilder.prototype.build = function(req, res){
 	new ProductBuilder().getSalesProducts(this.createIndex.bind(this, res));
-	res.json({success: true, message: 'indices built successfully'});
+	//res.json({success: true, message: 'indices built successfully'});
 }
 
 IndexBuilder.prototype.createIndex = function(resHttp, products){
@@ -111,7 +111,7 @@ IndexBuilder.prototype.putMapping = function(products, resHttp){
 IndexBuilder.prototype.addTypesToIndex = function(products, resHttp){
 	var self = this;
 	var sales20KDoc = [];
-	var TWENTY_K = 20000;
+	var TWENTY_K = Math.min(20000, products.length);
 	var orgCnt = products.length;
 	var isResponseSent = false;
 
