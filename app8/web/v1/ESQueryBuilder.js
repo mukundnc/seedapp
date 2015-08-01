@@ -6,12 +6,12 @@ function ESQueryBuilder(){
 
 ESQueryBuilder.prototype.getBasicQuery = function(){
 	return {
-		index: 'companysales',
-		type: 'sales',
+		index: 'catsales',
+		type: 'csales',
 		body: {
 			query: {
 				match: {
-					category: 'Electronics'
+					name: '123 Warehousing'
 				}
 			},
 			//fields : ['city'],
@@ -22,8 +22,8 @@ ESQueryBuilder.prototype.getBasicQuery = function(){
 
 ESQueryBuilder.prototype.getBasicFilteredQuery = function(){
 	return {
-		index: 'companysales',
-		type: 'sales',
+		index: 'catsales',
+		type: 'csales',
 		body: {
 			query: {
 				filtered: {
@@ -46,8 +46,8 @@ ESQueryBuilder.prototype.getBasicFilteredQuery = function(){
 
 ESQueryBuilder.prototype.getAndFilteredQuery = function(){
 	return {
-		index: 'companysales',
-		type: 'sales',
+		index: 'catsales',
+		type: 'csales',
 		body: {
 			query: {
 				filtered: {
@@ -75,8 +75,8 @@ ESQueryBuilder.prototype.getAndFilteredQuery = function(){
 
 ESQueryBuilder.prototype.getOrFilteredQuery = function(){
 	return {
-		index: 'companysales',
-		type: 'sales',
+		index: 'catsales',
+		type: 'csales',
 		body: {
 			query: {
 				filtered: {
@@ -104,8 +104,8 @@ ESQueryBuilder.prototype.getOrFilteredQuery = function(){
 
 ESQueryBuilder.prototype.getBoolFilteredQuery = function(){
 	return {
-		index: 'companysales',
-		type: 'sales',
+		index: 'catsales',
+		type: 'csales',
 		body: {
 			query: {
 				filtered: {
@@ -131,11 +131,11 @@ ESQueryBuilder.prototype.getMatchAllWithMultiAndQuery = function(){
 	
 }
 ESQueryBuilder.prototype.executeQuery = function(url, cbOnDone){
-	$.getJSON(url, cbOnDone);
-	return;
+	// $.getJSON(url, cbOnDone);
+	// return;
 
-	// var esQuery = this.getBoolFilteredQuery();
-	// this.client.search(esQuery).then(this.onQueryResponse.bind(this, cbOnDone), this.onQueryError.bind(this));	
+	var esQuery = this.getBasicQuery();
+	this.client.search(esQuery).then(this.onQueryResponse.bind(this, cbOnDone), this.onQueryError.bind(this));	
 }
 
 ESQueryBuilder.prototype.onQueryResponse = function(cbOnDone, data){

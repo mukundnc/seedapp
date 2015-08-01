@@ -63,11 +63,11 @@ AntlrApp.prototype.showResultsTable = function(resp){
 	var $tbody = $('.resultsTable tbody');
 	hits.forEach(function(h){
 		var p = h._source.product;
-		var product = p.category + '-' + p.type + '-' + p.brand + '-' + p.model;
-		var r = h._source.region;
-		var region = r.city + '-' + r.state + ' (' + r.region + ')';
-		var customer = h._source.customer.name + '-' + h._source.customer.id;
-		var date = self.getDisplayDate(h._source.timestamp);
+		var product = p.line + '-' + p.model + '-' + p.component;
+		var r = h._source.supplier;
+		var region = r.name + '-' + r.city + ' (' + r.country + ')';
+		var customer = h._source.quantity + ' x ' + h._source.rate + ' = ' + h._source.amount;
+		var date = self.getDisplayDate(h._source.date);
 
 		var row = rowHtml.replace('ID_PRODUCT', product).replace('ID_REGION', region).replace('ID_CUSTOMER', customer).replace('ID_DATE', date);
 		var $trow = $(row);
