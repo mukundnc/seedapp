@@ -13,6 +13,7 @@
     "body-parser": "^1.12.4",
     "elasticsearch": "^4.1.0",
     "express": "^4.12.4",
+    "fast-csv": "^0.6.0",
     "fs": "0.0.2",
     "request": "^2.57.0",
     "rio": "^1.4.0",

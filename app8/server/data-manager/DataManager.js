@@ -19,7 +19,7 @@ DataManager.prototype.saveSalesStrategy = function(req, res){
 	});	
 }
 
-DataManager.prototype.buildSalesIndices = function(req, res){
+DataManager.prototype.buildSalesIndices_old = function(req, res){
 	fs.readFile(config.saleStrategy.strategyFileName, (function(err, data){
 		if(err){
 			res.json({success : false, message : 'error in reading staregy file'});
@@ -33,5 +33,9 @@ DataManager.prototype.buildSalesIndices = function(req, res){
 	}).bind(this));
 }
 
+DataManager.prototype.buildSalesIndices = function(req, res){
+	var indexBldr = new IndexBuilder();
+	indexBldr.build(req, res);
+}
 module.exports = DataManager;
 

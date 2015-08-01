@@ -1,0 +1,220 @@
+.border{
+	border-style: solid;
+	border-width: 1px;
+}
+
+h1 {
+	position : relative;
+	left:40%;
+}
+.container{
+	position:relative;
+	top  : 2%;
+	left : 2%;
+	height : 600px;
+	width : 90%;
+}
+
+.searchContainer{
+	position: relative;
+	height : 15%;
+}
+
+.resultsContainer{
+	position : relative;
+	height: 85%;
+}
+
+.searchInput {
+	position: relative;
+	left: 1%;
+	width:80%;
+	height: 35px;
+	font-size: medium;
+}
+
+#run{
+	position: relative;
+	right: 235px;
+	height: 40px;
+	width:40px;
+	float: right;
+	background-color: #4d90fe;
+  	//background-image: -webkit-linear-gradient(top,#4d90fe,#4787ed);
+  	background-image: url("Icons_Search.svg");
+  	cursor: pointer;
+}
+
+.countRow {
+	height : 10%;
+	margin-top:10px;
+}
+
+.countRow span{
+	margin-left:10px;
+	font-size: larger;
+	font-weight: 600;
+	color: rgb(49, 50, 200);
+}
+
+.resultsRow {
+	height:90%;
+}
+
+.resultsTable {
+	position: relative;
+	width: 100%;
+}
+
+.sContainer{
+	float : left;
+	width : 500px;
+}
+
+.yearRow {
+	position: relative;
+	left: 300px;
+	top: 80px;
+}
+
+.quarterRow{
+	position: relative;
+	top: 100px;
+	left:175px;
+}
+
+.qSpan {
+	margin-left: 50px;
+}
+
+.eastRow{
+	position : relative;
+	top : 100px;
+	left:10px;
+}
+.eastContainerRow {
+	position : relative;
+	top : 95px;
+}
+
+.eastContainer{
+	position: relative;
+	top: 10px;
+	left : 60px;
+}
+
+.sinput, .binput {
+	width : 40px;
+	margin-left: 30px;
+}
+
+.westRow{
+	position : relative;
+	top : 110px;
+	left:10px;
+}
+.westContainerRow{
+	position:relative;
+	top : 120px;
+	left : 60px;
+}
+
+.northRow{
+	position : relative;
+	top : 135px;
+	left:10px;
+}
+.northContainerRow{
+	position:relative;
+	top : 145px;
+	left : 60px;
+}
+
+
+.southRow{
+	position : relative;
+	top : 160px;
+	left:10px;
+}
+.southContainerRow{
+	position:relative;
+	top : 170px;
+	left : 60px;
+}
+
+.cContainer{
+	position: absolute;
+	top : 165px;
+	left : 520px;
+}
+
+#save{
+	position: relative;
+	top:10px;
+	left: 20px;
+	height: 40px;
+	width:150px;
+	float: left;
+	background-color: #4d90fe;
+  	cursor: pointer;
+  	z-index: 999;	
+}
+
+#save span{
+	position: relative;
+	top: 24%;
+	left: 40%;
+}
+
+#build{
+	position: relative;
+	top:60px;
+	left: -130px;
+	height: 40px;
+	width:150px;
+	float: left;
+	background-color: #4d90fe;
+  	cursor: pointer;
+  	z-index: 999;	
+}
+
+#build span{
+	position: relative;
+	top: 22%;
+	left: 25%;
+}
+
+.bContainer{
+	position: relative;
+	float : left;
+	left:200px;
+	width : 500px;
+	top:120px;
+}
+
+.bQuarterRow{
+	position: relative;
+	left : 300px;
+}
+
+.bQuarterHead{
+	margin-left: 50px;
+}
+
+.bCategory{
+	position: relative;
+	left : 5px;
+	width : 100px;
+}
+
+.bRow{
+	position: relative;
+	left: 115px;	
+}
+
+.bAutoContainer, .bElecContainer, .bApplianceContainer, .bClothsContainer{
+	display: none
+}
+.bActive{
+	display : block;
+}

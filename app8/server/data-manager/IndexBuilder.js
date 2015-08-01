@@ -15,32 +15,12 @@ function IndexBuilder(){
 	this.id = 1;
 }
 
-IndexBuilder.prototype.build = function(req, res, saleStrategy){
-	var prodBldr = new ProductBuilder();
-	var products = prodBldr.getSalesProducts(saleStrategy);
-	if(!products || products.length === 0){
-		logger.log('0 products created');
-		res.json({success : false, message : '0 products indexed'});
-		return;
-	}
-
-	this.createIndex(products, res);
-	//res.json({success: true, message: 'indices built successfully'});
-}
-IndexBuilder.prototype.buildCsv = function(req, res, saleStrategy){
-	var prodBldr = new ProductBuilder();
-	var products = prodBldr.getSalesProducts(saleStrategy);
-	if(!products || products.length === 0){
-		logger.log('0 products created');
-		res.json({success : false, message : '0 products indexed'});
-		return;
-	}
-
-	this.createCsv(products);
-	res.json({success: true, message: 'Created csv successfully'});
+IndexBuilder.prototype.build = function(req, res){
+	new ProductBuilder().getSalesProducts(this.createIndex.bind(this, res));
+	res.json({success: true, message: 'indices built successfully'});
 }
 
-IndexBuilder.prototype.createIndex = function(products, resHttp){
+IndexBuilder.prototype.createIndex = function(resHttp, products){
 	this.deleteIndex((function(result){
 		if(!result){
 			res.json({success: false, message: 'failed to delete index'});
@@ -90,36 +70,26 @@ IndexBuilder.prototype.createNewIndexWithMapping = function(products, resHttp){
 IndexBuilder.prototype.putMapping = function(products, resHttp){
 	var url = esConfig.url + esConfig.salesIndex + '/_mapping/' + esConfig.salesType;
 	var mapping = {
-		sales : {
+		csales : {
 			properties : {
 				product : {
 					properties : {
-						id : {'type': 'long'},
-						category : {'type' : 'string', 'index' : 'not_analyzed', 'store' : 'true'},
-						type : {'type' : 'string', 'index' : 'not_analyzed', 'store' : 'true'},
-						brand : {'type' : 'string', 'index' : 'not_analyzed', 'store' : 'true'},
-						model : {'type' : 'string', 'index' : 'not_analyzed', 'store' : 'true'}
+						line : {'type' : 'string', 'index' : 'not_analyzed', 'store' : 'true'},
+						model : {'type' : 'string', 'index' : 'not_analyzed', 'store' : 'true'},
+						component : {'type' : 'string', 'index' : 'not_analyzed', 'store' : 'true'}
 					}
 				},
-				customer : {
+				supplier : {
 					properties: {
-						id : {'type': 'long'},
-						sex : {'type' : 'string', 'index' : 'not_analyzed', 'store' : 'true'},
-						email : {'type' : 'string', 'index' : 'not_analyzed', 'store' : 'true'},
-						contactNumber : {'type' : 'long'},
-						dob : {'type':'date', 'format':'yyyy/MM/dd HH:mm:ss||yyyy/MM/dd'}
-					}
-				},
-				region : {
-					properties: {
-						id : {'type': 'long'},
-						region : {'type' : 'string', 'index' : 'not_analyzed', 'store' : 'true'},
-						state : {'type' : 'string', 'index' : 'not_analyzed', 'store' : 'true'},
+						name : {'type' : 'string', 'index' : 'not_analyzed', 'store' : 'true'},
 						city : {'type' : 'string', 'index' : 'not_analyzed', 'store' : 'true'},
-						pincode : {'type' : 'long'}						
+						country : {'type' : 'string', 'index' : 'not_analyzed', 'store' : 'true'}
 					}
 				},
-				timestamp:{'type':'date','format':'yyyy/MM/dd HH:mm:ss||yyyy/MM/dd'}
+				quantity : {'type' : 'integer'},
+				rate : {'type' : 'double'},
+				amount : {'type' : 'double'},
+				date : {'type':'date', 'format':'yyyy/MM/dd HH:mm:ss||yyyy/MM/dd'}
 			}
 		}
 	};

@@ -1,0 +1,54 @@
+id,Product Line,Model,BOM - Type,Part,Supplier,City,Country,Quantity,Rate,Amount,Date
+1,Microwave,MW-2012,Sheet Metal,Chasis-MW-01,Demo Company,Manchester,UK,140,17.5,2450,12-Jan-14
+2,Microwave,MW-2012,Sheet Metal,Front Panel-MW-01,Virtucon,Tianjin,China,140,12.05,1687,12-Jan-14
+3,Microwave,MW-2012,Electrical,Motor-MW-01,Widget Corp,Houston,USA,140,22.5,3150,12-Jan-14
+4,Microwave,MW-2012,Electronics,Controller-MW-01,Praxis Corporation,Mumbai,India,140,14,1960,12-Jan-14
+5,Microwave,MW-2012,Electrical,Magnetron-MW-01,Three Waters,Chicago,USA,140,40,5600,12-Jan-14
+6,Microwave,MW-2012,Wiring,Wiring Harness-MW-01,Galaxy Corp,Delhi,India,140,6,840,12-Jan-14
+7,Microwave,MW-2012,Electrical,Power Supply-MW-01,Ajax,Toronto,Canada,140,20,2800,12-Jan-14
+8,Microwave,MW-2012,Injection Molding,Door-MW-01,LexCorp,Shanghai,China,140,13.65,1911,12-Jan-14
+9,Microwave,MW-2012,Electrical,Cooling Fan-MW-01,Widget Corp,Houston,USA,140,12,1680,12-Jan-14
+10,Refrigerator,RF-X-3001,Sheet Metal,Metal body,Sombra Corporation,Birmingham,UK,200,18,3600,27-Feb-14
+11,Refrigerator,RF-X-3001,Sheet Metal,Door,Demo Company,Manchester,UK,200,14,2800,27-Feb-14
+12,Refrigerator,RF-X-3001,Sub-assembly,Compressor,LuthorCorp,Stuttgart,Germany,200,57,11400,27-Feb-14
+13,Refrigerator,RF-X-3001,Piping / tubing,Evaporator,Fake Brothers,Detroit,USA,200,15.45,3090,27-Feb-14
+14,Refrigerator,RF-X-3001,Piping / tubing,Radiator,Wentworth Industries,Nagoy,Japan,200,34.85,6970,27-Feb-14
+15,Refrigerator,RF-X-3001,Electronics,Controller,General Products,Ottawa,Canada,200,9,1800,27-Feb-14
+16,Refrigerator,RF-X-3001,Injection Molding,Shelfs and baskets,Dunder Mifflin,Leverpool,UK,800,2.45,1960,27-Feb-14
+17,Refrigerator,RF-X-3001,Injection Molding,Inner shell,Atlantic Northern,Dresden,Germany,200,24.5,4900,27-Feb-14
+18,Refrigerator,RF-X-3001,Special,Insulation foam,Wayne Enterprises,Osaka,Japan,1200,5.55,6660,27-Feb-14
+19,Refrigerator,RF-X-3001,Wiring,Wiring harness,Data Systems,Kolkata,India,200,7.5,1500,27-Feb-14
+20,Refrigerator,RF-X-3001,Plastic / Rubber,Door seal,Smith and Co.,Beijing,China,800,1.85,1480,27-Feb-14
+21,Desktop PC,PC-X-201,Sheet Metal,Cabinet,Barrytron,Hangzhou,China,72,21,1512,9-Apr-14
+22,Desktop PC,PC-X-201,Electrical,Power supply,Milliways Inc,Shenzhen,China,72,16.8,1209.6,9-Apr-14
+23,Desktop PC,PC-X-201,Electronics,HDD,Initech,Boston,USA,72,80,5760,9-Apr-14
+24,Desktop PC,PC-X-201,Special,DVD,Mainway Inc,Bangalore,India,72,35.45,2552.4,9-Apr-14
+25,Desktop PC,PC-X-201,Electronics,RAM,The New Firm,Toronto,Canada,144,23,3312,9-Apr-14
+26,Desktop PC,PC-X-201,Electronics,Motherboard,General Products,Ottawa,Canada,72,152,10944,9-Apr-14
+27,Desktop PC,PC-X-201,Special,CPU,Klimpys,Toulouse,France,72,120,8640,9-Apr-14
+28,Desktop PC,PC-X-201,Electronics,Graphics Card,123 Warehousing,Munich,Germany,72,80,5760,9-Apr-14
+29,Desktop PC,PC-X-201,Electronics,Wireless Card,123 Warehousing,Munich,Germany,72,27,1944,9-Apr-14
+30,AC,AC-3-2014,Injection Molding,Indoor Casing,LexCorp,Shanghai,China,105,14.5,1522.5,10-Jun-14
+31,AC,AC-3-2014,Piping / tubing,Evaporator,Fake Brothers,Detroit,USA,105,21.5,2257.5,10-Jun-14
+32,AC,AC-3-2014,Electrical,Fan - Indoor,Krustyco,Tokyo,Japan,105,9,945,10-Jun-14
+33,AC,AC-3-2014,Electronics,Controller,Praxis Corporation,Mumbai,India,105,11.5,1207.5,10-Jun-14
+34,AC,AC-3-2014,Piping / tubing,Copper Tubing,Stay Puft Corporation,Shanghai,China,210,6.5,1365,10-Jun-14
+35,AC,AC-3-2014,Plastic / Rubber,Insulation,Roxxon,Kobe,Japan,210,3.5,735,10-Jun-14
+36,AC,AC-3-2014,Special,Remote,Sixty Second Corp,Tianjin,China,105,15.75,1653.75,10-Jun-14
+37,AC,AC-3-2014,Sheet Metal,Indoor Chasis,Virtucon,Tianjin,China,105,14,1470,10-Jun-14
+38,AC,AC-3-2014,Sheet Metal,Outdoor Chasis,Sombra Corporation,Birmingham,UK,105,26.5,2782.5,10-Jun-14
+39,AC,AC-3-2014,Sheet Metal,Metal Casing,Barrytron,Hangzhou,China,105,9.5,997.5,10-Jun-14
+40,AC,AC-3-2014,Sub-assembly,Compressor,Gadgetron,Seattle,USA,105,72,7560,10-Jun-14
+41,AC,AC-3-2014,Piping / tubing,Radiator,Wentworth Industries,Nagoy,Japan,105,47.85,5024.25,10-Jun-14
+42,AC,AC-3-2014,Electrical,Fan,Krustyco,Tokyo,Japan,105,11.5,1207.5,10-Jun-14
+43,AC,AC-3-2014,Sheet Metal,Mountung Stand,Demo Company,Manchester,UK,105,15.75,1653.75,10-Jun-14
+44,AC,AC-3-2014,Special,Air Filter,Wayne Enterprises,Osaka,Japan,210,4.5,945,10-Jun-14
+45,Microwave,MW-2012X,Chasis,Chasis-MW-02,Demo Company,Manchester,UK,127,18.025,2289.175,21-Feb-14
+46,Microwave,MW-2012X,Front Panel,Front Panel-MW-02,Virtucon,Tianjin,China,127,12.4115,1576.2605,21-Feb-14
+47,Microwave,MW-2012X,Motor-002,Motor-MW-02,Widget Corp,Houston,USA,127,23.175,2943.225,21-Feb-14
+48,Microwave,MW-2012X,Controller,Controller-MW-01,Praxis Corporation,Mumbai,India,127,14.42,1831.34,21-Feb-14
+49,Microwave,MW-2012X,Magnetron,Magnetron-MW-02,Three Waters,Chicago,USA,127,41.2,5232.4,21-Feb-14
+50,Microwave,MW-2012X,Wiring Harness,Wiring Harness-MW-02,Galaxy Corp,Delhi,India,127,6.18,784.86,21-Feb-14
+51,Microwave,MW-2012X,Power Supply,Power Supply-MW-02,Ajax,Toronto,Canada,127,20.6,2616.2,21-Feb-14
+52,Microwave,MW-2012X,Door,Door-MW-02,LexCorp,Shanghai,China,127,14.0595,1785.5565,21-Feb-14
+53,Microwave,MW-2012X,Cooling Fan,Cooling Fan-MW-01,Widget Corp,Houston,USA,127,12.36,1569.72,21-Feb-14

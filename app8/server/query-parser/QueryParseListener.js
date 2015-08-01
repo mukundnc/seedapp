@@ -158,6 +158,7 @@ QueryParseListener.prototype.getParsedQueryFromMemory = function(){
 
 	query.context = this.getQueryContext(query.product.key, query.supplier.key, query.part.isPresent,
 		                                 query.spend.isPresent, query.average.isPresent);
+	
 	return query;
 }
 

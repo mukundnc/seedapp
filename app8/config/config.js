@@ -56,7 +56,7 @@ var config = {
 		country_average : 45
 	},
 	saleStrategy : {
-		strategyFileName : './web/v1/sales.txt'
+		strategyFileName : './web/v1/csales.csv'
 	},
 	rConfig : {
 		forecastFilePath : './server/outliers/Forecast.R'

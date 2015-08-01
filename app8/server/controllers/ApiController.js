@@ -1,7 +1,7 @@
 var logger = require('./../utils/Logger');
- var QueryParser = require('./../query-parser/QueryParser');
+var QueryParser = require('./../query-parser/QueryParser');
 // var QueryRunner = require('./../query-runner/QueryRunner');
-// var DataManager = require('./../data-manager/DataManager');
+ var DataManager = require('./../data-manager/DataManager');
 // var OutlierManager = require('./../outliers/OutlierManager');
 
 function ApiController(){
@@ -40,8 +40,8 @@ ApiController.prototype.handleSaveSalesStrategyRequest = function(req, res){
 }
 
 ApiController.prototype.handleBuildSalesIndicesRequest = function(req, res){
-	// var dataMgr = new DataManager();
-	// dataMgr.buildSalesIndices(req, res);
+	var dataMgr = new DataManager();
+	dataMgr.buildSalesIndices(req, res);
 }
 
 ApiController.prototype.handleOutlierRequest = function(req, res){
