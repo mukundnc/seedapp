@@ -32,6 +32,11 @@ body{
 	border-right-color: grey;
 	border-right-style: solid;
 	border-right-width: 1px;
+	height: 100%;
+}
+
+.view-container {
+	height: 100%;
 }
 
 .searchbar-container{
