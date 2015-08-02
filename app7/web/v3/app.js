@@ -15,3 +15,12 @@ function setViewPort(){
 	svgView.attr('height', availableHeight);
 	$('.opt-menu-icon').css('top', -($('.svg-container').height()) + 'px')
 }
+
+function getViewPort(){
+	return {
+		top : $('.searchbar-container').height(),
+		left : $('.tree-container').width(),
+		height : $('.svg-container').height(),
+		width : $('.svg-container').width()
+	};
+}
