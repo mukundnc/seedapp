@@ -43,6 +43,15 @@ body{
 	height: 100%;
 }
 
+.svg-tree-container{
+	height : 100%;
+}
+
+.svg-tree{
+	height : 100%;
+	width:100%;
+}
+
 .search-input-container{
 	padding: 10px 0px 10px 0px;
 }
