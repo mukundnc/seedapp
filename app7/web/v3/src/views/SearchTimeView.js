@@ -216,8 +216,8 @@ SearchTimeView.prototype.initOptionsMenu = function(){
 	$menuIcon.off('click');
 	$menuIcon.on('click', function(e){
 		$menuContainer.show();
-		var l = (window.innerWidth - $menuContainer.width() - $menuIcon.width() - 25 )+ 'px';
-		var t = ($('.header-container').height() + 10) + 'px'
+		var l = (window.innerWidth - $menuContainer.width() - $menuIcon.width() - 20)+ 'px';
+		var t = ($('.header-container').height() + $menuIcon.height()) + 'px'
 		$menuContainer.css({top : t, left : l});
 		$menuItem.on('mouseover', function(e){
 			$(this).css('background-color', '#4d90fe');
