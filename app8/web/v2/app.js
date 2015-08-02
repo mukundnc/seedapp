@@ -3,8 +3,7 @@
 
 $(document).ready(function(){
 	setViewPort();
-	//gSalesAppController = new SalesAppController(); 
-
+	//gSalesAppController = new SalesAppController(); 	
 })
 
 function setViewPort(){	
@@ -14,4 +13,13 @@ function setViewPort(){
 	svgView.attr('width', $('.svg-container').width());
 	svgView.attr('height', availableHeight);
 	$('.opt-menu-icon').css('top', -($('.svg-container').height()) + 'px')
+}
+
+function getViewPort(){
+	return {
+		top : $('.searchbar-container').height(),
+		left : $('.tree-container').width(),
+		height : $('.svg-container').height(),
+		width : $('.svg-container').width()
+	};
 }
