@@ -29,11 +29,11 @@ ESQueryBuilder.prototype.getBasicFilteredQuery = function(){
 				filtered: {
 					query :{
 						match: {
-							category: 'Automobile'
+							line: 'Desktop PC'
 						}
 					},
 					filter : {
-						term : {'brand' : 'BMW'}
+						term : {'country' : 'Germany'}
 					}
 
 				}		
@@ -134,7 +134,7 @@ ESQueryBuilder.prototype.executeQuery = function(url, cbOnDone){
 	// $.getJSON(url, cbOnDone);
 	// return;
 
-	var esQuery = this.getBasicQuery();
+	var esQuery = this.getBasicFilteredQuery();
 	this.client.search(esQuery).then(this.onQueryResponse.bind(this, cbOnDone), this.onQueryError.bind(this));	
 }
 

@@ -1,0 +1,35 @@
+<svg height="45" width="205" xmlns="http://www.w3.org/2000/svg"
+xmlns:xlink="http://www.w3.org/1999/xlink">
+<style type="text/css">
+	.c-g {
+		stroke : rgb(252, 113, 14);
+		stroke-width : 3px;
+		fill : none;
+	}
+	.c-e1 {
+		stroke : rgb(211, 215, 50);
+		stroke-width : 3px;
+		fill : none;
+	}
+	.c-k {
+		stroke : rgb(63, 155, 81);
+		stroke-width : 3px;
+		fill : none;
+	}
+	.c-t {
+		stroke : rgb(252, 113, 14);
+		stroke-width : 3px;
+		fill : none;
+	}
+	.c-r {
+		stroke : rgb(199, 145, 63);
+		stroke-width : 3px;
+		fill : none;
+	}
+
+  
+</style>
+<g class="logo-container" transform="translate(0, 45) scale(1, -1)">
+			
+		<g><path d=" M 22 22 L 42 22 A 20 20 0 1 0 22 42 L 32 42 " class="c-g"></path></g><g><path d=" M 66 7 A 10 10 0 1 0 66 17 L 54 17 " class="c-e1"></path></g><g><path d=" M 90 7 A 10 10 0 1 0 90 17 L 78 17 " class="c-e1"></path></g><g><path d=" M 97 1 L 97 42 M 112 19 L 99 10.5 L 112 2 " class="c-k"></path></g><g><path d=" M 119 1 L 119 42 M 129 27.720000000000002 L 109 27.720000000000002 " class="c-t"></path></g><g><path d=" M 129 1 L 129 14 A 9 9 0 0 0 147 14 " class="c-r"></path></g><g><path d=" M 171 7 A 10 10 0 1 0 171 17 L 159 17 " class="c-e1"></path></g><g><path d=" M 195 7 A 10 10 0 1 0 195 17 L 183 17 " class="c-e1"></path></g></g>
+</svg>

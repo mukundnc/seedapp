@@ -1,0 +1,110 @@
+
+body{
+	margin-top:0px;
+	margin-left: 0px;
+	background-color: #353535;
+}
+.header-container, .body-container, .view-container, .tree-container, .searchbar-container{
+	margin : 0px 0px 0px 0px;
+	padding : 0px 0px 0px 0px;
+}
+.left-pane {
+	padding-right:0px;
+}
+
+.right-pane{
+	padding-left: 0px;
+}
+
+.header-container{
+	height: 50px;
+	width:100%;
+	background: #4d5359;
+}
+
+.body-container{
+	width : 100%;
+	background-color: #353535;
+	min-height: 100%;
+}
+
+.tree-container {
+	border-right-color: grey;
+	border-right-style: solid;
+	border-right-width: 1px;
+}
+
+.searchbar-container{
+	height: 100%;
+}
+
+.search-input-container{
+	padding: 10px 0px 10px 0px;
+}
+
+#tbSearch{	
+	width : 60%;
+	height : 30px;
+	border-radius: 2px;
+	font-size: 15px;
+}
+
+.search-icon{
+	display:inline-block;
+	background-color: #4d5359;
+	border-radius:2px;
+	cursor: pointer;
+}
+
+.search-icon img{
+	height: 30px;
+	width : 30px;
+}
+
+.opt-menu-icon{
+	float: right;
+	height: 25px;
+	top: 3px;
+	cursor: pointer;
+	position: relative;
+	border-style: solid;
+	border-width: 1px;
+	border-color: grey;
+}
+
+.opt-menu-container{
+	position : absolute;
+	display: none;
+}
+.opt-menu-list{
+	list-style-type: none;
+}
+
+.opt-menu-item{
+	color : grey;
+	border-style: solid;
+  	border-width: 1px;
+  	cursor: pointer;
+  	padding: 5px 5px 5px 5px;
+}
+
+.opt-menu-list li: hover{
+	background-color: #4d90fe;
+}
+
+
+#overlay{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: black;
+	opacity: 0.5;
+	z-index: 900;
+	display: none;
+}
+
+#loading{
+	display : none;
+}
