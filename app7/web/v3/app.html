@@ -3,26 +3,36 @@
 <head>
 	<meta charset="UTF-8">
 	<title>Sales App</title>
+	<link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap-theme.min.css">
+	<link rel="stylesheet" type="text/css" href="libs/bootstrap/css/bootstrap.min.css">	
 	<link rel="stylesheet" type="text/css" href="app.css">
+	<link rel="stylesheet" type="text/css" href="svg.css">
 
 </head>
 <body>
-	<div class="header-container">
-		<div class="searchbar-container">
+	<div class="container header-container">
+		<div class="col-md-12 searchbar-container">
+			<div class="col-md-2 left-pane">
 				<img src="img/logo.svg">
-				<input id="tbSearch" type="text" value="cars"></input>
-				<div class="search-icon">
-					<img src="img/search-icon.svg"></img>
+			</div>
+			<div class="col-md-10 right-pane">
+				<div class="search-input-container">
+					<input id="tbSearch" type="text" value="cars"></input>
+					<div class="search-icon">
+						<img src="img/search-icon.svg"></img>
+					</div>
 				</div>				
+							
+			</div>								
 		</div>
 	</div>
-	<div class="body-container">
-		<div class="tree-container">
+	<div class="col-md-12 body-container">
+		<div class="col-md-2 left-pane tree-container">
 			<div class="svg-tree-container">
 				<svg class="svg-tree"></svg>
 			</div>
 		</div>
-		<div class="view-container">			
+		<div class="col-md-10 right-pane view-container">			
 			<div class="graph-container">
 				<div class="svg-container">
 					<svg class="svg-view"></svg>
@@ -48,6 +58,7 @@
 	<script src="libs/jquery-2.1.4.min.js"></script>
 	<script src="libs/d3.min.js"></script>
 	<script src="libs/underscore-min.js"></script>
+	<script src="libs/bootstrap/js/bootstrap.min.js"></script>
 
 	<script src="src/utils/Utils.js"></script>
 	<script src="src/utils/ResponseParser.js"></script>

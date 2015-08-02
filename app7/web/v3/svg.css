@@ -1,0 +1,250 @@
+.s-cat, .cat-filter, .view-opt, .outerSlice, .topSlice, .sp-pie-label, .bh {
+	cursor: pointer
+}
+
+.col-rect, .row-rect, .cell-rect, .st-rect, .st-bn-rect{
+	stroke-width : 1px; 
+	stroke : grey; 
+	fill:#353535;
+	cursor : pointer;
+}
+
+.col-text, .row-text, .cell-text, .st-text{
+	color:grey;
+	cursor:pointer;
+	font-size:11px;
+	fill:grey;
+}
+
+.st-bn-text{
+	color:grey;
+	cursor:pointer;
+	font-size:18px;
+	fill:grey;
+}
+
+.col-select, .row-select, .st-select, .st-bn-select{
+	fill:#4d90fe;
+}
+
+.col-text-select, .row-text-select, .st-text-select{
+	fill : white;
+	color:grey;
+	cursor:pointer;
+	font-size:11px;
+}
+
+.st-bn-text-select{
+	fill : white;
+	color:grey;
+	cursor:pointer;
+	font-size:18px;
+}
+
+.chart-axis{
+	stroke-width : 1px; 
+	stroke : grey;
+}
+
+.snode-root-text{
+	color:grey;
+	cursor:pointer;
+	font-size:20px;
+	fill:grey;
+}
+
+.snode-text{
+	color:grey;
+	cursor:pointer;
+	font-size:15px;
+	fill:grey;
+}
+
+.snode-text-select{
+	color:white;
+	cursor:pointer;
+	font-size:17px;
+	fill:white;
+}
+
+.snode-marker-line{
+	stroke : grey;
+	stroke-width : 1px;
+}
+
+.bar-1{
+	stroke-width : 1px; 
+	fill: #2b908f
+}
+
+.bar-2{
+	stroke-width : 1px; 
+	fill: #990099
+}
+
+.bar-3{
+	stroke-width : 1px; 
+	fill: #109618
+}
+
+.bar-4{
+	stroke-width : 1px; 
+	fill: #FF9900
+}
+
+.bar-5{
+	stroke-width : 1px; 
+	fill: #DC3912
+}
+
+.sales-header{
+	color : #E0E0E3;
+	font-size : 20px;
+	text-transform : uppercase;
+	fill:grey; 
+}
+
+
+.sf-rect{
+	stroke-width : 1px; 
+	stroke : grey; 
+	fill:#353535;
+	cursor : pointer;
+}
+
+.sf-text{
+	color:grey;
+	cursor:pointer;
+	font-size:15px;
+	fill:grey;
+}
+
+.sf-rect-select{
+	fill:#4d90fe;
+}
+
+.sf-text-select{
+	fill : white;
+	color:grey;
+	cursor:pointer;
+	font-size:15px;
+}
+
+.sp-pie-label{
+	color : #E0E0E3;
+	font-size : 15px;
+	fill:rgb(202, 202, 202); 
+}
+
+
+.res-tb-head{
+	stroke-width : 1px; 
+	stroke : grey; 
+	fill:#353535;
+}
+
+#othersTooltip{
+	position : absolute;
+	top : 100px;
+	left : 700px;
+	width : 200px;
+	background-color : rgba(74, 71, 67, 0.75);
+	border-radius: 10px;
+	border-color: rgba(176, 160, 160, 0.74);
+	border-width: 1px;
+	border-style: solid;	
+}
+
+.others-item{
+	display : inline-block;
+	color : #E0E0E3;
+	margin-left : 10px;	
+	fill:rgb(202, 202, 202); 
+}
+
+.def-chart-line{
+	stroke-width:2px; 
+	fill:none;
+}
+
+.chart-label{
+	cursor:pointer;
+	font-size:11px;
+}
+
+.chart-label-line{
+	stroke-width : 1px;
+}
+
+
+.opt-menu-icon{
+	float: right;
+	height: 25px;
+	top: 3px;
+	cursor: pointer;
+	position: relative;
+	border-style: solid;
+	border-width: 1px;
+	border-color: grey;
+}
+
+.opt-menu-container{
+	position : absolute;
+	display: none;
+}
+.opt-menu-list{
+	list-style-type: none;
+}
+
+.opt-menu-item{
+	color : grey;
+	border-style: solid;
+  	border-width: 1px;
+  	cursor: pointer;
+  	padding: 5px 5px 5px 5px;
+}
+
+.opt-menu-list li: hover{
+	background-color: #4d90fe;
+}
+
+
+#overlay{
+	position: absolute;
+	top: 0;
+	left: 0;
+	height: 100%;
+	width: 100%;
+	background-color: black;
+	opacity: 0.5;
+	z-index: 900;
+	display: none;
+}
+
+#loading{
+	display : none;
+}
+
+.ol-pos-circle{
+	fill : white;
+}
+
+.ol-neg-circle{
+	fill : rgb(173, 89, 95);
+}
+
+.ol-text{
+	color:black;
+	font-size:15px;
+}
+
+.ol-bar{
+	cursor: pointer;
+}
+
+.ol-chart-label{
+	color: grey;
+	cursor: pointer;
+	font-size: 8px;
+	fill: grey;
+}
