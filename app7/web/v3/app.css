@@ -75,6 +75,12 @@ body{
 	width : 30px;
 }
 
+.logo-icon{
+	width:60%;
+	padding-top: 5px;
+}
+
+
 .opt-menu-icon{
 	float: right;
 	height: 25px;
