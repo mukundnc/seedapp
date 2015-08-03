@@ -11,11 +11,19 @@ ESQueryBuilder.prototype.getBasicQuery = function(){
 		body: {
 			query: {
 				match: {
-					supplier: 'Ajax'
+					line: 'Microwave'
 				}
 			},
 			//fields : ['city'],
-			size:25
+			size:25,
+			aggs : {
+				models : {
+					terms : { 
+						field : 'model',
+						size : 50 
+					}
+				}
+			}
 		}
 	}
 }
@@ -83,19 +91,38 @@ ESQueryBuilder.prototype.getOrFilteredQuery = function(){
 						}
 					},
 					filter : {
-						or : [
-							{term : {'type' : 'Car'}},
-							{term : {'type': 'Bike'}}
-						],
 						and : [
-							{term : {'state' : 'UP'}}
+							{term : {'line' : 'Microwave'}}
 						]
 					}
-
 				}		
 			},
 			size:100,
-			_source : true
+			_source : true,
+			aggs : {
+				models : {
+					terms : { 
+						field : 'model',
+						size : 50 
+					},
+					aggs : {}
+				},
+				countries : {
+					terms : {
+						field : 'country',
+						size : 50
+					},
+					aggs : {
+						cities : {
+							terms : {
+								field : 'city',
+								size : 50
+							},
+							aggs:{}
+						}
+					}
+				}
+			}
 		}
 	}
 }
@@ -132,7 +159,7 @@ ESQueryBuilder.prototype.executeQuery = function(url, cbOnDone){
 	$.getJSON(url, cbOnDone);
 	return;
 
-	// var esQuery = this.getAndFilteredQuery();
+	// var esQuery = this.getOrFilteredQuery();
 	// this.client.search(esQuery).then(this.onQueryResponse.bind(this, cbOnDone), this.onQueryError.bind(this));	
 }
 

@@ -1,6 +1,8 @@
 var qb = require('./ESQueryBuilder');
 var elasticsearch = require('elasticsearch');
 var config = require('./../../config/config');
+var QueryAggregator = require('./QueryAggregator');
+var logger = require('./../utils/Logger');
 
 function QueryRunner(){
 	this.client = new elasticsearch.Client({
@@ -11,6 +13,7 @@ function QueryRunner(){
 
 QueryRunner.prototype.run = function(antlrQueryObject, cbOnDone){
 	var esQuery = this.getESQuery(antlrQueryObject);
+	this.applyAggregatorsToESQuery(esQuery, antlrQueryObject);
 	console.log(JSON.stringify(esQuery));
 	this.client.search(esQuery, function(err, res){
 		if(err){
@@ -43,4 +46,8 @@ QueryRunner.prototype.getESQuery = function(query){
 	return esQuery.toESQuery();
 }
 
+QueryRunner.prototype.applyAggregatorsToESQuery = function(esQuery, antlrQueryObject){
+	var agg = new QueryAggregator();
+	esQuery.body.aggs = agg.getAggregates(antlrQueryObject).aggs;	
+}
 module.exports = QueryRunner;
