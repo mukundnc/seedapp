@@ -87,7 +87,7 @@ QueryParseListener.prototype.enterAverage_spec = function(ctx) {
 
 // Enter a parse tree produced by salesParser#time_spec.
 QueryParseListener.prototype.enterTime_spec = function(ctx) {
-	this.timeFilters = new ExpressionBuilder().build(ctx);
+	this.timeFilters = new ExpressionBuilder().build(ctx.timeSpec());
 };
 
 // Enter a parse tree produced by salesParser#by_time_spec.

@@ -31,7 +31,7 @@ MatchAllWithMultiAndFiltersQuery.prototype.addFilter = function(key, value){
 MatchAllWithMultiAndFiltersQuery.prototype.addDateRange = function(start, end){
 	var range = {
 		range : {
-			timestamp : {
+			date : {
 				gte : start,
 				lte : end
 			}
