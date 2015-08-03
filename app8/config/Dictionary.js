@@ -136,7 +136,8 @@ var DomainStringMap = {
 	'door-mw-09' : 'Door-MW-09',
 	'u.s. robotics and mechanical men' : 'U.S. Robotics and Mechanical Men',
 	'turntable-mw-09' : 'Turntable-MW-09',
-	'usa' : 'US'
+	'usa' : 'US',
+	'microwave' : 'Microwave'
 };
 
 function getDomainQualifiedStr(str){
