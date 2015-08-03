@@ -35,8 +35,8 @@ ApiController.prototype.onExecuteQueryResponse = function(parsedQueryObject, res
 }
 
 ApiController.prototype.handleSaveSalesStrategyRequest = function(req, res){
-	// var dataMgr = new DataManager();
-	// dataMgr.saveSalesStrategy(req, res);
+	var dataMgr = new DataManager();
+	dataMgr.saveSalesStrategy(req, res);
 }
 
 ApiController.prototype.handleBuildSalesIndicesRequest = function(req, res){

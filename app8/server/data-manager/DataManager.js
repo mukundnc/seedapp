@@ -2,21 +2,14 @@
 var fs = require('fs');
 var config = require('./../../config/config');
 var IndexBuilder = require('./IndexBuilder');
-
+var ProductBuilder = require('./ProductBuilder');
 function DataManager(){
 
 }
 
 DataManager.prototype.saveSalesStrategy = function(req, res){
-	var filePath = config.saleStrategy.strategyFileName;
-	fs.writeFile(filePath, JSON.stringify(req.body), function(err){
-		if(err){
-			logger.log(err);
-			res.json({success: false, message: 'falied to save the data'})
-		}
-		else
-			res.json({success: true, message: 'data saved successfully'});
-	});	
+	new ProductBuilder().saveData();
+	res.json({success: true, message: 'data saved successfully'});
 }
 
 DataManager.prototype.buildSalesIndices_old = function(req, res){

@@ -23,23 +23,23 @@ function save(){
 	// 	}
 	// }
 
-	// var options = {
-	// 	url : '/api/strategy/save',
-	// 	type : 'POST',
-	// 	contentType : 'application/json',
-	// 	data : JSON.stringify(sData),
-	// 	success : function(res){			
-	// 		if(res.success)
-	// 			alert('Data saved successfully');
-	// 		else
-	// 			alert('Failed to save data');
-	// 	},
-	// 	error : function(a,b,c){
-	// 		console.error('error in saving data');
-	// 		alert('Network error while saving data');
-	// 	}
-	// }
-	// $.ajax(options);
+	var options = {
+		url : '/api/strategy/save',
+		type : 'POST',
+		contentType : 'application/json',
+		data : JSON.stringify({}),
+		success : function(res){			
+			if(res.success)
+				alert('Data saved successfully');
+			else
+				alert('Failed to save data');
+		},
+		error : function(a,b,c){
+			console.error('error in saving data');
+			alert('Network error while saving data');
+		}
+	}
+	$.ajax(options);
 }
 
 function build(){

@@ -43,9 +43,11 @@ ProductBuilder.prototype.getSalesProducts = function(cbOnDone){
 		});
 }
 
-ProductBuilder.prototype.testFunction = function(){
-	var csv = require("fast-csv");
-	var _ = require('underscore');
+ProductBuilder.prototype.saveData = function(){
+	this.logDomainMap();
+}
+
+ProductBuilder.prototype.logUniqueColsLowerCase = function(){
 	var i = 0;
 	var models = [], components = [], suppliers = [], cities = [], countries = [];
 
@@ -83,4 +85,26 @@ ProductBuilder.prototype.testFunction = function(){
 		}); 
 }
 
+ProductBuilder.prototype.logDomainMap = function(){
+	var i = 0;
+	var domain = [];
+	csv.fromPath('/Users/vishal/Downloads/CAT-MW-Data-2.csv', {headers:false})
+	   .on("data", function(data){
+		   	if(i > 0){
+		   		domain.push(data[1]);
+		   		domain.push(data[2]);
+		   		domain.push(data[9]);
+		   		domain.push(data[10]);
+		   		domain.push(data[11]);		   		
+		   	}
+		    i++;
+		})
+		.on("end", function(){
+		     domain = _.uniq(domain);
+		     domain.forEach(function(d){
+		     	var s = '\'' + d.toLowerCase() + '\' : \'' + d + '\',';
+		     	console.log(s);
+		     });
+		}); 
+}
 module.exports = ProductBuilder;
