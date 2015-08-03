@@ -49,7 +49,7 @@ ProductBuilder.prototype.saveData = function(){
 
 ProductBuilder.prototype.logUniqueColsLowerCase = function(){
 	var i = 0;
-	var models = [], components = [], suppliers = [], cities = [], countries = [];
+	var lines = [], models = [], components = [], suppliers = [], cities = [], countries = [];
 
 	function logArr(arr){
 		var s = '';
@@ -63,6 +63,7 @@ ProductBuilder.prototype.logUniqueColsLowerCase = function(){
 	csv.fromPath('/Users/vishal/Downloads/CAT-MW-Data-2.csv', {headers:false})
 	   .on("data", function(data){
 		   	if(i > 0){
+		   		lines.push(data[0].toLowerCase());
 		   		models.push(data[1].toLowerCase());
 		   		components.push(data[2].toLowerCase());
 		   		suppliers.push(data[9].toLowerCase());
@@ -72,11 +73,13 @@ ProductBuilder.prototype.logUniqueColsLowerCase = function(){
 		    i++;
 		})
 		.on("end", function(){
+			 lines = _.uniq(lines);
 		     models = _.uniq(models);
 		     components = _.uniq(components);
 		     suppliers = _.uniq(suppliers);
 		     cities = _.uniq(cities);
 		     countries = _.uniq(countries);
+		     logArr(lines);
 		     logArr(models);
 		     logArr(components);
 		     logArr(suppliers);
@@ -91,6 +94,7 @@ ProductBuilder.prototype.logDomainMap = function(){
 	csv.fromPath('/Users/vishal/Downloads/CAT-MW-Data-2.csv', {headers:false})
 	   .on("data", function(data){
 		   	if(i > 0){
+		   		domain.push(data[0]);
 		   		domain.push(data[1]);
 		   		domain.push(data[2]);
 		   		domain.push(data[9]);
