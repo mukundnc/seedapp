@@ -62,7 +62,7 @@ supplierCitySpec
 	;
 
 supplierCountrySpec
-	: 'uk' | 'china' | 'usa' | 'india' | 'canada' | 'germany' | 'japan' | 'france'
+	: 'uk' | 'china' | 'us' | 'india' | 'canada' | 'germany' | 'japan' | 'france'
 	;
 
 

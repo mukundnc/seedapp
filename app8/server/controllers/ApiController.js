@@ -1,7 +1,7 @@
 var logger = require('./../utils/Logger');
 var QueryParser = require('./../query-parser/QueryParser');
-// var QueryRunner = require('./../query-runner/QueryRunner');
- var DataManager = require('./../data-manager/DataManager');
+var QueryRunner = require('./../query-runner/QueryRunner');
+var DataManager = require('./../data-manager/DataManager');
 // var OutlierManager = require('./../outliers/OutlierManager');
 
 function ApiController(){
@@ -20,18 +20,18 @@ ApiController.prototype.onQueryParseResponse = function(respHttp, respQueryParse
 		respHttp.json(respQueryParse);
 		return;
 	}
-	respHttp.json({success : true, results : respQueryParse});
-	//this.executeQuery(respQueryParse.data, respHttp);
+	//respHttp.json({success : true, results : respQueryParse});
+	this.executeQuery(respQueryParse.data, respHttp);
 }
 
 ApiController.prototype.executeQuery = function(parsedQueryObject, respHttp){
-	// var queryRunner = new QueryRunner();
-	// queryRunner.run(parsedQueryObject, this.onExecuteQueryResponse.bind(this, parsedQueryObject, respHttp));
+	var queryRunner = new QueryRunner();
+	queryRunner.run(parsedQueryObject, this.onExecuteQueryResponse.bind(this, parsedQueryObject, respHttp));
 }
 
 ApiController.prototype.onExecuteQueryResponse = function(parsedQueryObject, respHttp, respExecQuery){
-	// respExecQuery.query = parsedQueryObject;
-	// respHttp.json(respExecQuery);
+	respExecQuery.query = parsedQueryObject;
+	respHttp.json(respExecQuery);
 }
 
 ApiController.prototype.handleSaveSalesStrategyRequest = function(req, res){

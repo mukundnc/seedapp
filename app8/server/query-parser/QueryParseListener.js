@@ -56,7 +56,7 @@ QueryParseListener.prototype.enterSupplier_spec = function(ctx) {
 	var key = '';
 	var spec = null;
 	if(ctx.supplierNameSpec().length > 0){
-		key = 'supplier';
+		key = 'name';
 		spec = ctx.supplierNameSpec();
 	}
 	else if(ctx.supplierCitySpec().length > 0){

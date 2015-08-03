@@ -11,7 +11,7 @@ ESQueryBuilder.prototype.getBasicQuery = function(){
 		body: {
 			query: {
 				match: {
-					line: 'Desktop PC'
+					supplier: 'Ajax'
 				}
 			},
 			//fields : ['city'],
@@ -29,7 +29,7 @@ ESQueryBuilder.prototype.getBasicFilteredQuery = function(){
 				filtered: {
 					query :{
 						match: {
-							line: 'Desktop PC'
+							line: 'Microwave'
 						}
 					},
 					filter : {
@@ -53,14 +53,12 @@ ESQueryBuilder.prototype.getAndFilteredQuery = function(){
 				filtered: {
 					query :{
 						match: {
-							category: 'Automobile'
+							line: 'Microwave'
 						}
 					},
 					filter : {
 						and : [
-							{term : {'brand' : 'BMW'}},
-							{term : {'region': 'South'}},
-							{term : {'city' : 'Guntur'}}
+							{term : {name : 'Ajax'}}
 						]
 						
 					}
@@ -131,11 +129,11 @@ ESQueryBuilder.prototype.getMatchAllWithMultiAndQuery = function(){
 	
 }
 ESQueryBuilder.prototype.executeQuery = function(url, cbOnDone){
-	// $.getJSON(url, cbOnDone);
-	// return;
+	$.getJSON(url, cbOnDone);
+	return;
 
-	var esQuery = this.getBasicFilteredQuery();
-	this.client.search(esQuery).then(this.onQueryResponse.bind(this, cbOnDone), this.onQueryError.bind(this));	
+	// var esQuery = this.getAndFilteredQuery();
+	// this.client.search(esQuery).then(this.onQueryResponse.bind(this, cbOnDone), this.onQueryError.bind(this));	
 }
 
 ESQueryBuilder.prototype.onQueryResponse = function(cbOnDone, data){

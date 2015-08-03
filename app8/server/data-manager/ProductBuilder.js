@@ -15,22 +15,25 @@ ProductBuilder.prototype.getSalesProducts = function(cbOnDone){
 	csv.fromPath(config.saleStrategy.strategyFileName, {headers:false})
 	   .on("data", function(data){
 		   	if(i > 0){
-		   		sales.push({
-			     	product : {
-			     		line : data[1],
-			     		model : data[2],
-			     		component : data[4]
+		   		var quantity = parseInt(data[6]);
+		   		var object = {
+		   			product : {
+			     		line : data[0],
+			     		model : data[1],
+			     		component : data[2]
 			     	},
 			     	supplier : {
-			     		name : data[5],
-			     		city : data[6],
-			     		country : data[7]
+			     		name : data[9],
+			     		city : data[10],
+			     		country : data[11]
 			     	},
-			     	quantity : parseInt(data[8]),
-			     	rate : parseFloat(data[9]),
-			     	amount : parseFloat(data[10]),
-			     	date : self.getDate(data[11])
-			     });
+			     	quantity : 1,
+			     	rate : parseFloat(data[7]),
+			     	amount : parseFloat(data[8]),
+			     	date : data[5]
+		   		};
+		   		for(var j = 0; j < quantity; j++)
+		   			sales.push(object);
 		   	}
 		    i++;
 		})

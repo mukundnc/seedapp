@@ -1,7 +1,7 @@
 var _ = require('underscore');
 
 var productTypes = ['line', 'model', 'component'];
-var supplierType = ['supplier', 'city', 'country'];
+var supplierType = ['name', 'city', 'country'];
 
 function isProductType(p){
 	return _.contains(productTypes, p);

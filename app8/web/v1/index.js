@@ -39,7 +39,7 @@ AntlrApp.prototype.handleKeyPressEvent = function(e){
 
 AntlrApp.prototype.onDataReceived = function(data){
 	if(data.success){
-		var consolidatedResults = this.postProcessResults(data.results);
+		var consolidatedResults = this.postProcessResults([data.results]);
 		this.showResultsTable(consolidatedResults);
 	}
 	else
