@@ -34,7 +34,8 @@ QueryAggregator.prototype.getLineAgg = function(){
 	return {
 		aggs : {
 			models : this.getModelAggTmpl(),
-			countries : this.getCountryAggTmpl()
+			countries : this.getCountryAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
 }
@@ -42,7 +43,8 @@ QueryAggregator.prototype.getLineAgg = function(){
 QueryAggregator.prototype.getModelAgg = function(){
 	return {
 		aggs : {
-			countries : this.getCountryAggTmpl()
+			countries : this.getCountryAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
 }
@@ -50,7 +52,8 @@ QueryAggregator.prototype.getModelAgg = function(){
 QueryAggregator.prototype.getComponentAgg = function(){
 	return {
 		aggs : {
-			countries : this.getCountryAggTmpl()
+			countries : this.getCountryAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
 }
@@ -58,24 +61,34 @@ QueryAggregator.prototype.getComponentAgg = function(){
 QueryAggregator.prototype.getLineFromSupplierAgg = function(){
 	return {
 		aggs : {
-			models : this.getModelAggTmpl()
+			models : this.getModelAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};	
 }
 
 QueryAggregator.prototype.getModelFromSupplierAgg = function(){
-	return {};
+	return {
+		aggs : {
+			amount : { "sum" : { "field" : "rate" } }
+		}
+	};
 }
 
 QueryAggregator.prototype.getComponentFromSupplierAgg = function(){
-	return {};
+	return {
+		aggs : {
+			amount : { "sum" : { "field" : "rate" } }
+		}
+	};
 }
 
 QueryAggregator.prototype.getLineFromCityAgg = function(){
 	return {
 		aggs : {
 			models : this.getModelAggTmpl(),
-			suppliers : this.getSupplierAggTmpl()
+			suppliers : this.getSupplierAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
 }
@@ -83,7 +96,8 @@ QueryAggregator.prototype.getLineFromCityAgg = function(){
 QueryAggregator.prototype.getModelFromCityAgg = function(){
 	return {
 		aggs : {
-			suppliers : this.getSupplierAggTmpl()
+			suppliers : this.getSupplierAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};	
 }
@@ -91,7 +105,8 @@ QueryAggregator.prototype.getModelFromCityAgg = function(){
 QueryAggregator.prototype.getComponentFromCityAgg = function(){
 	return {
 		aggs : {
-			suppliers : this.getSupplierAggTmpl()
+			suppliers : this.getSupplierAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
 }
@@ -100,7 +115,8 @@ QueryAggregator.prototype.getLineFromCountryAgg = function(){
 	return {
 		aggs : {
 			models : this.getModelAggTmpl(),
-			cities : this.getCityAggTmpl()
+			cities : this.getCityAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
 }
@@ -108,7 +124,8 @@ QueryAggregator.prototype.getLineFromCountryAgg = function(){
 QueryAggregator.prototype.getModelFromCountryAgg = function(){
 	return {
 		aggs : {
-			cities : this.getCityAggTmpl()
+			cities : this.getCityAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
 }
@@ -116,7 +133,8 @@ QueryAggregator.prototype.getModelFromCountryAgg = function(){
 QueryAggregator.prototype.getComponentFromCountryAgg = function(){
 	return {
 		aggs : {
-			cities : this.getCityAggTmpl()
+			cities : this.getCityAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
 }
@@ -124,7 +142,8 @@ QueryAggregator.prototype.getComponentFromCountryAgg = function(){
 QueryAggregator.prototype.getSupplierAgg = function(){
 	return {
 		aggs : {
-			lines : this.getLineAggTmpl()
+			lines : this.getLineAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
 }
@@ -133,7 +152,8 @@ QueryAggregator.prototype.getCityAgg = function(){
 	return {
 		aggs : {
 			lines : this.getLineAggTmpl(),
-			suppliers : this.getSupplierAggTmpl()
+			suppliers : this.getSupplierAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
 }
@@ -142,7 +162,8 @@ QueryAggregator.prototype.getCountryAgg = function(){
 	return {
 		aggs : {
 			lines : this.getLineAggTmpl(),
-			cities : this.getCityAggTmpl()
+			cities : this.getCityAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
 }
@@ -154,7 +175,8 @@ QueryAggregator.prototype.getLineAggTmpl = function(){
 			size : 50
 		},
 		aggs : {
-			models : this.getModelAggTmpl()
+			models : this.getModelAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
 }
@@ -165,7 +187,9 @@ QueryAggregator.prototype.getModelAggTmpl= function(){
 			field : 'model',
 			size : 50
 		},
-		aggs : {}
+		aggs : {
+			amount : { "sum" : { "field" : "rate" } }
+		}
 	};
 }
 
@@ -176,7 +200,8 @@ QueryAggregator.prototype.getCountryAggTmpl = function(){
 			size : 50
 		},
 		aggs : {
-			cities : this.getCityAggTmpl()
+			cities : this.getCityAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
 }
@@ -188,7 +213,8 @@ QueryAggregator.prototype.getCityAggTmpl = function(){
 			size : 50
 		},
 		aggs : {
-			suppliers : this.getSupplierAggTmpl()
+			suppliers : this.getSupplierAggTmpl(),
+			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
 }
@@ -199,7 +225,9 @@ QueryAggregator.prototype.getSupplierAggTmpl = function(){
 			field : 'name',
 			size : 50
 		},
-		aggs : {}
+		aggs : {
+			amount : { "sum" : { "field" : "rate" } }
+		}
 	};
 }
 
@@ -242,7 +270,6 @@ QueryAggregator.prototype.getYearlyTimeAgg = function(){
 			}
 		}
 	}	
-
 }
 
 QueryAggregator.prototype.getMonthlyTimeAgg = function(){

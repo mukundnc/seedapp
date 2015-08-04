@@ -168,6 +168,9 @@ QueryParseListener.prototype.getQueryContext = function(prodKey, suppKey, part, 
 	if(prodKey) 
 		strCtx += ('_' + prodKey);
 	if(suppKey) {
+		if(suppKey === 'name')
+			suppKey = 'supplier';
+		
 		if(prodKey)
 			strCtx += ('_from_' + suppKey);
 		else
