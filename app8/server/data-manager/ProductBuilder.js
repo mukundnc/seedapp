@@ -5,14 +5,15 @@ var config = require('./../../config/config');
 var csv = require("fast-csv");
 
 function ProductBuilder(){
-
+	//this.csvFileName = config.saleStrategy.strategyFileName;
+	this.csvFileName = '/Users/vishal/work/csales.csv'; 
 }
 
 ProductBuilder.prototype.getSalesProducts = function(cbOnDone){	
 	var self = this;
 	var sales = [];
 	var i = 0;
-	csv.fromPath(config.saleStrategy.strategyFileName, {headers:false})
+	csv.fromPath(this.csvFileName, {headers:false})
 	   .on("data", function(data){
 		   	if(i > 0){
 		   		var quantity = parseInt(data[6]);
@@ -44,6 +45,7 @@ ProductBuilder.prototype.getSalesProducts = function(cbOnDone){
 }
 
 ProductBuilder.prototype.saveData = function(){
+	this.logUniqueColsLowerCase();
 	this.logDomainMap();
 }
 
@@ -60,9 +62,10 @@ ProductBuilder.prototype.logUniqueColsLowerCase = function(){
 		console.log('******************************************************************************************************************************');
 	}
 
-	csv.fromPath('/Users/vishal/Downloads/CAT-MW-Data-2.csv', {headers:false})
-	   .on("data", function(data){
+	csv.fromPath(this.csvFileName, {headers:false})
+	   .on("data", function(data){	   	
 		   	if(i > 0){
+		   		console.log(data[0].toLowerCase(), data[1].toLowerCase(), i);
 		   		lines.push(data[0].toLowerCase());
 		   		models.push(data[1].toLowerCase());
 		   		components.push(data[2].toLowerCase());
@@ -91,7 +94,7 @@ ProductBuilder.prototype.logUniqueColsLowerCase = function(){
 ProductBuilder.prototype.logDomainMap = function(){
 	var i = 0;
 	var domain = [];
-	csv.fromPath('/Users/vishal/Downloads/CAT-MW-Data-2.csv', {headers:false})
+	csv.fromPath(this.csvFileName, {headers:false})
 	   .on("data", function(data){
 		   	if(i > 0){
 		   		domain.push(data[0]);
