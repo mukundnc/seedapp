@@ -10,21 +10,66 @@ QueryAggregator.prototype.getAggregates = function(query){
 	var agg = {};
 	
 	switch(query.context){
-		case sc.line : agg = this.getLineAgg(); break;
-		case sc.model : agg = this.getModelAgg(); break;
-		case sc.component : agg = this.getComponentAgg(); break;
-		case sc.line_from_supplier : agg = this.getLineFromSupplierAgg(); break;
-		case sc.model_from_supplier : agg = this.getModelFromSupplierAgg(); break;
-		case sc.component_from_supplier : agg = this.getComponentFromSupplierAgg(); break;
-		case sc.line_from_city : agg = this.getLineFromCityAgg(); break;
-		case sc.model_from_city : agg = this.getModelFromCityAgg(); break;
-		case sc.component_from_city : agg = this.getComponentFromCityAgg(); break;
-		case sc.line_from_country : agg = this.getLineFromCountryAgg(); break;
-		case sc.model_from_country : agg = this.getModelFromCountryAgg(); break;
-		case sc.component_from_country : agg = this.getComponentFromCountryAgg(); break;
-		case sc.supplier : agg = this.getSupplierAgg(); break;
-		case sc.city : agg = this.getCityAgg(); break;
-		case sc.country : agg = this.getCountryAgg(); break;
+		case sc.line : 
+		case sc.line_spend : 
+			agg = this.getLineAgg(); 
+			break;
+		case sc.model : 
+		case sc.model_spend : 
+			agg = this.getModelAgg(); 
+			break;
+		case sc.component : 
+		case sc.component_spend : 
+			agg = this.getComponentAgg(); 
+			break;
+		case sc.line_from_supplier : 
+		case sc.line_from_supplier_spend : 
+			agg = this.getLineFromSupplierAgg(); 
+			break;
+		case sc.model_from_supplier : 
+		case sc.model_from_supplier_spend : 
+			agg = this.getModelFromSupplierAgg(); 
+			break;
+		case sc.component_from_supplier : 
+		case sc.component_from_supplier_spend : 
+			agg = this.getComponentFromSupplierAgg(); 
+			break;
+		case sc.line_from_city : 
+		case sc.line_from_city_spend : 
+			agg = this.getLineFromCityAgg(); 
+			break;
+		case sc.model_from_city : 
+		case sc.model_from_city_spend : 
+			agg = this.getModelFromCityAgg(); 
+			break;
+		case sc.component_from_city : 
+		case sc.component_from_city_spend : 
+			agg = this.getComponentFromCityAgg(); 
+			break;
+		case sc.line_from_country : 
+		case sc.line_from_country_spend : 
+			agg = this.getLineFromCountryAgg(); 
+			break;
+		case sc.model_from_country : 
+		case sc.model_from_country_spend : 
+			agg = this.getModelFromCountryAgg(); 
+			break;
+		case sc.component_from_country : 
+		case sc.component_from_country_spend : 
+			agg = this.getComponentFromCountryAgg(); 
+			break;
+		case sc.supplier : 
+		case sc.supplier_spend : 
+			agg = this.getSupplierAgg(); 
+			break;
+		case sc.city : 
+		case sc.city_spend : 
+			agg = this.getCityAgg(); 
+			break;
+		case sc.country : 
+		case sc.country_spend : 
+			agg = this.getCountryAgg(); 
+			break;
 	}
 	this.addTimeAggregate(agg);
 	return agg;
