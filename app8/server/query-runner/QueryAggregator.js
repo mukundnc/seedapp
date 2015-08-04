@@ -6,10 +6,10 @@ function QueryAggregator(){
 
 
 QueryAggregator.prototype.getAggregates = function(query){
-	this.context = query.context;
+	this.query = query;
 	var agg = {};
 	
-	switch(this.context){
+	switch(query.context){
 		case sc.line : agg = this.getLineAgg(); break;
 		case sc.model : agg = this.getModelAgg(); break;
 		case sc.component : agg = this.getComponentAgg(); break;
@@ -26,7 +26,7 @@ QueryAggregator.prototype.getAggregates = function(query){
 		case sc.city : agg = this.getCityAgg(); break;
 		case sc.country : agg = this.getCountryAgg(); break;
 	}
-
+	this.addTimeAggregate(agg);
 	return agg;
 }
 
@@ -201,6 +201,74 @@ QueryAggregator.prototype.getSupplierAggTmpl = function(){
 		},
 		aggs : {}
 	};
+}
+
+QueryAggregator.prototype.addTimeAggregate = function(agg){
+	if(!agg.aggs) return;
+	if(Object.keys(agg.aggs).length === 0) return;
+	var root = agg.aggs;
+
+	Object.keys(root).forEach((function(k){
+		var t = this.getTimeAggregate();
+		var tKey = Object.keys(t)[0];
+		if(root[k].aggs)
+			root[k].aggs[tKey] = t[tKey];
+	}).bind(this));
+
+}
+
+QueryAggregator.prototype.getTimeAggregate = function(){
+	var time = this.query.time;
+	if(!time.isPresent)
+		return this.getYearlyTimeAgg();
+	
+	if(time.values[0].filter.dist === 'daily')
+		return this.getDailyTimeAgg();
+
+	if(time.values[0].filter.dist === 'monthly')
+		return this.getMonthlyTimeAgg();
+
+	return this.getYearlyTimeAgg();
+}
+
+
+QueryAggregator.prototype.getYearlyTimeAgg = function(){
+	return {
+		yearly : {
+			date_histogram : {
+				field : 'date',
+				interval : 'year',
+				format : 'YYYY/MM/DD'
+			}
+		}
+	}	
+
+}
+
+QueryAggregator.prototype.getMonthlyTimeAgg = function(){
+	return {
+		monthly : {
+			date_histogram : {
+				field : 'date',
+				interval : 'month',
+				format : 'YYYY/MM/DD'
+			}
+		}
+	}	
+
+}
+
+QueryAggregator.prototype.getDailyTimeAgg = function(){
+	return {
+		daily : {
+			date_histogram : {
+				field : 'date',
+				interval : 'day',
+				format : 'YYYY/MM/DD'
+			}
+		}
+	}	
+
 }
 
 module.exports = QueryAggregator;
