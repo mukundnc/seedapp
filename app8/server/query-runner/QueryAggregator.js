@@ -89,6 +89,7 @@ QueryAggregator.prototype.getModelAgg = function(){
 	return {
 		aggs : {
 			countries : this.getCountryAggTmpl(),
+			components : this.getComponentAggTmpl(),
 			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
@@ -115,6 +116,7 @@ QueryAggregator.prototype.getLineFromSupplierAgg = function(){
 QueryAggregator.prototype.getModelFromSupplierAgg = function(){
 	return {
 		aggs : {
+			components : this.getComponentAggTmpl(),
 			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
@@ -141,6 +143,7 @@ QueryAggregator.prototype.getLineFromCityAgg = function(){
 QueryAggregator.prototype.getModelFromCityAgg = function(){
 	return {
 		aggs : {
+			components : this.getComponentAggTmpl(),
 			suppliers : this.getSupplierAggTmpl(),
 			amount : { "sum" : { "field" : "rate" } }
 		}
@@ -169,6 +172,7 @@ QueryAggregator.prototype.getLineFromCountryAgg = function(){
 QueryAggregator.prototype.getModelFromCountryAgg = function(){
 	return {
 		aggs : {
+			components : this.getComponentAggTmpl(),
 			cities : this.getCityAggTmpl(),
 			amount : { "sum" : { "field" : "rate" } }
 		}
@@ -230,6 +234,18 @@ QueryAggregator.prototype.getModelAggTmpl= function(){
 	return {
 		terms : {
 			field : 'model',
+			size : 50
+		},
+		aggs : {
+			amount : { "sum" : { "field" : "rate" } }
+		}
+	};
+}
+
+QueryAggregator.prototype.getComponentAggTmpl= function(){
+	return {
+		terms : {
+			field : 'component',
 			size : 50
 		},
 		aggs : {
