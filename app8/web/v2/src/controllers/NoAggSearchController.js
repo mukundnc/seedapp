@@ -33,7 +33,7 @@ NoAggSearchController.prototype.renderView = function(qid, apiRes){
 	var yStart = 400;
 	var w = 150;
 	var h = 25;
-	var headers = ['Line', 'Model', 'Component', 'Supplier', 'City', 'Country', 'Date', 'Count'];
+	var headers = ['Line', 'Model', 'Component', 'Supplier', 'City', 'Country', 'Date'];
 	headers.forEach((function(head){
 		var gR = this.utils.addRectLabel(g, xStart, yStart, w, h, head, 'res-head', 'sf-rect', 'sf-text', 'middle');
 		gR.select('text').attr('x', xStart+w/2);
@@ -47,7 +47,7 @@ NoAggSearchController.prototype.renderView = function(qid, apiRes){
 	data.records.forEach((function(r){
 		var p = r._source.product;
 		var rg = r._source.supplier;
-		headers = [p.line, p.model, p.component, rg.name, rg.city, rg.country, r._source.date, '1'];
+		headers = [p.line, p.model, p.component, rg.name, rg.city, rg.country, r._source.date];
 		headers.forEach((function(head){
 			var gR = this.utils.addRectLabel(g, xStart, yStart, w, h, head, 'res-head', 'sf-rect', 'sf-text', 'middle');
 			gR.select('text').attr('x', xStart+w/2);
