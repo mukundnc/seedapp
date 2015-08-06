@@ -40,7 +40,7 @@ SearchFrameView.prototype.render = function(){
 
 SearchFrameView.prototype.renderTabs = function(){
 	var tabH = 30;
-	var tabW = 80;
+	var tabW = 120;
 	var xOrg = 0;
 	var xForm = this.utils.getCodtSystemXForm(xOrg, tabH);
 	var g = this.utils.getGroupByClassName('sf-frame-group');
