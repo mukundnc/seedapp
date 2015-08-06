@@ -244,12 +244,12 @@ SvgUtils.prototype.getDefaultColors = function(){
 
 
 function isProductType(pType){
-	var products = ['categories', 'types', 'brands', 'models', 'category', 'type', 'brand', 'model'];
+	var products = ['lines', 'models', 'components', 'line', 'model', 'component'];
 	return products.indexOf(pType.toLowerCase()) !== -1;
 }
 
 function isRegionType(rType){
-	var regions = ['regions', 'states', 'cities', 'region', 'state', 'city'];
+	var regions = ['countries', 'cities', 'suppliers', 'country', 'city', 'supplier'];
 	return regions.indexOf(rType.toLowerCase()) !== -1;
 }
 
@@ -275,19 +275,17 @@ function hideLoading(){
 	$('#overlay').hide();
 }
 
-function getQueryString (queryParams, qSource, qTarget, filters){
-	var regionTypes = ['regions', 'states', 'cities', 'region', 'state', 'city'];
-	var productTypes = ['categories', 'types', 'brands', 'models', 'category', 'type', 'brand', 'model'];
-
-	function isProductType(p){
-		return productTypes.indexOf(p) !== -1;
-	}
-
-	function isRegionType(t){
-		return regionTypes.indexOf(t) !== -1;
-	}
+function getQueryString (queryParams, orgQuery){
 	var q = '';
-	if(!qTarget){
+	var qSource = {
+		key : orgQuery.product.key,
+		value : orgQuery.product.values[0] ? orgQuery.product.values[0] : ''
+	};
+	var qTarget = {
+		key : orgQuery.supplier.key,
+		value : orgQuery.supplier.values[0] ? orgQuery.supplier.values[0] : ''
+	};
+	if(!orgQuery.supplier.isPresent){
 		if(isProductType(queryParams.type)){
 			if(isProductType(qSource.key)){
 				//Single word product drill down  search
@@ -295,34 +293,64 @@ function getQueryString (queryParams, qSource, qTarget, filters){
 			}
 			else{
 				//product drilldown in region
-				q = queryParams.label + ' in ' + qSource.value; 
+				q = queryParams.label + ' from ' + qSource.value; 
 			}
 		}
 		else{
 			if(isRegionType(qSource.key)){
 				//Single word region drill down  search
-				q = queryParams.label;
+				q = 'parts from ' + queryParams.label;
 			}
 			else{
 				//Org query now in region
-				q = qSource.value  + ' in ' + queryParams.label;
+				q = qSource.value  + ' from ' + queryParams.label;
 			}
 		}
 	}
 	else{
 		if(isProductType(queryParams.type)){
 			//Drilldown product in region search
-			q = queryParams.label + ' in ' + qTarget.value;
+			q = queryParams.label + ' from ' + qTarget.value;
 		}
 		else{
 			//Org query now in region drilldown
-			q = qSource.value  + ' in ' + queryParams.label;
+			q = qSource.value  + ' from ' + queryParams.label;
 		}
 	}
-	if(filters && filters.length > 1){
-		q += (' between ' + filters[0].filter.value + ' and ' + filters[1].filter.value);
+	if(queryParams.source === 'timeline'){
+		q += getTimeFilterSuffix(queryParams);
+	}
+	else if(orgQuery.time.isPresent){
+		q += (' between ' + orgQuery.time.values[0].value + ' and ' + orgQuery.time.values[1].value);
 	}
 	return q;
+}
+
+function getTimeFilterSuffix(queryParams){
+	var map = {
+		'Jan' : { m : 1, d : 31},
+		'Feb' : { m : 2, d : 28},
+		'Mar' : { m : 3, d : 31},
+		'Apr' : { m : 4, d : 30},
+		'May' : { m : 5, d : 31},
+		'Jun' : { m : 6, d : 30},
+		'Jul' : { m : 7, d : 31},
+		'Aug' : { m : 8, d : 31},
+		'Sep' : { m : 9, d : 30},
+		'Oct' : { m : 10, d : 31},
+		'Nov' : { m : 11, d : 30},
+		'Dec' : { m : 12, d : 31}
+	};
+	if(queryParams.tKey.indexOf('-') !== -1){
+		var arr = queryParams.tKey.split('-');
+		var year = 2000 + parseInt(arr[1]);
+		var month = map[arr[0]].m;
+		var date = map[arr[0]].d;
+		return ' between ' + year + '/' + month + '/01 and ' + year + '/' + month + '/' + date;
+	}
+	else{
+		return ' between ' + queryParams.tKey + '/01/01 and ' + queryParams.tKey + '/12/31';
+	}
 }
 
 function getDatesFromQuery(query){

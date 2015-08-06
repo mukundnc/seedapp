@@ -155,12 +155,12 @@ SalesTimeModel.prototype.getTimeGroupKey = function(uiTimeItems){
 
 SalesTimeModel.prototype.getYAxisLabelsForModelKey = function(modelKey, uiTimeObj, frameHeight, frameWidth){
 	if(!uiTimeObj[modelKey]) return null;
-
+	var self = this;
 	var tKey =  this.getTimeGroupKey(uiTimeObj[modelKey].items[0].items);
 	var allValues = [];
 	uiTimeObj[modelKey].items.forEach(function(uiTimeItems){
 		uiTimeItems.items[tKey].items.forEach(function(dataItem){
-			switch(this.options.mode){
+			switch(self.options.mode){
 				case 'count' : allValues.push(dataItem.doc_count); break;
 				case 'spend' : allValues.push(dataItem.amount); break;
 				case 'average_spend' : allValues.push(dataItem.doc_count); break;
