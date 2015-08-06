@@ -1,7 +1,7 @@
 function SalesAppController (){
 	this.init();
 	this.searchController = new SearchController(this);
-	this.noAggController = null; //new NoAggSearchController(this);
+	this.noAggController = new NoAggSearchController(this);
 	this.compareController = null; //new CompareController(this);
 	this.outlierController = null; //new OutlierController(this);
 	this.searchTreeView = new SearchTreeView({controller : this});
@@ -91,7 +91,7 @@ SalesAppController.prototype.getControllerForSearch = function(apiRes){
 		return this.compareController;
 	}
 		
-	if(apiRes.results.aggregations)
+	if(Object.keys(apiRes.results.aggregations).length > 1)
 		return this.searchController;
 
 	return this.noAggController;
