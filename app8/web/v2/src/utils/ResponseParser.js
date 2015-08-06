@@ -41,7 +41,7 @@ ResponseParser.prototype.addNodesRecurssive = function(obj, apiObj, strRootKey){
 					self.addNodesRecurssive(t, bucket[bKey], bKey);
 				}
 				else if(bKey === 'amount')
-					item[bKey] = bucket[bKey].value;
+					item[bKey] = bucket[bKey].value || bucket[bKey];
 				else
 					item[bKey] = bucket[bKey];				
 			});	
