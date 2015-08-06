@@ -9,7 +9,7 @@ NoAggSearchController.prototype.renderView = function(qid, apiRes){
 		this.qidResults[qid] = apiRes;
 
 	var results = this.qidResults[qid];
-
+	var labels = getLablesFormQueryResponse(results);
 	d3.selectAll('.svg-view').html('');
 
 	var data = {
@@ -28,7 +28,7 @@ NoAggSearchController.prototype.renderView = function(qid, apiRes){
 
 	var g = this.utils.getGroupByClassName('res-table-group');
 	g.attr('transform', this.utils.getCodtSystemXForm(0, 500));
-	this.utils.addTextXForm(g, $('.svg-container').width()/2.5, -450, 'TOTAL SALES - ' + data.total, 'sales-header');
+	this.utils.addTextXForm(g, $('.svg-container').width()/2.5, -450, labels.pageTitle, 'sales-header');
 	var xStart = 70;
 	var yStart = 400;
 	var w = 150;
