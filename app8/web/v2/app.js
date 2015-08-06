@@ -1,9 +1,9 @@
 
-// var gSalesAppController = null;
+ var gSalesAppController = null;
 
 $(document).ready(function(){
 	setViewPort();
-	//gSalesAppController = new SalesAppController(); 	
+	gSalesAppController = new SalesAppController(); 	
 })
 
 function setViewPort(){	
