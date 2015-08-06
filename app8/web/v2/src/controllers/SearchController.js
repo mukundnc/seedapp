@@ -39,9 +39,10 @@ SearchController.prototype.getModelOptions = function(apiRes){
 }
 
 SearchController.prototype.getViewOptions = function(apiRes, qid){
+	var labels = getLablesFormQueryResponse(apiRes)
 	return {
 		controller : this,
-		resultCount : apiRes.results.hits.total,
+		pageTitle : labels.pageTitle,
 		w : this.W,
 		h : this.H,
 		container : {
@@ -58,7 +59,8 @@ SearchController.prototype.getViewOptions = function(apiRes, qid){
 			xOrg : 90,
 			yOrg : this.H * 0.9,
 			w : this.W + 50,
-			h : this.H * 0.45
+			h : this.H * 0.45,
+			yAxisTitle : labels.yAxisTitle
 		}
 	}
 }

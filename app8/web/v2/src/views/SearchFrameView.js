@@ -63,8 +63,8 @@ SearchFrameView.prototype.renderTabs = function(){
 		xOrg += tabW;
 		i++;
 	}).bind(this));
-	if(this.options.resultCount)
-		this.utils.addTextXForm(g, this.options.w/2, 0, 'TOTAL SALES - ' + this.options.resultCount, 'sales-header');
+	if(this.options.pageTitle)
+		this.utils.addTextXForm(g, this.options.w/2, 0, this.options.pageTitle, 'sales-header');
 	var self = this;
 	$('.sf-tab').on('click', function(e){
 		self.onTabChange(this);
