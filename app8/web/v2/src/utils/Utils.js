@@ -321,7 +321,7 @@ function getQueryString (queryParams, orgQuery){
 		q += getTimeFilterSuffix(queryParams);
 	}
 	else if(orgQuery.time.isPresent){
-		q += (' between ' + orgQuery.time.values[0].value + ' and ' + orgQuery.time.values[1].value);
+		q += (' between ' + orgQuery.time.values[0].filter.value + ' and ' + orgQuery.time.values[1].filter.value);
 	}
 	return q;
 }
@@ -356,9 +356,9 @@ function getTimeFilterSuffix(queryParams){
 function getDatesFromQuery(query){
 	if(query.time.isPresent){
 		return {
-			startDate : query.time.values[0].value,
-			endDate : query.time.values[1].value,
-			dist : query.time.values[0].dist
+			startDate : query.time.values[0].filter.value,
+			endDate : query.time.values[1].filter.value,
+			dist : query.time.values[0].filter.dist
 		}
 	}
 	else{
