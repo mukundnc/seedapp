@@ -382,11 +382,11 @@ function getLablesFormQueryResponse (apiRes){
 	var pageTitle = '';
 	var yAxisTitle = '';
 	if(!apiRes.query.spend.isPresent){
-		pageTitle = 'TOTALE PARTS - ' + apiRes.results.hits.total;
+		pageTitle = 'TOTAL PARTS - ' + apiRes.results.hits.total;
 		yAxisTitle = 'SALES';
 	}
 	else{
-		pageTitle = 'TOTALE SPEND - ' + Math.round(apiRes.results.aggregations.amount.value);
+		pageTitle = 'TOTAL SPEND - ' + Math.round(apiRes.results.aggregations.amount.value);
 		yAxisTitle = 'SPEND';
 	}
 	return{
