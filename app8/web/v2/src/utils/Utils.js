@@ -285,36 +285,43 @@ function getQueryString (queryParams, orgQuery){
 		key : orgQuery.supplier.key,
 		value : orgQuery.supplier.values[0] ? orgQuery.supplier.values[0] : ''
 	};
+
+	var PART_SPEND = ' part ';
+	var PART_SPEND_FROM = ' part from ';
+	if(orgQuery.spend.isPresent){
+		PART_SPEND = ' spend ';
+		PART_SPEND_FROM = ' spend from ';
+	}
 	if(!orgQuery.supplier.isPresent){
 		if(isProductType(queryParams.type)){
 			if(isProductType(qSource.key)){
 				//Single word product drill down  search
-				q = queryParams.label;
+				q = queryParams.label + PART_SPEND;
 			}
 			else{
 				//product drilldown in region
-				q = queryParams.label + ' from ' + qSource.value; 
+				q = queryParams.label + PART_SPEND_FROM + qSource.value; 
 			}
 		}
 		else{
 			if(isRegionType(qSource.key)){
 				//Single word region drill down  search
-				q = 'parts from ' + queryParams.label;
+				q = PART_SPEND_FROM + queryParams.label;
 			}
 			else{
 				//Org query now in region
-				q = qSource.value  + ' from ' + queryParams.label;
+				q = qSource.value  + PART_SPEND_FROM+ queryParams.label;
 			}
 		}
 	}
 	else{
 		if(isProductType(queryParams.type)){
 			//Drilldown product in region search
-			q = queryParams.label + ' from ' + qTarget.value;
+			q = queryParams.label + PART_SPEND_FROM + qTarget.value;
 		}
 		else{
 			//Org query now in region drilldown
-			q = qSource.value  + ' from ' + queryParams.label;
+			q = qSource.value  + PART_SPEND_FROM + queryParams.label;
 		}
 	}
 	if(queryParams.source === 'timeline'){
