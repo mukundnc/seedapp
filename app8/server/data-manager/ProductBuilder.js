@@ -15,7 +15,7 @@ ProductBuilder.prototype.getSalesProducts = function(cbOnDone){
 	var i = 0;
 	csv.fromPath(this.csvFileName, {headers:false})
 	   .on("data", function(data){
-		   	if(i > 0){
+		   	if(i > 0 && data.length === 12){
 		   		var quantity = parseInt(data[6]);
 		   		var object = {
 		   			product : {
