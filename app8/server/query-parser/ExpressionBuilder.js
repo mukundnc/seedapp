@@ -159,6 +159,17 @@ ExpressionBuilder.prototype.getTimeFiltersForBetweenYears = function(timeSpec){
 
 ExpressionBuilder.prototype.getTimeFiltersForBetweenDates = function(timeSpec){
 	var dates = timeSpec.YYYY_MM_DD();
+	var dStart = Date.parse(dates[0].getText());
+	var dEnd = Date.parse(dates[1].getText());
+	var dMs = dEnd - dStart;
+	var dDays = dMs/(1000 * 60 * 60 * 24);
+	var dist = 'yearly';
+	if(dDays < 366 && dDays > 31)
+		dist = 'monthly';
+	else if(dDays <=31){
+		dist = 'daily';
+	}
+
 	var filters = [];
 	filters.push({
 		filter : {
@@ -166,7 +177,7 @@ ExpressionBuilder.prototype.getTimeFiltersForBetweenDates = function(timeSpec){
 			operator : 'from',
 			value : dates[0].getText(),
 			isDate : true,
-			dist : 'yearly'
+			dist : dist
 		}
 	});
 	filters.push({
@@ -175,7 +186,7 @@ ExpressionBuilder.prototype.getTimeFiltersForBetweenDates = function(timeSpec){
 			operator : 'to',
 			value : dates[1].getText(),
 			isDate : true,
-			dist : 'yearly'
+			dist : dist
 		}
 	});
 	return filters;
