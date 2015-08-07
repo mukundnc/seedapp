@@ -4,7 +4,8 @@ function ResponseParser (){
 
 ResponseParser.prototype.parse = function(apiRes){
 	var uiObjects = [];
-	apiRes.results.forEach((function(result){
+	var results = [apiRes.results];
+	results.forEach((function(result){
 		if(result.aggregations){
 			var uiObject = this.getUIObjectForAggregation(result.aggregations);
 			uiObject.queryDetails = { qSource : result.qSource, qTarget : result.qTarget};

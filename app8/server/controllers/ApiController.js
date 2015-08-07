@@ -2,7 +2,7 @@ var logger = require('./../utils/Logger');
 var QueryParser = require('./../query-parser/QueryParser');
 var QueryRunner = require('./../query-runner/QueryRunner');
 var DataManager = require('./../data-manager/DataManager');
-// var OutlierManager = require('./../outliers/OutlierManager');
+var OutlierManager = require('./../outliers/OutlierManager');
 
 function ApiController(){
 
@@ -45,8 +45,8 @@ ApiController.prototype.handleBuildSalesIndicesRequest = function(req, res){
 }
 
 ApiController.prototype.handleOutlierRequest = function(req, res){
-	// var outlierMgr = new OutlierManager(this);
-	// outlierMgr.handleOutlierRequest(req, res);
+	var outlierMgr = new OutlierManager(this);
+	outlierMgr.handleOutlierRequest(req, res);
 }
 
 

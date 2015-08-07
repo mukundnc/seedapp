@@ -3,7 +3,7 @@ function SalesAppController (){
 	this.searchController = new SearchController(this);
 	this.noAggController = new NoAggSearchController(this);
 	this.compareController = new CompareController(this);
-	this.outlierController = null; //new OutlierController(this);
+	this.outlierController = new OutlierController(this);
 	this.searchTreeView = new SearchTreeView({controller : this});
 	this.queryIndex = 0;
 	this.queryIndices = {};
