@@ -19,10 +19,12 @@ ResponseParser.prototype.getUIObjectForAggregation = function(agg){
 	var uiObject = {};
 	var i = 1;
 	Object.keys(agg).forEach((function(a){
-		var k = 'key' + i;
-		uiObject[k] = {};
-		this.addNodesRecurssive(uiObject[k], agg[a], a);
-		i++;
+		if(a !== 'amount'){
+			var k = 'key' + i;
+			uiObject[k] = {};
+			this.addNodesRecurssive(uiObject[k], agg[a], a);
+			i++;
+		}
 	}).bind(this));
 	return uiObject;	
 }
@@ -36,11 +38,13 @@ ResponseParser.prototype.addNodesRecurssive = function(obj, apiObj, strRootKey){
 			var bKeys = Object.keys(bucket);
 			var item = { key : '', items : [] };	
 			bKeys.forEach(function(bKey){													
-				if(typeof(bucket[bKey]) === 'object'){
+				if(typeof(bucket[bKey]) === 'object' && bKey !== 'amount'){
 					var t = {key : ''};
 					item.items.push(t);
 					self.addNodesRecurssive(t, bucket[bKey], bKey);
 				}
+				else if(bKey === 'amount')
+					item[bKey] = bucket[bKey].value || bucket[bKey];
 				else
 					item[bKey] = bucket[bKey];				
 			});	

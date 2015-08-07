@@ -2,6 +2,7 @@ var rio = require("rio");
 var _ = require('underscore');
 var config = require('./../../config/config').rConfig;
 var logger = require('./../utils/Logger');
+var utils = require('./../utils/Utils');
 
 function OutlierHelper(){
 
@@ -13,30 +14,15 @@ OutlierHelper.prototype.getOutlierItemsForLine = function(parsedResponse, line){
 		var key = keys[i];
 		var src = parsedResponse[key];
 		if(src){
-			if(this.isProductType(src.key) && line === 'product'){
+			if(utils.isProductType(src.key) && line === 'product'){
 				return src;
 			}
-			else if(this.isRegionType(src.key) && line === 'region'){
+			else if(utils.isRegionType(src.key) && line === 'region'){
 				return src;
 			}
 		}
 	}
 	return [];
-}
-
-OutlierHelper.prototype.isProductType = function(pType){
-	var products = ['categories', 'types', 'brands', 'models'];
-	return products.indexOf(pType) !== -1;
-}
-
-OutlierHelper.prototype.isRegionType = function(rType){
-	var regions = ['regions', 'states', 'cities'];
-	return regions.indexOf(rType) !== -1;
-}
-
-OutlierHelper.prototype.isTimeType = function(tType){
-	var times = ['yearly', 'monthly', 'daily'];
-	return times.indexOf(tType) !== -1;
 }
 
 OutlierHelper.prototype.getOutlierFlagsForTimeItems = function(timeKeyVsCount, timeDistribution, cbOnDone){

@@ -2,6 +2,7 @@
 var _ = require('underscore');
 var OutlierHelper = require('./OutlierHelper');
 var ResponseParser = require('./../utils/ResponseParser');
+var utils = require('./../utils/Utils');
 
 function OutlierTop(){
 	this.timeDistribution = 'yearly';
@@ -31,6 +32,7 @@ OutlierTop.prototype.markOutliersInObject = function(obj, cbOnDone){
 	var self = this;
 	var resIdOutlierItems = {};
 	var id = 1;
+
 	obj.items.forEach(function(childObj){
 		resIdOutlierItems[id] = {
 			key : childObj.key,
@@ -95,7 +97,7 @@ OutlierTop.prototype.markOutliersInOneTimeItem = function(timeItem, cbOnDone){
 
 OutlierTop.prototype.getTimeItemFromArray = function(arr){
 	for(var i = 0 ; i < arr.length ; i++){
-		if(this.helper.isTimeType(arr[i].key)){
+		if(utils.isTimeType(arr[i].key)){
 			this.timeDistribution = arr[i].key;
 			return arr[i];
 		}
