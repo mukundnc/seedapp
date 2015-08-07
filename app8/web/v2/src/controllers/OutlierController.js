@@ -2,8 +2,9 @@ function OutlierController(appController){
 	this.appController = appController;
 	this.qidResults = {};
 	this.qidModels = {};
-	this.H = $('.svg-container').height();
-	this.W = $('.svg-container').width();
+	var vp = getViewPort();
+	this.H = vp.height;
+	this.W = vp.width;
 }
 
 OutlierController.prototype.renderView = function(qid, apiRes){
@@ -11,7 +12,6 @@ OutlierController.prototype.renderView = function(qid, apiRes){
 		this.qidResults[qid] = apiRes;	
 	
 	var results = this.qidResults[qid];
-	console.log(results);
 	
 	this.initModel(results, qid);
 	var model = this.qidModels[qid];
@@ -47,13 +47,14 @@ OutlierController.prototype.getViewOptions = function(results, qid){
 }
 
 OutlierController.prototype.executeOutlierDrilldownSearch = function(selLabel, qid, line){
-	var qSource = this.qidResults[qid].qSource;
-	var qTarget = this.qidResults[qid].qTarget;
 	var qParams = {
-		type : line === 'product' ? 'brand' : 'region',
+		type : line === 'product' ? 'line' : 'country',
 		label : selLabel
 	}
-	var query = getQueryString(qParams, qSource, qTarget, null);
+	var bkup = this.qidResults[qid].query.time.isPresent;
+	this.qidResults[qid].query.time.isPresent = false;
+	var query = getQueryString(qParams, this.qidResults[qid].query);
+	this.qidResults[qid].query.time.isPresent = bkup;
 	query += ' in last 1 year';
 	$('#tbSearch').val(query);
 	this.appController.executeQuery();

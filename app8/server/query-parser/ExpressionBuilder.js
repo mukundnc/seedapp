@@ -33,6 +33,7 @@ ExpressionBuilder.prototype.build = function(timeSpec){
 
 ExpressionBuilder.prototype.getTimeFiltersForInLastYears = function(timeSpec){
 	var nVal = parseInt(timeSpec.NUM());
+	var dist = nVal === 1 ? 'monthly' : 'yearly';
 	var year = this.sysMaxYear - nVal + 1;
 	var filters = [];
 	filters.push({
@@ -41,7 +42,7 @@ ExpressionBuilder.prototype.getTimeFiltersForInLastYears = function(timeSpec){
 			operator : 'from',
 			value : year + '/01/01',
 			isDate : true,
-			dist : 'yearly'
+			dist : dist
 		}
 	});
 	filters.push({
@@ -50,7 +51,7 @@ ExpressionBuilder.prototype.getTimeFiltersForInLastYears = function(timeSpec){
 			operator : 'to',
 			value : this.sysEndDate,
 			isDate : true,
-			dist : 'yearly'
+			dist : dist
 		}
 	});
 	return filters;

@@ -4,6 +4,7 @@ var OutlierDrillDown = require('./OutlierDrillDown');
 var ResponseParser = require('./../utils/ResponseParser');
 var logger = require('./../utils/Logger');
 var QueryParser = require('./../query-parser/QueryParser');
+var utils = require('./../utils/Utils');
 
 function OutlierManager(apiController){
 	this.apiController = apiController;
@@ -65,7 +66,7 @@ OutlierManager.prototype.buildAndExecuteDrilldownSearches = function(searchResul
 		return;
 	}
 
-	var allDrillDownSearches = this.getAllDrilldownSearches(parsedResponse, query, line);
+	var allDrillDownSearches = this.getAllDrilldownSearches(parsedResponse, query, line, searchResults.query.spend.isPresent);
 	logger.log(allDrillDownSearches);
 
 	var allSearchDetails = [];
@@ -90,10 +91,10 @@ OutlierManager.prototype.isDrilldownSupported = function(parsedResponse, line){
 	keys.forEach((function(key){
 		var src = parsedResponse[0][key];
 		if(src){
-			if(this.isProductType(src.key) && line === 'product'){
+			if(utils.isProductType(src.key) && line === 'product'){
 				supported.isProduct = true;
 			}
-			if(this.isRegionType(src.key) && line === 'region'){
+			if(utils.isRegionType(src.key) && line === 'region'){
 				supported.isRegion = true;
 			}
 		}
@@ -101,7 +102,7 @@ OutlierManager.prototype.isDrilldownSupported = function(parsedResponse, line){
 	return line === 'product' ? supported.isProduct : supported.isRegion;
 }
 
-OutlierManager.prototype.getAllDrilldownSearches = function(parsedResponse, query, line){
+OutlierManager.prototype.getAllDrilldownSearches = function(parsedResponse, query, line, isSpendPresent){
 	var drillDownItems = this.getDrilldownItemsForLine(parsedResponse, line);
 	var drillDownSubjects = [];
 	drillDownItems.forEach(function(ddItem){
@@ -113,10 +114,10 @@ OutlierManager.prototype.getAllDrilldownSearches = function(parsedResponse, quer
 	var drillDownQueries = [];
 	drillDownSubjects.forEach((function(ddSub){
 		var qParams = {
-			type : line === 'product' ? 'categories' : 'regions',
+			type : line === 'product' ? 'lines' : 'countries',
 			label : ddSub
 		}
-		var ddQuery = this.getQueryString(qParams, qSource, qTarget);
+		var ddQuery = utils.getQueryString(qParams, qSource, qTarget, isSpendPresent);
 		ddQuery += ' in last 1 year';
 		drillDownQueries.push(ddQuery);
 	}).bind(this));
@@ -132,70 +133,13 @@ OutlierManager.prototype.getDrilldownItemsForLine = function(parsedResponse, lin
 	keys.forEach((function(key){
 		var src = parsedResponse[0][key];
 		if(src){
-			if(this.isProductType(src.key))
+			if(utils.isProductType(src.key))
 				items.product = src.items;
-			if(this.isRegionType(src.key))
+			if(utils.isRegionType(src.key))
 				items.region = src.items;
 		}
 	}).bind(this));
 	return line === 'product' ? items.product : items.region;
-}
-
-OutlierManager.prototype.getQueryString = function(queryParams, qSource, qTarget){
-	var regionTypes = ['regions', 'states', 'cities', 'region', 'state', 'city'];
-	var productTypes = ['categories', 'types', 'brands', 'models', 'category', 'type', 'brand', 'model'];
-
-	function isProductType(p){
-		return productTypes.indexOf(p) !== -1;
-	}
-
-	function isRegionType(t){
-		return regionTypes.indexOf(t) !== -1;
-	}
-	var q = '';
-	if(!qTarget){
-		if(isProductType(queryParams.type)){
-			if(isProductType(qSource.key)){
-				//Single word product drill down  search
-				q = queryParams.label;
-			}
-			else{
-				//product drilldown in region
-				q = queryParams.label + ' in ' + qSource.value; 
-			}
-		}
-		else{
-			if(isRegionType(qSource.key)){
-				//Single word region drill down  search
-				q = queryParams.label;
-			}
-			else{
-				//Org query now in region
-				q = qSource.value  + ' in ' + queryParams.label;
-			}
-		}
-	}
-	else{
-		if(isProductType(queryParams.type)){
-			//Drilldown product in region search
-			q = queryParams.label + ' in ' + qTarget.value;
-		}
-		else{
-			//Org query now in region drilldown
-			q = qSource.value  + ' in ' + queryParams.label;
-		}
-	}
-	return q;
-}
-
-OutlierManager.prototype.isProductType = function(pType){
-	var products = ['categories', 'types', 'brands'];
-	return products.indexOf(pType) !== -1;
-}
-
-OutlierManager.prototype.isRegionType = function(rType){
-	var regions = ['regions', 'states'];
-	return regions.indexOf(rType) !== -1;
 }
 
 OutlierManager.prototype.executeAllDrilldownSearches = function(allSearchDetails, line, cbOnDone){

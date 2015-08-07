@@ -19,9 +19,54 @@ function isRegionType(r){
 function isTimeType(t){
 	return _.contains(timeTypes, t);
 }
+
+function getQueryString (queryParams, qSource, qTarget, isSpendPresent){
+	var q = '';
+	var PART_SPEND = ' part ';
+	var PART_SPEND_FROM = ' part from ';
+	if(isSpendPresent){
+		PART_SPEND = ' spend ';
+		PART_SPEND_FROM = ' spend from ';
+	}
+	if(!qTarget.isPresent){
+		if(isProductType(queryParams.type)){
+			if(isProductType(qSource.key)){
+				//Single word product drill down  search
+				q = queryParams.label + PART_SPEND;
+			}
+			else{
+				//product drilldown in region
+				q = queryParams.label + PART_SPEND_FROM + qSource.values[0]; 
+			}
+		}
+		else{
+			if(isRegionType(qSource.key)){
+				//Single word region drill down  search
+				q = PART_SPEND_FROM + queryParams.label;
+			}
+			else{
+				//Org query now in region
+				q = qSource.values[0]  + PART_SPEND_FROM+ queryParams.label;
+			}
+		}
+	}
+	else{
+		if(isProductType(queryParams.type)){
+			//Drilldown product in region search
+			q = queryParams.label + PART_SPEND_FROM + qTarget.values[0];
+		}
+		else{
+			//Org query now in region drilldown
+			q = qSource.values[0]  + PART_SPEND_FROM + queryParams.label;
+		}
+	}
+	return q;
+}
+
 module.exports = {
 	isProductType : isProductType,
 	isSupplierType : isSupplierType,
 	isTimeType : isTimeType,
-	isRegionType : isRegionType
+	isRegionType : isRegionType,
+	getQueryString : getQueryString
 }

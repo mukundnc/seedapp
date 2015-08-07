@@ -31,7 +31,7 @@ QueryRunner.prototype.run = function(antlrQueryObject, cbOnDone){
 QueryRunner.prototype.runSingle = function(antlrQueryObject, cbOnDone){
 	var esQuery = this.getESQuery(antlrQueryObject);
 	this.applyAggregatorsToESQuery(esQuery, antlrQueryObject);
-	logger.log(JSON.stringify(esQuery));
+	//logger.log(JSON.stringify(esQuery));
 	this.client.search(esQuery, (function(err, res){
 		if(err){
 			logger.log(err);

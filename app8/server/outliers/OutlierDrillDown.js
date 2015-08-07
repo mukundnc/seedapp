@@ -1,13 +1,15 @@
 var _ = require('underscore');
 var ResponseParser = require('./../utils/ResponseParser');
 var OutlierHelper = require('./OutlierHelper');
+var utils = require('./../utils/Utils');
 
 function OutlierDrillDown(){
-	this.timeDistribution = 'yearly';
+	this.timeDistribution = 'monthly';
 	this.helper = new OutlierHelper();
 }
 
 OutlierDrillDown.prototype.getOutliersForDrillDown = function(drillDownSearchResults, rootSearchResults, line, cbOnDone){	
+
 	var resParser = new ResponseParser();
 	
 	var resIdVsOutlierItems = {};
@@ -23,13 +25,13 @@ OutlierDrillDown.prototype.getOutliersForDrillDown = function(drillDownSearchRes
 	}).bind(this));
 	
 	var self = this;
-	function onDone(){
+	function onDone(){		
 		var timeFormatedOutliers = self.getTimeFormattedOutliers(resIdVsOutlierItems);
 		cbOnDone({
 			success : true,
 			query : rootSearchResults.query,
-			qSource : rootSearchResults.results[0].qSource,
-			qTarget : rootSearchResults.results[0].qTarget,
+			qSource : rootSearchResults.query.product,
+			qTarget : rootSearchResults.query.supplier,
 			timeDistribution : self.timeDistribution,
 			line : line,
 			results : timeFormatedOutliers
@@ -72,8 +74,9 @@ OutlierDrillDown.prototype.markOutlierInOneItem = function(outlierItem, cbOnDone
 		var timeKeyVsItem = {};
 		var timeKeyVsCount = {};
 		objChild.items.forEach(function(objChildTimeItem){
-			if(self.helper.isTimeType(objChildTimeItem.key)){
-				self.timeDistribution = objChildTimeItem.key;
+			if(utils.isTimeType(objChildTimeItem.key)){
+				//self.timeDistribution = objChildTimeItem.key;
+				//console.log(self.timeDistribution);
 				var tItems = objChildTimeItem.items;
 				tItems = self.helper.addMissingItemsInTimeSeries(tItems, self.timeDistribution);
 				tItems.forEach(function(tItem){

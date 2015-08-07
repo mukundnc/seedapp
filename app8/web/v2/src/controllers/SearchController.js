@@ -78,13 +78,12 @@ SearchController.prototype.getOutlierData = function(params, cbOnDataReceived){
 	if(params.mode === 'drilldown'){
 		var orgQuery = this.appController.getQueryById(params.qid);
 		var apiRes = this.qidResults[params.qid];
-		var qSource = apiRes.results[0].qSource;
-		var qTarget = apiRes.results[0].qTarget;
-		var filters = apiRes.query.filters? apiRes.query.filters.and : null;
-		if(filters && filters.length > 1){
-			params.query = qSource.value;
-			if(qTarget)
-				params.query += (' in ' + qTarget.value);
+		var qSource = apiRes.query.product;
+		var qTarget = apiRes.query.supplier;
+		if(apiRes.query.time.isPresent){
+			params.query = qSource.values[0];
+			if(qTarget.isPresent)
+				params.query += (' in ' + qTarget.values[0]);
 			params.query += ' in last 1 year ';
 		}
 		else{
