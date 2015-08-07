@@ -13,15 +13,15 @@ query
 display_aspect : DISPLAY_PREFIX?;
 
 product_spec 
-	: lineSpec (',' lineSpec)?
-	| modelSpec  (',' modelSpec)?
-	| componentSpec (',' componentSpec)?
+	: lineSpec (',' lineSpec)*
+	| modelSpec  (',' modelSpec)*
+	| componentSpec (',' componentSpec)*
 	;
 
 supplier_spec 
-	: supplierNameSpec (',' supplierNameSpec)? 
-	| supplierCitySpec (',' supplierCitySpec)? 
-	| supplierCountrySpec (',' supplierCountrySpec)?
+	: supplierNameSpec (',' supplierNameSpec)*
+	| supplierCitySpec (',' supplierCitySpec)*
+	| supplierCountrySpec (',' supplierCountrySpec)*
 	;
 
 part_spec : PART;
