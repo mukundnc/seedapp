@@ -11,7 +11,7 @@ function CompareController(appController){
 CompareController.prototype.renderView = function(qid, apiRes){
 	this.initModels(qid, apiRes);
 
-	var searchFrameView = new SearchFrameView(this.qidModels[qid], this.getViewOptions(qid));
+	var searchFrameView = new SearchFrameView(this.qidModels[qid], this.getViewOptions(qid, this.qidResults[qid]));
 	searchFrameView.render()
 }
 
@@ -48,7 +48,8 @@ CompareController.prototype.getModelOptions = function(query){
 	};
 }
 
-CompareController.prototype.getViewOptions = function(qid){
+CompareController.prototype.getViewOptions = function(qid, apiRes){
+	var labels = getLablesFormQueryResponse(apiRes);
 	return {
 		controller : this,
 		w : this.W,
@@ -60,7 +61,8 @@ CompareController.prototype.getViewOptions = function(qid){
 			xOrg : 0,
 			yOrg : this.H * 0.5,
 			w : this.W - 50,
-			h : this.H * 0.45
+			h : this.H * 0.45,
+			pageTitle : labels.pageTitle
 		},
 		timeline : {
 			qid : qid,
@@ -68,7 +70,8 @@ CompareController.prototype.getViewOptions = function(qid){
 			xOrg : 90,
 			yOrg : this.H * 0.9,
 			w : this.W + 50,
-			h : this.H * 0.38
+			h : this.H * 0.38,
+			yAxisTitle : labels.yAxisTitle
 		}
 	}
 }

@@ -78,7 +78,7 @@ CompareTimeView.prototype.addYAxis = function(g){
 	}).bind(this));
 	var y = -h/2
 	var x = -55;
-	var gT = this.utils.addTextXForm(g, x, y, 'SALES', 'col-text', 'middle');
+	var gT = this.utils.addTextXForm(g, x, y, this.options.yAxisTitle, 'col-text', 'middle');
 	gT.attr('transform', 'scale(1, -1) rotate(-90, ' + x + ',' + y + ')' );	
 }
 

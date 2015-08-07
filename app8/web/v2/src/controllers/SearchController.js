@@ -39,7 +39,7 @@ SearchController.prototype.getModelOptions = function(apiRes){
 }
 
 SearchController.prototype.getViewOptions = function(apiRes, qid){
-	var labels = getLablesFormQueryResponse(apiRes)
+	var labels = getLablesFormQueryResponse(apiRes);
 	return {
 		controller : this,
 		pageTitle : labels.pageTitle,

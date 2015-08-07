@@ -26,5 +26,5 @@ CompareContainerView.prototype.render = function(){
 
 	var gH = this.utils.getGroupByClassName('sp-group-label');
 	gH.attr('transform', xForm);
-	this.utils.addTextXForm(gH, this.options.w/2, -this.options.h, 'TOTAL SALES - ' + resultCount, 'sales-header');
+	this.utils.addTextXForm(gH, this.options.w/2, -this.options.h, this.options.pageTitle, 'sales-header');
 }
