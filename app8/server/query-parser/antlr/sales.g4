@@ -35,7 +35,8 @@ mwSpec : 'mw-2000'  | 'mw-2000x'  | 'mw-2003'  | 'mw-2004'  | 'mw-2004x'  | 'mw-
 rfSpec : 'rf-2000'  | 'rf-2000l'  | 'rf-2000x'  | 'rf-2003x'  | 'rf-2003s'  | 'rf-2005'  | 'rf-2005l'  | 'rf-2008'  
 	   | 'rf-2008x'  | 'rf-2008l'  | 'rf-2011'  | 'rf-2011x';
 pcSpec : 'pc-x-201';
-acSpec : 'ac-3-2014';
+acSpec : 'ac-201'  | 'ac-201x'  | 'ac-202'  | 'ac-203'  | 'ac-202l'  | 'ac-203x'  | 'ac-205'  | 'ac-205x'  | 'ac-208l'  | 'ac-208'  
+	   | 'ac-211l'  | 'ac-211x';
 
 
 componentSpec 
@@ -61,7 +62,40 @@ componentSpec
 	| 'magnetron-mw-04x'  | 'power supply-mw-04x'  | 'cooling fan-mw-04x'  | 'chasis-mw-04'  | 'front panel-mw-04'  
 	| 'controller-mw-04'  | 'wiring harness-mw-04'  | 'door-mw-04'  | 'turntable-mw-04'  | 'chasis-mw-07'  | 'front panel-mw-07'  
 	| 'motor-mw-09'  | 'magnetron-mw-09'  | 'power supply-mw-09'  | 'cooling fan-mw-09'  | 'door-mw-07'  | 'turntable-mw-07'  
-	| 'chasis-mw-09'  | 'front panel-mw-09'  | 'controller-mw-09'  | 'wiring harness-mw-09'  | 'door-mw-09'  | 'turntable-mw-09'
+	| 'chasis-mw-09'  | 'front panel-mw-09'  | 'controller-mw-09'  | 'wiring harness-mw-09'  | 'door-mw-09'  | 'turntable-mw-09'  
+	| 'indoor chasis-201'  | 'indoor chasis-201x'  | 'indoor chasis-202'  | 'indoor chasis-203'  | 'indoor chasis-202l'  
+	| 'indoor chasis-203x'  | 'indoor chasis-205'  | 'indoor chasis-205x'  | 'indoor chasis-208l'  | 'indoor chasis-208'  
+	| 'indoor chasis-211l'  | 'indoor chasis-211x'  | 'indoor casing-201'  | 'indoor casing-201x'  | 'indoor casing-202'  
+	| 'indoor casing-203'  | 'indoor casing-202l'  | 'indoor casing-203x'  | 'indoor casing-205'  | 'indoor casing-205x'  
+	| 'indoor casing-208l'  | 'indoor casing-208'  | 'indoor casing-211l'  | 'indoor casing-211x'  | 'outdoor chasis-201'  
+	| 'outdoor chasis-201x'  | 'outdoor chasis-202'  | 'outdoor chasis-203'  | 'outdoor chasis-202l'  | 'outdoor chasis-203x'  
+	| 'outdoor chasis-205'  | 'outdoor chasis-205x'  | 'outdoor chasis-208l'  | 'outdoor chasis-208'  | 'outdoor chasis-211l'  
+	| 'outdoor chasis-211x'  | 'metal casing-201'  | 'metal casing-201x'  | 'metal casing-202'  | 'metal casing-203'  
+	| 'metal casing-202l'  | 'metal casing-203x'  | 'metal casing-205'  | 'metal casing-205x'  | 'metal casing-208l'  
+	| 'metal casing-208'  | 'metal casing-211l'  | 'metal casing-211x'  | 'mountung stand-201'  | 'mountung stand-201x'  
+	| 'mountung stand-202'  | 'mountung stand-203'  | 'mountung stand-202l'  | 'mountung stand-203x'  | 'mountung stand-205'  
+	| 'mountung stand-205x'  | 'mountung stand-208l'  | 'mountung stand-208'  | 'mountung stand-211l'  | 'mountung stand-211x'  
+	| 'evaporator-201'  | 'evaporator-201x'  | 'evaporator-202'  | 'evaporator-203'  | 'evaporator-202l'  | 'evaporator-203x'  
+	| 'evaporator-205'  | 'evaporator-205x'  | 'evaporator-208l'  | 'evaporator-208'  | 'evaporator-211l'  | 'evaporator-211x'  
+	| 'fan - indoor-201'  | 'fan - indoor-201x'  | 'fan - indoor-202'  | 'fan - indoor-203'  | 'fan - indoor-202l'  
+	| 'fan - indoor-203x'  | 'fan - indoor-205'  | 'fan - indoor-205x'  | 'fan - indoor-208l'  | 'fan - indoor-208'  
+	| 'fan - indoor-211l'  | 'fan - indoor-211x'  | 'controller-201'  | 'controller-201x'  | 'controller-202'  | 'controller-203'  
+	| 'controller-202l'  | 'controller-203x'  | 'controller-205'  | 'controller-205x'  | 'controller-208l'  | 'controller-208'  
+	| 'controller-211l'  | 'controller-211x'  | 'copper tubing-201'  | 'copper tubing-201x'  | 'copper tubing-202'  
+	| 'copper tubing-203'  | 'copper tubing-202l'  | 'copper tubing-203x'  | 'copper tubing-205'  | 'copper tubing-205x'  
+	| 'copper tubing-208l'  
+	| 'copper tubing-208'  | 'copper tubing-211l'  | 'copper tubing-211x'  | 'insulation-201'  | 'insulation-201x'  | 'insulation-202'  
+	| 'insulation-203'  | 'insulation-202l'  | 'insulation-203x'  | 'insulation-205'  | 'insulation-205x'  | 'insulation-208l'  
+	| 'insulation-208'  | 'insulation-211l'  | 'insulation-211x'  | 'remote-201'  | 'remote-201x'  | 'remote-202'  | 'remote-203'  
+	| 'remote-202l'  | 'remote-203x'  | 'remote-205'  | 'remote-205x'  | 'remote-208l'  | 'remote-208'  | 'remote-211l'  
+	| 'remote-211x'  | 'compressor-201'  | 'compressor-201x'  | 'compressor-202'  | 'compressor-203'  | 'compressor-202l'  
+	| 'compressor-203x'  | 'compressor-205'  | 'compressor-205x'  | 'compressor-208l'  | 'compressor-208'  | 'compressor-211l'  
+	| 'compressor-211x'  | 'radiator-201'  | 'radiator-201x'  | 'radiator-202'  | 'radiator-203'  | 'radiator-202l'  | 'radiator-203x'  
+	| 'radiator-205'  | 'radiator-205x'  | 'radiator-208l'  | 'radiator-208'  | 'radiator-211l'  | 'radiator-211x'  | 'fan-201'  
+	| 'fan-201x'  | 'fan-202'  | 'fan-203'  | 'fan-202l'  | 'fan-203x'  | 'fan-205'  | 'fan-205x'  | 'fan-208l'  | 'fan-208'  
+	| 'fan-211l'  | 'fan-211x'  | 'air filter-201'  | 'air filter-201x'  | 'air filter-202'  | 'air filter-203'  | 'air filter-202l'  
+	| 'air filter-203x'  | 'air filter-205'  | 'air filter-205x'  | 'air filter-208l'  | 'air filter-208'  | 'air filter-211l'  
+	| 'air filter-211x'
 	;
 
 supplierNameSpec
@@ -81,14 +115,15 @@ supplierNameSpec
 	| 'extensive enterprise'  | 'carrys components'  | 'blammo'  | 'primatech'  | 'mammoth llc'  | 'roxxon'  | 'sto plains holdings'  
 	| 'smith and co.'  | 'tip top plc'  | 'ajax'  | '123 warehousing'  | 'globo dyn american corp'  | 'three waters'  
 	| 'bland corporation'  | 'abc corp'  | 'incom corporation'  | 'big kahuna inc'  | 'milliways inc'  | 'omni consumer products'  
-	| 'universal electricals'  | 'widget corp'  | 'krustyco'  | 'tessier-ashpool'  | 'acme corp'
+	| 'universal electricals'  | 'widget corp'  | 'krustyco'  | 'tessier-ashpool'  | 'acme corp'  | 'duff machining'  
+	| 'globex corporation'  | 'sirius cybernetics corporation'
 	;
 
 supplierCitySpec
 	: 'birmingham'  | 'sydney'  | 'shanghai'  | 'hangzhou'  | 'leverpool'  | 'dusseldorf'  | 'munich'  | 'rio de janeiro'  | 'kolkata'  
 	| 'nice'  | 'beijing'  | 'shenzhen'  | 'kobe'  | 'turin'  | 'manchester'  | 'florence'  | 'tokyo'  | 'chennai'  | 'guadalajara'  
 	| 'detroit'  | 'perth'  | 'ecatepec'  | 'delhi'  | 'brisbane'  | 'salvador'  | 'seattle'  | 'tianjin'  | 'nagoya'  | 'lyon'  
-	| 'tijuana'  | 'houston'  | 'catania'  | 'mumbai'  | 'fortaleza' 
+	| 'tijuana'  | 'houston'  | 'catania'  | 'mumbai'  | 'fortaleza'
 	;
 
 supplierCountrySpec
