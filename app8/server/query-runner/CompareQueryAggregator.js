@@ -174,7 +174,7 @@ CompareQueryAggregator.prototype.getModelFromCountryAgg = function(){
 	return {
 		aggs : {
 			models : this.getModelAggTmpl(),
-			counries : this.getCountryAggTmpl(),
+			countries : this.getCountryAggTmpl(),
 			amount : { "sum" : { "field" : "rate" } }
 		}
 	};
