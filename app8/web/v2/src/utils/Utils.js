@@ -383,7 +383,7 @@ function getLablesFormQueryResponse (apiRes){
 	var yAxisTitle = '';
 	if(!apiRes.query.spend.isPresent){
 		pageTitle = 'TOTAL PARTS - ' + apiRes.results.hits.total;
-		yAxisTitle = 'SALES';
+		yAxisTitle = 'PARTS';
 	}
 	else{
 		pageTitle = 'TOTAL SPEND - ' + Math.round(apiRes.results.aggregations.amount.value);
