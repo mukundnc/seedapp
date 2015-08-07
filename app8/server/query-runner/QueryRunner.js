@@ -13,15 +13,48 @@ function QueryRunner(){
 }
 
 QueryRunner.prototype.run = function(antlrQueryObject, cbOnDone){
+	function onComplete(data){
+		cbOnDone({
+			success : data.success,
+			results : data.results
+		});
+	}
+
+	if(this.isCompareSearch(antlrQueryObject)){
+		this.runCompare(antlrQueryObject, onComplete)
+	}
+	else
+		this.runSingle(antlrQueryObject, onComplete);
+}
+
+
+QueryRunner.prototype.runSingle = function(antlrQueryObject, cbOnDone){
 	var esQuery = this.getESQuery(antlrQueryObject);
 	this.applyAggregatorsToESQuery(esQuery, antlrQueryObject);
-	console.log(JSON.stringify(esQuery));
+	logger.log(JSON.stringify(esQuery));
 	this.client.search(esQuery, (function(err, res){
 		if(err){
 			logger.log(err);
 			cbOnDone({success : false, results : 'error in ES query execute'});
 		}
 		else{
+			this.addValueAggregateToTimeSeries(res);
+			cbOnDone({success : true, results : res});
+		}
+	}).bind(this));	
+}
+
+QueryRunner.prototype.runCompare = function(antlrQueryObject, cbOnDone){
+	var esQuery = this.getESQueryToCompare(antlrQueryObject);
+	this.applyAggregatorsToESQuery(esQuery, antlrQueryObject);
+	this.client.search(esQuery, (function(err, res){
+		if(err){
+			logger.log(err);
+			cbOnDone({success : false, results : 'error in ES query execute'});
+		}
+		else{
+			res.qSource = antlrQueryObject.product.values;
+			res.qTarget = antlrQueryObject.supplier.values;
 			this.addValueAggregateToTimeSeries(res);
 			cbOnDone({success : true, results : res});
 		}
@@ -78,5 +111,24 @@ QueryRunner.prototype.getTimeSeriesObjectFromBucket = function(bucket){
 		if(_.contains(timeKeys, key))
 			return bucket[key];
 	}
+}
+
+QueryRunner.prototype.isCompareSearch = function(query){
+	return (query.product.values.length > 0 || query.supplier.values.length > 0);
+}
+
+QueryRunner.prototype.getESQueryToCompare = function(query){
+	var esQuery = new qb.CompareQueryWithTermsAndFilters();
+	
+	query.product.values.forEach(function(pv){
+		esQuery.addTerm(query.product.key, pv);
+	});	
+	
+	query.supplier.values.forEach(function(sv){
+		query.product.isPresent ?
+					  esQuery.addFilter(query.supplier.key, sv) :
+					  esQuery.addTerm(query.supplier.key, sv);
+	});
+	return esQuery.toESQuery();
 }
 module.exports = QueryRunner;
