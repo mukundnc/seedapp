@@ -33,7 +33,7 @@ SearchController.prototype.getModelOptions = function(apiRes){
 			dateDist : dd.dist,
 			width : this.W + 50,
 			height : this.H * 0.37,
-			mode : this.getMode(apiRes.query)
+			mode : getQueryPartSpendOrAvgMode(apiRes.query)
 		}
 	};
 }
@@ -65,31 +65,10 @@ SearchController.prototype.getViewOptions = function(apiRes, qid){
 	}
 }
 
-SearchController.prototype.getMode = function(query){
-	var mode = 'count';
-	if(query.spend.isPresent){
-		if(query.average.isPresent)
-			mode = 'average_spend';
-		else
-			mode = 'spend';
-	}
-	return mode;
-}
-
 SearchController.prototype.executeSearch = function(queryParams){
 	var apiRes = this.qidResults[queryParams.qid];	
 	var queryStr = '';
-	queryStr = getQueryString(queryParams, apiRes.query);
-	//queryStr += this.getTimeFilterSuffix(queryParams);
-	// if(queryParams.source === 'timeline'){
-	// 	queryStr = getQueryString(queryParams, apiRes.query);
-	// 	queryStr += this.getTimeFilterSuffix(queryParams);
-	// }
-	// else{
-	// 	var filters  = apiRes.query.filters? apiRes.query.filters.and : null;
-	// 	queryStr = getQueryString(queryParams, qSource, qTarget, filters);
-	// }
-	
+	queryStr = getQueryString(queryParams, apiRes.query);	
 	$('#tbSearch').val(queryStr)
 	this.appController.executeQuery();
 }

@@ -395,3 +395,13 @@ function getLablesFormQueryResponse (apiRes){
 	}
 }
 
+function getQueryPartSpendOrAvgMode(query){
+	var mode = 'count';
+	if(query.spend.isPresent){
+		if(query.average.isPresent)
+			mode = 'average_spend';
+		else
+			mode = 'spend';
+	}
+	return mode;
+}

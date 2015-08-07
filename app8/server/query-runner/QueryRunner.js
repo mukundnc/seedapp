@@ -3,6 +3,7 @@ var qb = require('./ESQueryBuilder');
 var elasticsearch = require('elasticsearch');
 var config = require('./../../config/config');
 var QueryAggregator = require('./QueryAggregator');
+var CompareQueryAggregator = require('./CompareQueryAggregator');
 var logger = require('./../utils/Logger');
 
 function QueryRunner(){
@@ -19,7 +20,6 @@ QueryRunner.prototype.run = function(antlrQueryObject, cbOnDone){
 			results : data.results
 		});
 	}
-
 	if(this.isCompareSearch(antlrQueryObject)){
 		this.runCompare(antlrQueryObject, onComplete)
 	}
@@ -82,7 +82,7 @@ QueryRunner.prototype.getESQuery = function(query){
 }
 
 QueryRunner.prototype.applyAggregatorsToESQuery = function(esQuery, antlrQueryObject){
-	var agg = new QueryAggregator();
+	var agg = this.isCompareSearch(antlrQueryObject) ? new CompareQueryAggregator() : new QueryAggregator();
 	esQuery.body.aggs = agg.getAggregates(antlrQueryObject).aggs;	
 }
 
@@ -114,7 +114,7 @@ QueryRunner.prototype.getTimeSeriesObjectFromBucket = function(bucket){
 }
 
 QueryRunner.prototype.isCompareSearch = function(query){
-	return (query.product.values.length > 0 || query.supplier.values.length > 0);
+	return (query.product.values.length > 1 || query.supplier.values.length > 1);
 }
 
 QueryRunner.prototype.getESQueryToCompare = function(query){

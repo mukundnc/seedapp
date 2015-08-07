@@ -105,7 +105,7 @@ ModelFactory.prototype.getCompareFrameModel = function(apiRes, options){
 	var fms = this.getFrameModel(apiRes, options);
 	var model = this.getDefaultCompareModelTmpl();
 	fms.forEach((function(fm){		
-		if(this.isProductType(fm.container.type)){
+		if(isProductType(fm.container.type)){
 			var tLabels = [];
 			model.product.type = fm.type;
 			model.product.label = fm.label;
@@ -119,7 +119,7 @@ ModelFactory.prototype.getCompareFrameModel = function(apiRes, options){
 			});
 			model.product.timelines = this.getTimeLinesForCompare(fm.timeline, tLabels);
 		}
-		else if(this.isRegionType(fm.container.type)){
+		else if(isRegionType(fm.container.type)){
 			var tLabels = [];
 			model.region.type = fm.type;
 			model.region.label = fm.label;
@@ -136,16 +136,6 @@ ModelFactory.prototype.getCompareFrameModel = function(apiRes, options){
 	}).bind(this));	
 	console.log(fms);	
 	return model;
-}
-
-ModelFactory.prototype.isProductType = function(p){
-	var productTypes = ['category', 'categories', 'type', 'types', 'brand', 'brands', 'model', 'models'];
-	return _.contains(productTypes, p);
-}
-
-ModelFactory.prototype.isRegionType = function(r){
-	var regionTypes = ['regions', 'region', 'states', 'state', 'cities', 'city'];
-	return _.contains(regionTypes, r);
 }
 
 ModelFactory.prototype.getTimeLinesForCompare = function(timeline, tLabels){
