@@ -91,10 +91,10 @@ OutlierManager.prototype.isDrilldownSupported = function(parsedResponse, line){
 	keys.forEach((function(key){
 		var src = parsedResponse[0][key];
 		if(src){
-			if(utils.isProductType(src.key) && line === 'product'){
+			if(utils.isDDProductType(src.key) && line === 'product'){
 				supported.isProduct = true;
 			}
-			if(utils.isRegionType(src.key) && line === 'region'){
+			if(utils.isDDRegionType(src.key) && line === 'region'){
 				supported.isRegion = true;
 			}
 		}

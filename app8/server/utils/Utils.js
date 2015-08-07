@@ -2,6 +2,9 @@ var _ = require('underscore');
 
 var productTypes = ['line', 'model', 'component', 'lines', 'models', 'components'];
 var supplierType = ['name', 'city', 'country', 'names', 'cities', 'countries'];
+var ddProductTypes = ['line', 'lines', 'model', 'models'];
+var ddRegionTypes = ['country','countries', 'city', 'cities'];
+
 var timeTypes = ['yearly', 'monthly', 'daily'];
 
 function isProductType(p){
@@ -18,6 +21,14 @@ function isRegionType(r){
 
 function isTimeType(t){
 	return _.contains(timeTypes, t);
+}
+
+function isDDProductType(p){
+	return _.contains(ddProductTypes, p);
+}
+
+function isDDRegionType(r){
+	return _.contains(ddRegionTypes, r);
 }
 
 function getQueryString (queryParams, qSource, qTarget, isSpendPresent){
@@ -66,6 +77,8 @@ function getQueryString (queryParams, qSource, qTarget, isSpendPresent){
 module.exports = {
 	isProductType : isProductType,
 	isSupplierType : isSupplierType,
+	isDDProductType : isDDProductType,
+	isDDRegionType : isDDRegionType,	
 	isTimeType : isTimeType,
 	isRegionType : isRegionType,
 	getQueryString : getQueryString
