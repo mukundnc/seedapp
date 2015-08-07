@@ -6,7 +6,7 @@ var csv = require("fast-csv");
 
 function ProductBuilder(){
 	//this.csvFileName = config.saleStrategy.strategyFileName;
-	this.csvFileName = '/Users/vishal/work/csales.csv'; 
+	this.csvFileName = '/Users/vishal/Downloads/CAT_data_Dump.csv'; 
 }
 
 ProductBuilder.prototype.getSalesProducts = function(cbOnDone){	
@@ -65,13 +65,15 @@ ProductBuilder.prototype.logUniqueColsLowerCase = function(){
 	csv.fromPath(this.csvFileName, {headers:false})
 	   .on("data", function(data){	   	
 		   	if(i > 0){
-		   		console.log(data[0].toLowerCase(), data[1].toLowerCase(), i);
-		   		lines.push(data[0].toLowerCase());
-		   		models.push(data[1].toLowerCase());
-		   		components.push(data[2].toLowerCase());
-		   		suppliers.push(data[9].toLowerCase());
-		   		cities.push(data[10].toLowerCase());
-		   		countries.push(data[11].toLowerCase());		   		
+		   		//console.log(i, data);
+		   		if(data.length === 12){
+			   		lines.push(data[0].toLowerCase());
+			   		models.push(data[1].toLowerCase());
+			   		components.push(data[2].toLowerCase());
+			   		suppliers.push(data[9].toLowerCase());
+			   		cities.push(data[10].toLowerCase());
+			   		countries.push(data[11].toLowerCase());		
+			   	}   		
 		   	}
 		    i++;
 		})
@@ -97,12 +99,14 @@ ProductBuilder.prototype.logDomainMap = function(){
 	csv.fromPath(this.csvFileName, {headers:false})
 	   .on("data", function(data){
 		   	if(i > 0){
-		   		domain.push(data[0]);
-		   		domain.push(data[1]);
-		   		domain.push(data[2]);
-		   		domain.push(data[9]);
-		   		domain.push(data[10]);
-		   		domain.push(data[11]);		   		
+		   		if(data.length === 12){
+			   		domain.push(data[0]);
+			   		domain.push(data[1]);
+			   		domain.push(data[2]);
+			   		domain.push(data[9]);
+			   		domain.push(data[10]);
+			   		domain.push(data[11]);	
+		   		}	   		
 		   	}
 		    i++;
 		})
