@@ -134,7 +134,7 @@ ModelFactory.prototype.getCompareFrameModel = function(apiRes, options){
 			model.region.timelines = this.getTimeLinesForCompare(fm.timeline, tLabels);
 		}
 	}).bind(this));	
-	console.log(fms);	
+	//console.log(fms);	
 	return model;
 }
 
@@ -149,13 +149,18 @@ ModelFactory.prototype.getTimeLinesForCompare = function(timeline, tLabels){
 	tlArr.forEach(function(tl){
 		var tgs = tl.timeGroups;
 		var timeLabel = copyTLables.pop();
-		tgs.forEach(function(tg){
-			Object.keys(tg).forEach(function(k){
-				var arrTime = tg[k];
+		//tgs.forEach(function(tg){
+			Object.keys(tgs[0]).forEach(function(k){
+				var arrTime = tgs[0][k];
 				var toKeep = _.where(arrTime, {label : timeLabel})[0];
-				tg[k] = toKeep;
+				if(toKeep)
+					tgs[0][k] = toKeep;
+				else{
+					console.error(k, timeLabel);
+					console.error(tg);				
+				}
 			});
-		});
+		//});
 	});
 	copyTLables = tLabels.slice(0);
 	copyTLables.reverse();

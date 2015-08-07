@@ -20,7 +20,6 @@ CompareTimeView.prototype.initYScale = function(){
 	var allValues = [];
 	this.model.forEach(function(m){
 		m.timeline.timeGroups.forEach(function(tg){
-			console.log(tg);
 			Object.keys(tg).forEach(function(key){
 				var count = tg[key].count || tg[key].totalCount;
 				allValues.push(count);
@@ -100,11 +99,12 @@ CompareTimeView.prototype.addTimeLines = function(){
 	var colors = this.utils.getDefaultColors();
 	var mapLabelVsColor = {};
 	this.model.forEach(function(m){
-		m.timeline.timeGroups.forEach(function(tg){
+		//m.timeline.timeGroups.forEach(function(tg){
+			var tg = m.timeline.timeGroups[0];
 			var c = colors.pop();
 			mapLabelVsColor[m.label] = c;
 			self.addTimeLine(g, tg, m.label, c);
-		});
+		//});
 	});	
 	this.addLabelMarkers(g, mapLabelVsColor);
 }
