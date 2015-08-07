@@ -132,9 +132,9 @@ SalesAppController.prototype.getOutlierDataDrilldownMode = function(params){
 			$('#tbSearch').val(queryDisplay);
 			this.queryIdVsController[qid] = this.outlierController;
 			this.queryIdVsController[qid].renderView(qid, result);
-			var treeText = 'outlier-' + result.qSource.value;
-			if(result.qTarget)
-				treeText += '-' + result.qTarget.value;
+			var treeText = 'outlier-' + result.qSource.values[0];
+			if(result.qTarget.isPresent)
+				treeText += '-' + result.qTarget.values[0];
 			this.searchTreeView.add({id : qid, name : strToFirstUpper(treeText)});
 		}
 		else{
