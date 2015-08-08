@@ -8,7 +8,9 @@ function OutlierHelper(){
 
 }
 
-OutlierHelper.prototype.getOutlierItemsForLine = function(parsedResponse, line){
+OutlierHelper.prototype.getOutlierItemsForLine = function(parsedResponse, line, options){
+	this.options = options;
+
 	var keys = ['key1', 'key2'];
 	for(var i = 0 ; i < keys.length; i++){
 		var key = keys[i];
@@ -150,14 +152,16 @@ OutlierHelper.prototype.addMissingItemsInTimeSeries = function(timeSeries, timeD
 				timeSeries.push({
 					key : Date.parse(i + '/06/15'),
 					key_as_string : i + '/06/15',
-					doc_count : 0
+					doc_count : 0,
+					amount : 0
 				});
 			}
 			else if(timeDistribution === 'monthly'){
 				timeSeries.push({
 					key : Date.parse('2014/' + (i+1).toString() + '/15'),
 					key_as_string : '2014/' + (i+1).toString() + '/15',
-					doc_count : 0
+					doc_count : 0,
+					amount : 0
 				});
 			}
 		}

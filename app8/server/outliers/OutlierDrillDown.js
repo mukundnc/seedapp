@@ -8,7 +8,8 @@ function OutlierDrillDown(){
 	this.helper = new OutlierHelper();
 }
 
-OutlierDrillDown.prototype.getOutliersForDrillDown = function(drillDownSearchResults, rootSearchResults, line, cbOnDone){	
+OutlierDrillDown.prototype.getOutliersForDrillDown = function(drillDownSearchResults, rootSearchResults, line, options, cbOnDone){	
+	this.options = options;
 
 	var resParser = new ResponseParser();
 	
@@ -18,7 +19,7 @@ OutlierDrillDown.prototype.getOutliersForDrillDown = function(drillDownSearchRes
 		
 		dsr.response = resParser.parse(dsr.response)[0];
 		
-		var olItems = this.helper.getOutlierItemsForLine(dsr.response, line);
+		var olItems = this.helper.getOutlierItemsForLine(dsr.response, line, this.options);
 
 		resIdVsOutlierItems[dsr.id] = olItems.items;
 
@@ -81,7 +82,7 @@ OutlierDrillDown.prototype.markOutlierInOneItem = function(outlierItem, cbOnDone
 				tItems = self.helper.addMissingItemsInTimeSeries(tItems, self.timeDistribution);
 				tItems.forEach(function(tItem){
 					timeKeyVsItem[tItem.key] = tItem;
-					timeKeyVsCount[tItem.key] = tItem.doc_count;
+					timeKeyVsCount[tItem.key] = self.options.isSpend? tItem.amount : tItem.doc_count;
 				});	
 			}		
 		});

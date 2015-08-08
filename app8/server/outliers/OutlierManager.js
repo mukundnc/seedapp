@@ -17,6 +17,9 @@ OutlierManager.prototype.handleOutlierRequest = function(reqHttp, resHttp){
 	var query = decodeURIComponent(reqHttp.query.q).toLowerCase();	
 	var mode = decodeURIComponent(reqHttp.query.mode).toLowerCase();	
 	var line = decodeURIComponent(reqHttp.query.line).toLowerCase();	
+	this.options = {
+		isSpend : query.indexOf('spend') !== -1
+	}
 	if(mode === 'top')
 		this.executeOutliersForTopMode(reqHttp, line, cbOnDone);
 	else if(mode === 'drilldown')
@@ -26,10 +29,11 @@ OutlierManager.prototype.handleOutlierRequest = function(reqHttp, resHttp){
 }
 
 OutlierManager.prototype.executeOutliersForTopMode = function(reqHttp, line, cbOnDone){	
+	var self = this;
 	var onSearchQueryResponse = {
 		json : function(res){
 			var outlierTop = new OutlierTop();
-			outlierTop.getOutliersForTop(res, line, cbOnDone);
+			outlierTop.getOutliersForTop(res, line, self.options, cbOnDone);
 		}
 	}
 	this.apiController.handleSearchRequest(reqHttp, onSearchQueryResponse);
@@ -45,7 +49,7 @@ OutlierManager.prototype.executeOutliersForDrilldownMode = function(reqHttp, que
 		}
 		var outlierDrillDown = new OutlierDrillDown();
 		//var t = [allExecutedSearches[0]];
-		outlierDrillDown.getOutliersForDrillDown(result.data, rootSearchResponse, line, cbOnDone);
+		outlierDrillDown.getOutliersForDrillDown(result.data, rootSearchResponse, line, self.options, cbOnDone);
 	}
 
 	var onSearchQueryResponse = {

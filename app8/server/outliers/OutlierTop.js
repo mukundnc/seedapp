@@ -9,8 +9,10 @@ function OutlierTop(){
 	this.helper = new OutlierHelper();
 }
 
-OutlierTop.prototype.getOutliersForTop = function(resSearchQuery, line, cbOnDone){
+OutlierTop.prototype.getOutliersForTop = function(resSearchQuery, line, options, cbOnDone){
 	var self = this;
+	this.options = options;
+
 	if(!resSearchQuery.success){
 		cbOnDone({success : false, message : 'Internal error whlie executing search'});
 		return;
@@ -23,7 +25,7 @@ OutlierTop.prototype.getOutliersForTop = function(resSearchQuery, line, cbOnDone
 		cbOnDone(timeFormattedResults);
 	}
 	
-	var olItems = this.helper.getOutlierItemsForLine(searchResults[0], line);
+	var olItems = this.helper.getOutlierItemsForLine(searchResults[0], line, this.options);
 	this.markOutliersInObject(olItems, onDone);
 	
 }
@@ -77,7 +79,7 @@ OutlierTop.prototype.markOutliersInOneTimeItem = function(timeItem, cbOnDone){
 	tItems = this.helper.addMissingItemsInTimeSeries(tItems, this.timeDistribution);
 	tItems.forEach(function(tItem){
 		timeKeyVsItem[tItem.key] = tItem;
-		timeKeyVsCount[tItem.key] = tItem.doc_count;
+		timeKeyVsCount[tItem.key] = self.options.isSpend? tItem.amount : tItem.doc_count;
 	});	
 
 	function onDone(err, res){
