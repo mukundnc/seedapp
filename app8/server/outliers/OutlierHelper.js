@@ -10,7 +10,6 @@ function OutlierHelper(){
 
 OutlierHelper.prototype.getOutlierItemsForLine = function(parsedResponse, line, options){
 	this.options = options;
-
 	var keys = ['key1', 'key2'];
 	for(var i = 0 ; i < keys.length; i++){
 		var key = keys[i];

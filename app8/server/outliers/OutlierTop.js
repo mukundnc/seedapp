@@ -73,6 +73,7 @@ OutlierTop.prototype.markOutliersInObject = function(obj, cbOnDone){
 }
 
 OutlierTop.prototype.markOutliersInOneTimeItem = function(timeItem, cbOnDone){
+	var self = this;
 	var timeKeyVsItem = {};
 	var timeKeyVsCount = {};
 	var tItems = timeItem.items.items;

@@ -1,7 +1,7 @@
 var _ = require('underscore');
 
 var productTypes = ['line', 'model', 'component', 'lines', 'models', 'components'];
-var supplierType = ['name', 'city', 'country', 'names', 'cities', 'countries'];
+var supplierType = ['name', 'city', 'country', 'names', 'cities', 'countries', 'supplier', 'suppliers'];
 var ddProductTypes = ['line', 'lines', 'model', 'models'];
 var ddRegionTypes = ['country','countries', 'city', 'cities'];
 
@@ -74,6 +74,12 @@ function getQueryString (queryParams, qSource, qTarget, isSpendPresent){
 	return q;
 }
 
+function log(s){
+	if(typeof(s) === 'string')
+		console.log(s);
+	else
+		console.log(JSON.stringify(s));
+}
 module.exports = {
 	isProductType : isProductType,
 	isSupplierType : isSupplierType,
@@ -81,5 +87,6 @@ module.exports = {
 	isDDRegionType : isDDRegionType,	
 	isTimeType : isTimeType,
 	isRegionType : isRegionType,
-	getQueryString : getQueryString
+	getQueryString : getQueryString,
+	log : log
 }
