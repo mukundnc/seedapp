@@ -15,7 +15,7 @@ function IndexBuilder(){
 	this.id = 1;
 }
 
-IndexBuilder.prototype.build = function(req, res, saleStrategy){
+IndexBuilder.prototype.buildINdex = function(req, res, saleStrategy){
 	var prodBldr = new ProductBuilder();
 	var products = prodBldr.getSalesProducts(saleStrategy);
 	if(!products || products.length === 0){
@@ -27,16 +27,33 @@ IndexBuilder.prototype.build = function(req, res, saleStrategy){
 	this.createIndex(products, res);
 	//res.json({success: true, message: 'indices built successfully'});
 }
-IndexBuilder.prototype.buildCsv = function(req, res, saleStrategy){
-	var prodBldr = new ProductBuilder();
-	var products = prodBldr.getSalesProducts(saleStrategy);
-	if(!products || products.length === 0){
-		logger.log('0 products created');
-		res.json({success : false, message : '0 products indexed'});
-		return;
+IndexBuilder.prototype.build = function(req, res, saleStrategy){
+	var self = this;
+	var cnt = 0;
+	var ONE_GB  = 10;
+	var total = ONE_GB * 0.1;
+
+	function onDone(){
+		cnt++;
+		if(cnt > total) {
+			console.log('Done : ' + cnt);
+			return;
+		}			
+		createProductCsv();
 	}
 
-	this.createCsv(products);
+	function createProductCsv(){
+		var prodBldr = new ProductBuilder();
+		var products = prodBldr.getSalesProducts(saleStrategy);
+		if(!products || products.length === 0){
+			logger.log('0 products created');
+			res.json({success : false, message : '0 products indexed'});
+			return;
+		}
+
+		self.createCsv(products, onDone);
+	}
+	createProductCsv();
 	res.json({success: true, message: 'Created csv successfully'});
 }
 
@@ -197,7 +214,7 @@ IndexBuilder.prototype.add20KSalesDoc = function(sales20KDoc, cbOnComplete){
 	});
 }
 
-IndexBuilder.prototype.createCsv = function(products){
+IndexBuilder.prototype.createCsv = function(products, cbOnComplete){
 	var csvProducts = this.convertToCsvProducts(products);
 	var keys = Object.keys(csvProducts[0]);
 	var comma = '\",\"';
@@ -216,12 +233,13 @@ IndexBuilder.prototype.createCsv = function(products){
 		header += '\n';
 	});
 	var csvFilePath = config.saleStrategy.strategyFileName.replace('.txt', '.csv');
-	fs.writeFile(csvFilePath, header, function(err) {
+	fs.appendFile(csvFilePath, header, function(err) {
 	    if(err) {
 	        return console.log(err);
 	    }
 
 	    logger.log("The file was saved - " + csvFilePath);
+	    cbOnComplete();
 	}); 
 }
 
