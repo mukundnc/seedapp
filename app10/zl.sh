@@ -6,7 +6,7 @@ echo "" >> ./loadit.sh
 echo "curl -XPUT http://localhost:9200/newindex?pretty" >> ./loadit.sh
 echo "" >> ./loadit.sh
 COUNTER=0
-FILES="./r1.txt"
+FILES="/Users/vishal/work/CV_OUT/r*.txt"
 for f in $FILES
 do
   COUNTER=$[COUNTER + 1]
