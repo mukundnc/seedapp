@@ -4,6 +4,7 @@ function SearchFrameView(model, options){
 	this.tabs = {};
 	this.activeTab = null;
 	this.utils = new SvgUtils();
+	this.graphType = 'grouped';
 
 	var productTypes = ['categories', 'types', 'brands', 'models'];
 	var regionTypes = ['regions', 'states', 'cities'];
@@ -29,11 +30,11 @@ SearchFrameView.prototype.render = function(){
 	this.renderTabs();
 
 	if(this.tabs['product']){
-		this.tabs['product'].view.render();
+		this.tabs['product'].view.render(this.graphType);
 		this.activeTab = 'product';
 	}
 	else if (this.tabs['region']){
-		this.tabs['region'].view.render();
+		this.tabs['region'].view.render(this.graphType);
 		this.activeTab = 'region';
 	}
 }
@@ -62,12 +63,30 @@ SearchFrameView.prototype.renderTabs = function(){
 		  })
 		xOrg += tabW;
 		i++;
-	}).bind(this));
+	}).bind(this));	
 	if(this.options.resultCount)
 		this.utils.addTextXForm(g, this.options.w/2, 0, 'TOTAL SALES - ' + this.options.resultCount, 'sales-header');
 	var self = this;
 	$('.sf-tab').on('click', function(e){
 		self.onTabChange(this);
+	});
+	//tabs for group and stacked views
+	var tt = this.utils.addRectLabel(g, xOrg+700, 0, tabW, tabH, 'Stacked', 'st-tab', 'st-rect', 'st-text', 'middle');
+	tt.attr('id', 'stacked');
+	tt.select('text')
+	  .attr({
+	  	x : xOrg + 700 + tabW/2,
+	  	'text-anchor' : 'middle'
+	  });
+    tt = this.utils.addRectLabel(g, xOrg+tabW+700, 0, tabW, tabH, 'Grouped', 'st-tab', 'st-rect-select', 'st-text-select', 'middle');
+	tt.attr('id', 'grouped');
+	tt.select('text')
+	  .attr({
+	  	x : xOrg + 700 + tabW + tabW/2,
+	  	'text-anchor' : 'middle'
+	  });
+  	$('.st-tab').on('click', function(e){
+		self.onGraphTypeChange(this);
 	});
 }
 
@@ -76,8 +95,17 @@ SearchFrameView.prototype.onTabChange = function(selTab){
 	d3.selectAll('.sf-text-select').classed('sf-text-select', false).classed('sf-text', true);
 	d3.select(selTab).select('rect').attr('class', 'sf-rect-select');
 	d3.select(selTab).select('text').attr('class', 'sf-text-select');
-	var id = d3.select(selTab).attr('id');
-	this.tabs[id].view.render();
+	this.activeTab = d3.select(selTab).attr('id');
+	this.tabs[this.activeTab].view.render(this.graphType);
+}
+
+SearchFrameView.prototype.onGraphTypeChange = function(selTab){
+	d3.selectAll('.st-rect-select').classed('st-rect-select', false).classed('st-rect', true);
+	d3.selectAll('.st-text-select').classed('st-text-select', false).classed('st-text', true);
+	d3.select(selTab).select('rect').attr('class', 'st-rect-select');
+	d3.select(selTab).select('text').attr('class', 'st-text-select');
+	this.graphType =d3.select(selTab).attr('id');	
+	this.tabs[this.activeTab].view.render(this.graphType);
 }
 
 

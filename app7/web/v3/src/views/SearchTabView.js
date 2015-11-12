@@ -9,7 +9,7 @@ function SearchTabView(model, options){
 	}
 }
 
-SearchTabView.prototype.render = function(){
+SearchTabView.prototype.render = function(type){
 	this.containerView.render();
-	this.timeView.render();
+	this.timeView.render(type);
 }

@@ -10,7 +10,7 @@ function SearchTimeView(model, options){
 	this.currTimeModelIndex = 0;
 	$(document).on('click', function(e){
 		if(false === $(e.target).hasClass('opt-menu-img'))
-				$('.opt-menu-container').hide();
+			$('.opt-menu-container').hide();
 	});
 }
 
@@ -20,12 +20,42 @@ SearchTimeView.prototype.clear = function(){
 	this.getGroupById(this.groups.backnext).html('');
 }
 
-SearchTimeView.prototype.render = function(){
+SearchTimeView.prototype.render = function(type){
 	this.clear();
+	this.gtype = type;
 	var g = this.getGroupById(this.groups.axes);
+	if(this.gtype === 'stacked')
+		this.getStackConstants();
 	this.addAxes();
 	this.showTimeView();
 	this.initOptionsMenu();
+}
+
+SearchTimeView.prototype.getStackConstants = function(){
+	if(this.gtype !== 'stacked')
+		return;
+	this.stackbw = (this.model.axes.x.labels[0].xEnd / 3);
+	this.stackiw = (this.model.axes.x.labels[0].xEnd / 2)-(this.stackbw / 2);
+	this.stackxw = this.model.axes.x.labels[0].xEnd;
+	var timeGroup = this.model.timeGroups[this.currTimeModelIndex];
+	var maxY = 0;
+	for(var key in timeGroup){
+		var bars = timeGroup[key];
+		var yEnd=0;
+		bars.forEach(function(bar){
+			yEnd += bar.count;
+		});
+		if(maxY < yEnd)
+			maxY = yEnd;
+	}
+	var pmaxY = this.model.axes.y.labels[this.model.axes.y.labels.length-1].label;
+	this.coEff = pmaxY/maxY;
+	var i=1;
+	for(var key in this.model.axes.y.labels){
+		var x = this.model.axes.y.labels[key];
+		x.slabel = parseInt((maxY/this.model.axes.y.labels.length) * i, 10);
+		i++;
+	}
 }
 
 SearchTimeView.prototype.getGroupById = function(clsName){
@@ -61,7 +91,10 @@ SearchTimeView.prototype.addYAxis = function(){
 	var h = 0;
 	this.utils.addLine(g, yAxis.xStart, yAxis.yStart, yAxis.xEnd, yAxis.yEnd, 'chart-axis');
 	yAxis.labels.forEach((function(l){
-		this.utils.addTextXForm(g, l.xStart - 10, -l.yStart, l.label, 'st-text', 'end');
+		if(this.gtype === 'stacked')
+			this.utils.addTextXForm(g, l.xStart - 10, -l.yStart, l.slabel, 'st-text', 'end');
+		else
+			this.utils.addTextXForm(g, l.xStart - 10, -l.yStart, l.label, 'st-text', 'end');
 		this.utils.addLine(g, l.xStart, l.yStart, l.xEnd, l.yEnd, 'chart-axis');
 		h = l.yEnd;
 	}).bind(this));
@@ -132,23 +165,37 @@ SearchTimeView.prototype.onTimeGroupBackNext = function(selBackNext){
 }
 
 SearchTimeView.prototype.showTimeGroupView = function(){
+	// alert(this.gtype);
 	var g = this.getGroupById(this.groups.times);
 	g.html('');
 
 	var timeGroup = this.model.timeGroups[this.currTimeModelIndex];
 	var allHeights = [];
+	var swidth = (this.gtype === 'stacked') ? this.stackiw : 0;		
 
 	for(var key in timeGroup){
 		var bars = timeGroup[key];
 		var i = 1;
+		var sheight = 0;
 		bars.forEach((function(bar){
 			if(bar.h > 0){
-				var gR = this.utils.addRect(g, bar.x, bar.y, bar.w, 0, 'bar-' + i + ' bh');
+				var gR;
+				if(this.gtype === 'stacked'){
+					gR = this.utils.addRect(g, swidth, (bar.y+sheight)*this.coEff, this.stackbw, 0, 'bar-' + i + ' bh');
+					sheight+=bar.h;
+					allHeights.push(bar.h*this.coEff);
+				}
+				else{
+					gR = this.utils.addRect(g, bar.x, bar.y, bar.w, 0, 'bar-' + i + ' bh');	
+					allHeights.push(bar.h);								
+				}
 				gR.attr({label : bar.label, tKey : bar.tKey});
-				allHeights.push(bar.h);
+				
 			}
 			i++;
 		}).bind(this));
+		if(this.gtype === 'stacked')
+			swidth += this.stackxw;
 	}
 	this.addTimeGroupContentMarkers(g);
 	this.animateCategoryHeights(g, allHeights);

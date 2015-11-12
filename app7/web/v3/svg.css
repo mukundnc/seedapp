@@ -105,25 +105,25 @@
 }
 
 
-.sf-rect{
+.st-rect, .sf-rect{
 	stroke-width : 1px; 
 	stroke : grey; 
 	fill:#353535;
 	cursor : pointer;
 }
 
-.sf-text{
+.st-text, .sf-text{
 	color:grey;
 	cursor:pointer;
 	font-size:15px;
 	fill:grey;
 }
 
-.sf-rect-select{
+.st-rect-select, .sf-rect-select{
 	fill:#4d90fe;
 }
 
-.sf-text-select{
+.st-text-select, .sf-text-select{
 	fill : white;
 	color:grey;
 	cursor:pointer;
